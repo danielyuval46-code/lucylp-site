@@ -415,6 +415,12 @@ footer{
   padding:72px 20px;
 }
 
+.limited-products{
+  background:#0b0b0b;
+  border-bottom:1px solid #1f1f1f;
+  padding:72px 20px;
+}
+
 .product-grid{
   display:grid;
   grid-template-columns:repeat(4, 1fr);
@@ -482,6 +488,16 @@ footer{
 }
 
 .israeli-products .product-card{
+  border-color:#302714;
+}
+
+.limited-placeholder{
+  background:
+    radial-gradient(circle at 50% 50%, #191919 0 29%, #050505 30% 36%, #3a3017 37% 39%, #080808 40% 100%),
+    radial-gradient(circle at top left, rgba(246,231,176,0.14), transparent 42%);
+}
+
+.limited-products .product-card{
   border-color:#302714;
 }
 
@@ -663,6 +679,7 @@ footer{
   .japanese-products,
   .middle-eastern-products,
   .israeli-products,
+  .limited-products,
   .app-coming-soon{
     padding:56px 16px;
   }
