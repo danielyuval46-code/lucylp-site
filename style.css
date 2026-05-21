@@ -403,6 +403,12 @@ footer{
   padding:72px 20px;
 }
 
+.middle-eastern-products{
+  background:#0b0b0b;
+  border-bottom:1px solid #1f1f1f;
+  padding:72px 20px;
+}
+
 .product-grid{
   display:grid;
   grid-template-columns:repeat(4, 1fr);
@@ -451,6 +457,16 @@ footer{
   letter-spacing:2px;
   text-transform:uppercase;
   transform:translate(-50%, -50%);
+}
+
+.middle-east-placeholder{
+  background:
+    radial-gradient(circle at 50% 50%, #171717 0 31%, #050505 32% 38%, #2a2313 39% 41%, #080808 42% 100%),
+    linear-gradient(145deg, rgba(212,175,55,0.14), transparent);
+}
+
+.middle-eastern-products .product-card{
+  border-color:#302714;
 }
 
 .product-content{
@@ -629,6 +645,7 @@ footer{
   }
 
   .japanese-products,
+  .middle-eastern-products,
   .app-coming-soon{
     padding:56px 16px;
   }
