@@ -115,6 +115,14 @@ footer{
   padding:72px 20px;
 }
 
+.japanese-metal{
+  background:#0b0b0b;
+}
+
+.japanese-metal .vinyl-card{
+  border-color:#302714;
+}
+
 .market-inner{
   max-width:1120px;
   margin:0 auto;
