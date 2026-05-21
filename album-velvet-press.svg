@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" role="img" aria-labelledby="title desc">
+  <title id="title">Velvet Press album cover</title>
+  <desc id="desc">A deep red, black, and gold collectible album cover.</desc>
+  <rect width="800" height="800" fill="#070707"/>
+  <rect x="56" y="56" width="688" height="688" fill="#15080b" stroke="#d4af37" stroke-width="8"/>
+  <circle cx="400" cy="420" r="255" fill="#090909" stroke="#3a1118" stroke-width="38"/>
+  <circle cx="400" cy="420" r="182" fill="none" stroke="#2a0e13" stroke-width="9"/>
+  <circle cx="400" cy="420" r="70" fill="#d4af37"/>
+  <path d="M122 214c132-90 262-93 390-7 64 43 114 49 166 18v112c-87 42-167 29-242-39-84-76-190-73-314 9z" fill="#7f1d2d"/>
+  <path d="M122 250c138-83 253-74 344 27 58 64 128 76 212 35" fill="none" stroke="#f6e7b0" stroke-width="10"/>
+  <text x="80" y="626" fill="#f6e7b0" font-family="Arial, sans-serif" font-size="44" font-weight="700">VELVET PRESS</text>
+  <text x="80" y="676" fill="#d4af37" font-family="Arial, sans-serif" font-size="26" letter-spacing="5">PRIVATE ISSUE</text>
+</svg>

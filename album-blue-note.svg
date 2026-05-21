@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" role="img" aria-labelledby="title desc">
+  <title id="title">Blue Note Afterhours album cover</title>
+  <desc id="desc">A blue, black, and gold rare jazz album cover.</desc>
+  <rect width="800" height="800" fill="#050505"/>
+  <rect x="56" y="56" width="688" height="688" fill="#081018" stroke="#d4af37" stroke-width="8"/>
+  <rect x="96" y="96" width="608" height="608" fill="#0b1622"/>
+  <circle cx="398" cy="402" r="238" fill="#050505" stroke="#112b40" stroke-width="36"/>
+  <circle cx="398" cy="402" r="166" fill="none" stroke="#1f4e6d" stroke-width="12"/>
+  <circle cx="398" cy="402" r="58" fill="#d4af37"/>
+  <path d="M176 564c76-141 155-207 237-198 56 6 98-18 127-72 33-61 67-92 102-94v364z" fill="#123b55"/>
+  <path d="M176 564c76-141 155-207 237-198 56 6 98-18 127-72 33-61 67-92 102-94" fill="none" stroke="#f6e7b0" stroke-width="12"/>
+  <text x="94" y="152" fill="#f6e7b0" font-family="Arial, sans-serif" font-size="38" font-weight="700">BLUE NOTE</text>
+  <text x="94" y="198" fill="#d4af37" font-family="Arial, sans-serif" font-size="28" letter-spacing="4">AFTERHOURS</text>
+</svg>

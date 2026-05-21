@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 800" role="img" aria-labelledby="title desc">
+  <title id="title">Midnight Gold album cover</title>
+  <desc id="desc">A luxury black and gold vinyl album cover.</desc>
+  <rect width="800" height="800" fill="#050505"/>
+  <rect x="56" y="56" width="688" height="688" fill="#101010" stroke="#d4af37" stroke-width="8"/>
+  <circle cx="400" cy="400" r="246" fill="#070707" stroke="#2b2b2b" stroke-width="34"/>
+  <circle cx="400" cy="400" r="186" fill="none" stroke="#1f1f1f" stroke-width="8"/>
+  <circle cx="400" cy="400" r="118" fill="none" stroke="#d4af37" stroke-width="6"/>
+  <circle cx="400" cy="400" r="58" fill="#d4af37"/>
+  <path d="M225 610 608 190h-142l108-108-382 420h142z" fill="#f4d35e" opacity=".95"/>
+  <text x="78" y="118" fill="#f6e7b0" font-family="Arial, sans-serif" font-size="42" font-weight="700">MIDNIGHT</text>
+  <text x="78" y="168" fill="#d4af37" font-family="Arial, sans-serif" font-size="34" letter-spacing="6">GOLD</text>
+</svg>
