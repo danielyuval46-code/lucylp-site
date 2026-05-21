@@ -7,7 +7,7 @@
 
   <title>LucyLP</title>
 
-  <link rel="stylesheet" href="style.css?v=gift-logo-branding">
+  <link rel="stylesheet" href="style.css?v=value-checker">
 </head>
 
 <body>
@@ -255,6 +255,71 @@
           </div>
         </section>
       </div>
+    </div>
+  </section>
+
+  <section class="value-checker" aria-labelledby="value-checker-title">
+    <div class="value-checker-inner">
+      <div class="value-checker-copy">
+        <p class="market-kicker">Free Collector Tool</p>
+        <h2 id="value-checker-title">LucyLP Value Checker</h2>
+        <p>
+          Preview a smarter way to estimate vinyl value before you buy, sell,
+          or add a record to your watchlist.
+        </p>
+      </div>
+
+      <form class="value-form" id="value-checker-form">
+        <div class="form-grid">
+          <label>
+            <span>Artist name</span>
+            <input type="text" name="artist" placeholder="Pink Floyd">
+          </label>
+
+          <label>
+            <span>Album title</span>
+            <input type="text" name="album" placeholder="The Dark Side of the Moon">
+          </label>
+
+          <label>
+            <span>Country / pressing</span>
+            <input type="text" name="pressing" placeholder="Japan press, OBI">
+          </label>
+
+          <label>
+            <span>Year</span>
+            <input type="text" name="year" placeholder="1973">
+          </label>
+
+          <label>
+            <span>Condition</span>
+            <select name="condition">
+              <option>Mint</option>
+              <option>Near Mint</option>
+              <option>Very Good Plus</option>
+              <option>Very Good</option>
+              <option>Good</option>
+            </select>
+          </label>
+
+          <label class="form-notes">
+            <span>Optional notes</span>
+            <textarea name="notes" rows="4" placeholder="OBI included, promo copy, colored vinyl, inserts, sleeve marks..."></textarea>
+          </label>
+        </div>
+
+        <button type="submit" class="estimate-btn">Estimate Value</button>
+      </form>
+
+      <article class="estimate-result" id="estimate-result" aria-live="polite" hidden>
+        <p class="market-kicker">Estimated Collector Range:</p>
+        <strong>$25 &ndash; $120</strong>
+        <p>
+          This is a demo estimate. Full market data and real-time eBay/Discogs
+          analysis are coming soon.
+        </p>
+        <a href="#japanese-rock-metal" class="ebay-btn">Discover Rare Finds</a>
+      </article>
     </div>
   </section>
 
@@ -876,5 +941,11 @@
     </p>
   </footer>
 
+  <script>
+    document.getElementById('value-checker-form').addEventListener('submit', function(event) {
+      event.preventDefault();
+      document.getElementById('estimate-result').hidden = false;
+    });
+  </script>
 </body>
 </html>
