@@ -501,6 +501,107 @@ footer{
   border-color:#302714;
 }
 
+.poster-products{
+  background:#050505;
+  border-bottom:1px solid #1f1f1f;
+  padding:72px 20px;
+}
+
+.poster-header{
+  align-items:start;
+}
+
+.poster-subtitle{
+  color:#cfcfcf;
+  font-size:18px;
+  line-height:1.6;
+  margin:14px 0 0;
+}
+
+.poster-categories{
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:flex-end;
+  gap:10px;
+  max-width:520px;
+}
+
+.poster-categories span{
+  color:#f6e7b0;
+  background:#15130c;
+  border:1px solid #3b3118;
+  border-radius:999px;
+  font-size:12px;
+  font-weight:bold;
+  letter-spacing:1px;
+  padding:9px 12px;
+  text-transform:uppercase;
+}
+
+.poster-grid{
+  display:grid;
+  grid-template-columns:repeat(5, 1fr);
+  gap:22px;
+}
+
+.poster-card{
+  background:linear-gradient(145deg, #151515, #080808);
+  border:1px solid #302714;
+  border-radius:8px;
+  box-shadow:0 24px 70px rgba(0,0,0,0.42);
+  overflow:hidden;
+  transition:0.3s;
+}
+
+.poster-card:hover{
+  transform:translateY(-6px);
+  border-color:#d4af37;
+  box-shadow:0 34px 96px rgba(0,0,0,0.56);
+}
+
+.poster-image-placeholder{
+  position:relative;
+  aspect-ratio:2 / 3;
+  background:
+    radial-gradient(circle at top left, rgba(246,231,176,0.22), transparent 34%),
+    radial-gradient(circle at bottom right, rgba(212,175,55,0.18), transparent 36%),
+    linear-gradient(145deg, #202020, #070707 70%);
+  border:12px solid #101010;
+  border-radius:8px;
+  box-shadow:inset 0 0 0 1px rgba(212,175,55,0.34);
+}
+
+.poster-image-placeholder::after{
+  content:"Poster";
+  position:absolute;
+  left:50%;
+  top:50%;
+  color:#d4af37;
+  font-size:12px;
+  font-weight:bold;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  transform:translate(-50%, -50%);
+}
+
+.poster-content{
+  padding:20px;
+}
+
+.poster-card h3{
+  color:white;
+  font-size:20px;
+  line-height:1.25;
+  margin:0 0 10px;
+}
+
+.poster-card p{
+  color:#bfbfbf;
+  font-size:15px;
+  line-height:1.6;
+  margin:0 0 18px;
+}
+
 .product-content{
   padding:22px;
 }
@@ -644,6 +745,18 @@ footer{
     grid-template-columns:repeat(2, 1fr);
   }
 
+  .poster-header{
+    align-items:start;
+  }
+
+  .poster-categories{
+    justify-content:flex-start;
+  }
+
+  .poster-grid{
+    grid-template-columns:repeat(2, 1fr);
+  }
+
   .app-inner{
     grid-template-columns:1fr;
   }
@@ -680,13 +793,19 @@ footer{
   .middle-eastern-products,
   .israeli-products,
   .limited-products,
+  .poster-products,
   .app-coming-soon{
     padding:56px 16px;
   }
 
   .product-grid,
+  .poster-grid,
   .benefit-list{
     grid-template-columns:1fr;
+  }
+
+  .poster-subtitle{
+    font-size:16px;
   }
 
   .product-image-placeholder{
