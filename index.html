@@ -958,6 +958,13 @@
       posters: 'Collectible Poster'
     };
 
+    const sectionCategories = {
+      'japanese-vinyl': 'japanese',
+      'israeli-vinyl': 'israeli',
+      'limited-edition-vinyl': 'limited',
+      posters: 'posters'
+    };
+
     function escapeHtml(value) {
       return String(value || '').replace(/[&<>"']/g, function(character) {
         return {
@@ -1026,22 +1033,22 @@
         grid.innerHTML = renderStatusCard(sectionKey, 'Loading live finds...');
       });
 
-      try {
-        const response = await fetch('/api/ebay', {
-          headers: {
-            Accept: 'application/json'
-          }
-        });
-
-        if (!response.ok) {
-          throw new Error('eBay API request failed');
-        }
-
-        const data = await response.json();
-
-        grids.forEach(function(grid) {
+      await Promise.all(Array.from(grids).map(async function(grid) {
+        try {
           const sectionKey = grid.dataset.ebaySection;
-          const items = data.sections && data.sections[sectionKey];
+          const category = sectionCategories[sectionKey];
+          const response = await fetch(`/api/ebay?category=${encodeURIComponent(category)}`, {
+            headers: {
+              Accept: 'application/json'
+            }
+          });
+
+          if (!response.ok) {
+            throw new Error('eBay API request failed');
+          }
+
+          const data = await response.json();
+          const items = data.items;
 
           if (!Array.isArray(items) || items.length === 0) {
             grid.innerHTML = renderStatusCard(sectionKey, 'No live finds available');
@@ -1053,15 +1060,13 @@
             return renderMarketplaceCard(item, sectionKey);
           }).join('');
           grid.removeAttribute('aria-busy');
-        });
-      } catch (error) {
-        grids.forEach(function(grid) {
+        } catch (error) {
           const sectionKey = grid.dataset.ebaySection;
           grid.innerHTML = renderStatusCard(sectionKey, 'Live finds unavailable');
           grid.removeAttribute('aria-busy');
-        });
-        console.warn('LucyLP live eBay feed unavailable.', error);
-      }
+          console.warn(`LucyLP live eBay feed unavailable for ${sectionKey}.`, error);
+        }
+      }));
     }
 
     document.addEventListener('error', function(event) {

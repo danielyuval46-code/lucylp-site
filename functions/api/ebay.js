@@ -14,41 +14,60 @@ const AFFILIATE_PARAMS = {
 };
 
 const SECTION_QUERIES = {
-  'japanese-vinyl': 'Japan pressing rock metal vinyl LP obi -cd -dvd -book -poster',
-  'israeli-vinyl': 'Israeli vinyl record LP Israel Hebrew music -poster -cd -dvd -book -cassette -barbie -doll -toy',
-  'limited-edition-vinyl': 'limited edition vinyl record LP colored numbered sealed -doll -toy -barbie -figure -book -cd -dvd',
-  posters: 'vintage music poster concert poster Israel Japan rock'
+  'japanese-vinyl': 'Japan pressing rock metal vinyl LP obi -cd -dvd -book -poster -toy -figure',
+  'israeli-vinyl': 'Israeli vinyl record LP Hebrew Israel music -poster -cd -dvd -book -cassette -barbie -doll -toy',
+  'limited-edition-vinyl': 'limited edition vinyl record LP colored numbered sealed -funko -barbie -doll -toy -figure -book -cd -dvd',
+  posters: 'vintage music concert poster Israel Japan rock'
 };
 
 const SECTION_LIMIT = 10;
 const SEARCH_LIMIT = 50;
 const DEFAULT_QUERY = SECTION_QUERIES['limited-edition-vinyl'];
+const CATEGORY_TO_SECTION = {
+  japanese: 'japanese-vinyl',
+  israeli: 'israeli-vinyl',
+  limited: 'limited-edition-vinyl',
+  posters: 'posters'
+};
+const VINYL_INCLUDE_GROUPS = [
+  ['vinyl', 'lp', 'record', 'album']
+];
+const VINYL_EXCLUDE_TERMS = [
+  'funko',
+  'barbie',
+  'doll',
+  'toy',
+  'figure',
+  'book',
+  'cd',
+  'dvd',
+  'cassette',
+  'poster'
+];
 const SECTION_FILTERS = {
   'israeli-vinyl': {
     includeGroups: [
       ['israel', 'israeli', 'hebrew', 'judaica', 'jewish'],
-      ['lp', 'vinyl', 'record']
+      ...VINYL_INCLUDE_GROUPS
     ],
-    exclude: ['poster', 'cd', 'dvd', 'cassette', 'book', 'doll', 'toy', 'barbie']
+    exclude: VINYL_EXCLUDE_TERMS
   },
   'japanese-vinyl': {
     includeGroups: [
       ['japan', 'japanese', 'obi'],
-      ['vinyl', 'lp', 'record']
+      ...VINYL_INCLUDE_GROUPS
     ],
-    exclude: ['cd', 'dvd', 'book', 'poster']
+    exclude: VINYL_EXCLUDE_TERMS
   },
   'limited-edition-vinyl': {
-    includeGroups: [
-      ['vinyl', 'lp', 'record', 'album']
-    ],
-    exclude: ['doll', 'toy', 'barbie', 'figure', 'book', 'cd', 'dvd']
+    includeGroups: VINYL_INCLUDE_GROUPS,
+    exclude: VINYL_EXCLUDE_TERMS
   },
   posters: {
     includeGroups: [
       ['poster', 'print', 'concert', 'tour']
     ],
-    exclude: []
+    exclude: ['funko', 'barbie', 'doll', 'toy', 'figure', 'book', 'cd', 'dvd', 'cassette']
   }
 };
 
@@ -145,6 +164,20 @@ function buildDiagnosticPayload(response, data) {
   };
 }
 
+function buildCategoryPayload(response, sectionKey, items) {
+  const firstItem = items[0] || {};
+
+  return {
+    tokenOk: true,
+    status: response.status,
+    category: sectionKey,
+    itemCount: items.length,
+    firstTitle: firstItem.title || '',
+    firstImageUrl: firstItem.imageUrl || firstItem.image || '',
+    items
+  };
+}
+
 function getEnvDebug(env) {
   return {
     hasEbayClientId: Boolean(env.EBAY_CLIENT_ID),
@@ -180,7 +213,7 @@ async function getAccessToken(env) {
   return data.access_token;
 }
 
-async function searchItems(accessToken, query, sectionKey) {
+async function fetchBrowseSummaries(accessToken, query) {
   const url = new URL(EBAY_SEARCH_URL);
   url.searchParams.set('q', query);
   url.searchParams.set('limit', String(SEARCH_LIMIT));
@@ -198,9 +231,31 @@ async function searchItems(accessToken, query, sectionKey) {
   }
 
   const data = await response.json();
-  return filterItemsForSection(data.itemSummaries || [], sectionKey)
+
+  return {
+    response,
+    itemSummaries: data.itemSummaries || []
+  };
+}
+
+async function searchItems(accessToken, query, sectionKey) {
+  const { itemSummaries } = await fetchBrowseSummaries(accessToken, query);
+
+  return filterItemsForSection(itemSummaries, sectionKey)
     .slice(0, SECTION_LIMIT)
     .map(normalizeItem);
+}
+
+async function searchCategory(accessToken, sectionKey) {
+  const { response, itemSummaries } = await fetchBrowseSummaries(
+    accessToken,
+    SECTION_QUERIES[sectionKey]
+  );
+  const items = filterItemsForSection(itemSummaries, sectionKey)
+    .slice(0, SECTION_LIMIT)
+    .map(normalizeItem);
+
+  return buildCategoryPayload(response, sectionKey, items);
 }
 
 async function searchBrowseApi(accessToken, query) {
@@ -263,7 +318,41 @@ export async function onRequest(context) {
   try {
     const accessToken = await getAccessToken(env);
     const url = new URL(request.url);
+    const category = url.searchParams.get('category');
     const query = url.searchParams.get('q');
+
+    if (category !== null) {
+      const sectionKey = CATEGORY_TO_SECTION[category.toLowerCase()];
+
+      if (!sectionKey) {
+        return jsonResponse(
+          {
+            tokenOk: false,
+            status: 400,
+            itemCount: 0,
+            firstTitle: '',
+            firstImageUrl: '',
+            items: [],
+            envDebug,
+            error: 'Invalid category',
+            message: 'Use category=limited, israeli, japanese, or posters'
+          },
+          {
+            status: 400,
+            cacheControl: 'no-store'
+          }
+        );
+      }
+
+      const payload = await searchCategory(accessToken, sectionKey);
+
+      return jsonResponse({
+        ...payload,
+        envDebug
+      }, {
+        cacheControl: 'no-store'
+      });
+    }
 
     if (query !== null) {
       const payload = await searchBrowseApi(accessToken, query);
