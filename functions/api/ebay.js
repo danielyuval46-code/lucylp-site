@@ -14,14 +14,21 @@ const AFFILIATE_PARAMS = {
 };
 
 const SECTION_QUERIES = {
-  'japanese-vinyl': 'Japanese rock metal vinyl Japan press OBI',
-  'israeli-vinyl': 'Israeli vinyl record',
-  'limited-edition-vinyl': 'limited edition vinyl record',
+  'japanese-vinyl': 'Japanese vinyl record Japan press OBI -barbie -doll -toy',
+  'israeli-vinyl': 'Israeli vinyl record LP album -barbie -doll -toy',
+  'limited-edition-vinyl': 'vinyl record limited edition -barbie -doll -toy',
   posters: 'collectible vintage concert movie poster'
 };
 
 const SECTION_LIMIT = 10;
-const DEFAULT_QUERY = 'vinyl limited edition';
+const DEFAULT_QUERY = 'vinyl record limited edition -barbie -doll -toy';
+const VINYL_SECTION_KEYS = new Set([
+  'japanese-vinyl',
+  'israeli-vinyl',
+  'limited-edition-vinyl'
+]);
+const VINYL_TITLE_TERMS = ['vinyl', 'lp', 'record', 'album'];
+const VINYL_EXCLUDE_TERMS = ['barbie', 'doll', 'toy', 'figure'];
 
 function jsonResponse(body, init = {}) {
   const { cacheControl = 'public, max-age=900', headers = {}, status = 200 } = init;
@@ -71,6 +78,27 @@ function normalizeItem(item) {
     condition: item.condition || '',
     url: appendAffiliateParams(item.itemWebUrl)
   };
+}
+
+function titleMatchesVinyl(item) {
+  const title = String(item.title || '').toLowerCase();
+  const includesVinylTerm = VINYL_TITLE_TERMS.some((term) => title.includes(term));
+  const includesExcludedTerm = VINYL_EXCLUDE_TERMS.some((term) => title.includes(term));
+
+  return includesVinylTerm && !includesExcludedTerm;
+}
+
+function isVinylQuery(query) {
+  const normalizedQuery = String(query || '').toLowerCase();
+  return VINYL_TITLE_TERMS.some((term) => normalizedQuery.includes(term));
+}
+
+function filterItemsForSection(items, sectionKey) {
+  if (!VINYL_SECTION_KEYS.has(sectionKey)) {
+    return items;
+  }
+
+  return items.filter(titleMatchesVinyl);
 }
 
 function buildDiagnosticPayload(response, data) {
@@ -126,7 +154,7 @@ async function getAccessToken(env) {
   return data.access_token;
 }
 
-async function searchItems(accessToken, query) {
+async function searchItems(accessToken, query, sectionKey) {
   const url = new URL(EBAY_SEARCH_URL);
   url.searchParams.set('q', query);
   url.searchParams.set('limit', String(SECTION_LIMIT));
@@ -144,7 +172,9 @@ async function searchItems(accessToken, query) {
   }
 
   const data = await response.json();
-  return (data.itemSummaries || []).slice(0, SECTION_LIMIT).map(normalizeItem);
+  return filterItemsForSection(data.itemSummaries || [], sectionKey)
+    .slice(0, SECTION_LIMIT)
+    .map(normalizeItem);
 }
 
 async function searchBrowseApi(accessToken, query) {
@@ -165,7 +195,14 @@ async function searchBrowseApi(accessToken, query) {
     throw new Error(`eBay Browse search failed with ${response.status}: ${JSON.stringify(data)}`);
   }
 
-  return buildDiagnosticPayload(response, data);
+  const itemSummaries = isVinylQuery(query)
+    ? (data.itemSummaries || []).filter(titleMatchesVinyl)
+    : data.itemSummaries || [];
+
+  return buildDiagnosticPayload(response, {
+    ...data,
+    itemSummaries
+  });
 }
 
 export async function onRequest(context) {
@@ -215,7 +252,7 @@ export async function onRequest(context) {
 
     const entries = await Promise.all(
       Object.entries(SECTION_QUERIES).map(async ([key, query]) => {
-        const items = await searchItems(accessToken, query);
+        const items = await searchItems(accessToken, query, key);
         return [key, items];
       })
     );
