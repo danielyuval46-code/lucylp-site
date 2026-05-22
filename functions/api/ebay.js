@@ -16,7 +16,7 @@ const AFFILIATE_PARAMS = {
 const SECTION_QUERIES = {
   'japanese-vinyl': 'Japan pressing rock metal vinyl LP obi -cd -dvd -book -poster -toy -figure',
   'israeli-vinyl': 'Israeli vinyl record LP Hebrew Israel music -poster -cd -dvd -book -cassette -barbie -doll -toy',
-  'limited-edition-vinyl': 'limited edition vinyl record LP colored numbered sealed -funko -barbie -doll -toy -figure -book -cd -dvd',
+  'limited-edition-vinyl': 'limited edition vinyl LP record colored sealed exclusive',
   posters: 'vintage music concert poster Israel Japan rock'
 };
 
@@ -49,6 +49,14 @@ const VINYL_EXCLUDE_TERMS = [
   'dvd',
   'cassette',
   'poster'
+];
+const LIMITED_EXCLUDE_TERMS = [
+  'funko',
+  'doll',
+  'toy',
+  'figure',
+  'barbie',
+  'plush'
 ];
 const NON_MEDIA_EXCLUDE_TERMS = [
   'funko',
@@ -84,10 +92,9 @@ const SECTION_FILTERS = {
   },
   'limited-edition-vinyl': {
     includeGroups: [
-      ['vinyl', 'lp', 'record', 'album'],
-      ['limited', 'colored', 'colour', 'marble', 'splatter', 'sealed', 'numbered', 'rsd', 'exclusive', 'picture disc']
+      ['vinyl', 'lp', 'record', 'album']
     ],
-    exclude: VINYL_EXCLUDE_TERMS
+    exclude: LIMITED_EXCLUDE_TERMS
   },
   posters: {
     includeGroups: [
