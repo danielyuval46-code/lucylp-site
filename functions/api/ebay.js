@@ -17,7 +17,7 @@ const SECTION_QUERIES = {
   'japanese-vinyl': 'Japanese vinyl LP Japan pressing obi rock metal',
   'israeli-vinyl': 'Israel Israeli Hebrew vinyl LP record music',
   'limited-edition-vinyl': 'limited edition vinyl LP record colored sealed exclusive',
-  posters: 'vintage concert poster music poster Israel Japan rock tour'
+  posters: 'concert poster'
 };
 
 const SECTION_LIMIT = 6;
@@ -78,17 +78,6 @@ const NON_MEDIA_EXCLUDE_TERMS = [
   'dvd',
   'cassette'
 ];
-const POSTER_EXCLUDE_TERMS = [
-  'vinyl',
-  'lp',
-  'record',
-  'cd',
-  'dvd',
-  'cassette',
-  'doll',
-  'toy',
-  'figure'
-];
 const SECTION_FILTERS = {
   'israeli-vinyl': {
     includeGroups: [
@@ -112,12 +101,7 @@ const SECTION_FILTERS = {
     exclude: LIMITED_EXCLUDE_TERMS,
     excludeUnlessVinyl: ['soundtrack']
   },
-  posters: {
-    includeGroups: [
-      ['poster', 'print', 'concert', 'tour', 'flyer']
-    ],
-    exclude: POSTER_EXCLUDE_TERMS
-  }
+  posters: null
 };
 
 function jsonResponse(body, init = {}) {
