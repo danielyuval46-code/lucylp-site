@@ -7,7 +7,7 @@
 
   <title>LucyLP</title>
 
-  <link rel="stylesheet" href="style.css?v=live-api-only">
+  <link rel="stylesheet" href="style.css?v=live-api-clean">
 </head>
 
 <body>
@@ -402,7 +402,7 @@
           });
 
           if (items.length === 0) {
-            renderGridMessage(grid, 'No live finds available');
+            renderGridMessage(grid, 'No curated finds available right now.');
             grid.removeAttribute('aria-busy');
             return;
           }
@@ -414,7 +414,7 @@
         } catch (error) {
           const sectionKey = grid.dataset.ebaySection;
           const category = sectionCategories[sectionKey];
-          renderGridMessage(grid, 'Live finds unavailable');
+          renderGridMessage(grid, 'No curated finds available right now.');
           grid.removeAttribute('aria-busy');
           console.log('LucyLP live category rendered', {
             category,
