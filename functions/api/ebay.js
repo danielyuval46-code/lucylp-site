@@ -161,7 +161,31 @@ async function searchBrowseApi(accessToken, query) {
   return buildDiagnosticPayload(response, data);
 }
 
-export async function onRequestGet({ env, request }) {
+export async function onRequest(context) {
+  const { env, request } = context;
+
+  if (request.method !== 'GET') {
+    return jsonResponse(
+      {
+        tokenOk: false,
+        status: 405,
+        itemCount: 0,
+        firstTitle: '',
+        firstImageUrl: '',
+        items: [],
+        error: 'Method not allowed',
+        message: 'Use GET /api/ebay?q=vinyl%20limited%20edition'
+      },
+      {
+        status: 405,
+        cacheControl: 'no-store',
+        headers: {
+          allow: 'GET'
+        }
+      }
+    );
+  }
+
   try {
     const accessToken = await getAccessToken(env);
     const url = new URL(request.url);
