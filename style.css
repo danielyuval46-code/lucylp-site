@@ -1071,6 +1071,15 @@ footer{
   margin-bottom:18px;
 }
 
+.live-status-card{
+  border-style:dashed;
+}
+
+.live-status-card .product-image,
+.live-status-card .poster-image{
+  opacity:0.72;
+}
+
 .ebay-btn{
   background:linear-gradient(135deg, var(--gold), var(--gold-soft));
   border:1px solid rgba(246,231,176,0.58);

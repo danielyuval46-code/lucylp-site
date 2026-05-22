@@ -7,7 +7,7 @@
 
   <title>LucyLP</title>
 
-  <link rel="stylesheet" href="style.css?v=jpg-card-images">
+  <link rel="stylesheet" href="style.css?v=live-ebay-cards">
 </head>
 
 <body>
@@ -954,13 +954,6 @@
       posters: 'Collectible Poster'
     };
 
-    const sectionDescriptions = {
-      'japanese-vinyl': 'Rare Japanese vinyl pressing selected for LucyLP collectors.',
-      'israeli-vinyl': 'Rare Israeli vinyl selected for LucyLP collectors.',
-      'limited-edition-vinyl': 'Limited edition vinyl selected for LucyLP collectors.',
-      posters: 'Collectible poster selected for LucyLP collectors.'
-    };
-
     function escapeHtml(value) {
       return String(value || '').replace(/[&<>"']/g, function(character) {
         return {
@@ -993,7 +986,6 @@
           <div class="${contentClass}">
             <span class="product-label">${escapeHtml(sectionLabels[sectionKey])}</span>
             <h3>${escapeHtml(item.title)}</h3>
-            <p>${escapeHtml(sectionDescriptions[sectionKey])}</p>
             <p class="live-item-meta">${escapeHtml(item.condition || 'Condition unavailable')}</p>
             <p class="live-item-price">${escapeHtml(item.price || 'Price unavailable')}</p>
             <a href="${escapeHtml(item.url)}" class="ebay-btn" target="_blank" rel="noopener sponsored">Discover This Find</a>
@@ -1002,8 +994,33 @@
       `;
     }
 
+    function renderStatusCard(sectionKey, message) {
+      const isPoster = sectionKey === 'posters';
+      const cardClass = isPoster ? 'poster-card live-status-card' : 'product-card live-status-card';
+      const contentClass = isPoster ? 'poster-content' : 'product-content';
+      const imageClass = isPoster ? 'poster-image' : 'product-image';
+      const placeholderSrc = isPoster ? 'poster-placeholder.jpg' : 'vinyl-placeholder.jpg';
+
+      return `
+        <article class="${cardClass}">
+          <img src="${placeholderSrc}" class="${imageClass}" alt="${escapeHtml(sectionLabels[sectionKey])} placeholder artwork">
+          <div class="${contentClass}">
+            <span class="product-label">${escapeHtml(sectionLabels[sectionKey])}</span>
+            <h3>${escapeHtml(message)}</h3>
+            <p class="live-item-meta">Live eBay feed</p>
+          </div>
+        </article>
+      `;
+    }
+
     async function loadLiveEbayFinds() {
       const grids = document.querySelectorAll('[data-ebay-section]');
+
+      grids.forEach(function(grid) {
+        const sectionKey = grid.dataset.ebaySection;
+        grid.setAttribute('aria-busy', 'true');
+        grid.innerHTML = renderStatusCard(sectionKey, 'Loading live finds...');
+      });
 
       try {
         const response = await fetch('/api/ebay', {
@@ -1023,15 +1040,23 @@
           const items = data.sections && data.sections[sectionKey];
 
           if (!Array.isArray(items) || items.length === 0) {
+            grid.innerHTML = renderStatusCard(sectionKey, 'No live finds available');
+            grid.removeAttribute('aria-busy');
             return;
           }
 
           grid.innerHTML = items.map(function(item) {
             return renderMarketplaceCard(item, sectionKey);
           }).join('');
+          grid.removeAttribute('aria-busy');
         });
       } catch (error) {
-        console.warn('LucyLP live eBay feed unavailable. Showing curated fallback cards.', error);
+        grids.forEach(function(grid) {
+          const sectionKey = grid.dataset.ebaySection;
+          grid.innerHTML = renderStatusCard(sectionKey, 'Live finds unavailable');
+          grid.removeAttribute('aria-busy');
+        });
+        console.warn('LucyLP live eBay feed unavailable.', error);
       }
     }
 
