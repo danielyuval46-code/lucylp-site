@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 520" role="img" aria-labelledby="title desc">
+  <title id="title">LucyLP vinyl placeholder artwork</title>
+  <desc id="desc">Luxury black and gold vinyl record placeholder for LucyLP collector cards.</desc>
+  <defs>
+    <radialGradient id="record" cx="50%" cy="50%" r="50%">
+      <stop offset="0" stop-color="#f6e7b0"/>
+      <stop offset="0.08" stop-color="#d4af37"/>
+      <stop offset="0.09" stop-color="#070707"/>
+      <stop offset="0.32" stop-color="#171717"/>
+      <stop offset="0.34" stop-color="#050505"/>
+      <stop offset="0.58" stop-color="#1c1c1c"/>
+      <stop offset="0.6" stop-color="#050505"/>
+      <stop offset="1" stop-color="#111"/>
+    </radialGradient>
+    <linearGradient id="gold" x1="0" x2="1">
+      <stop offset="0" stop-color="#4a3b13"/>
+      <stop offset="0.5" stop-color="#f6e7b0"/>
+      <stop offset="1" stop-color="#d4af37"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="520" fill="#050505"/>
+  <rect x="36" y="36" width="728" height="448" rx="34" fill="#0b0b0b" stroke="#3a3017" stroke-width="3"/>
+  <circle cx="400" cy="250" r="170" fill="url(#record)" stroke="#d4af37" stroke-opacity="0.45" stroke-width="2"/>
+  <circle cx="400" cy="250" r="46" fill="url(#gold)" opacity="0.95"/>
+  <circle cx="400" cy="250" r="8" fill="#050505"/>
+  <path d="M140 110h520M140 410h520" stroke="#d4af37" stroke-opacity="0.22" stroke-width="2"/>
+  <text x="400" y="457" text-anchor="middle" fill="#f6e7b0" font-family="Georgia, 'Times New Roman', serif" font-size="38" letter-spacing="8">LucyLP</text>
+</svg>
