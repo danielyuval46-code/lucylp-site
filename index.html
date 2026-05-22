@@ -7,7 +7,7 @@
 
   <title>LucyLP</title>
 
-  <link rel="stylesheet" href="style.css?v=ebay-api-integration">
+  <link rel="stylesheet" href="style.css?v=product-image-fix">
 </head>
 
 <body>
@@ -954,6 +954,13 @@
       posters: 'Collectible Poster'
     };
 
+    const sectionDescriptions = {
+      'japanese-vinyl': 'Rare Japanese vinyl pressing selected for LucyLP collectors.',
+      'israeli-vinyl': 'Rare Israeli vinyl selected for LucyLP collectors.',
+      'limited-edition-vinyl': 'Limited edition vinyl selected for LucyLP collectors.',
+      posters: 'Collectible poster selected for LucyLP collectors.'
+    };
+
     function escapeHtml(value) {
       return String(value || '').replace(/[&<>"']/g, function(character) {
         return {
@@ -982,6 +989,7 @@
           <div class="${contentClass}">
             <span class="product-label">${escapeHtml(sectionLabels[sectionKey])}</span>
             <h3>${escapeHtml(item.title)}</h3>
+            <p>${escapeHtml(sectionDescriptions[sectionKey])}</p>
             <p class="live-item-meta">${escapeHtml(item.condition || 'Condition unavailable')}</p>
             <p class="live-item-price">${escapeHtml(item.price || 'Price unavailable')}</p>
             <a href="${escapeHtml(item.url)}" class="ebay-btn" target="_blank" rel="noopener sponsored">Discover This Find</a>
