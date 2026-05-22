@@ -20,7 +20,7 @@ const SECTION_QUERIES = {
   posters: 'vintage music concert poster Israel Japan rock'
 };
 
-const SECTION_LIMIT = 10;
+const SECTION_LIMIT = 6;
 const SEARCH_LIMIT = 50;
 const DEFAULT_QUERY = SECTION_QUERIES['limited-edition-vinyl'];
 const CATEGORY_TO_SECTION = {
@@ -34,40 +34,66 @@ const VINYL_INCLUDE_GROUPS = [
 ];
 const VINYL_EXCLUDE_TERMS = [
   'funko',
-  'barbie',
   'doll',
   'toy',
   'figure',
+  'barbie',
+  'plush',
+  'outfit',
+  'head',
+  'body',
+  'statue',
+  'collectible figure',
   'book',
   'cd',
   'dvd',
   'cassette',
   'poster'
 ];
+const NON_MEDIA_EXCLUDE_TERMS = [
+  'funko',
+  'doll',
+  'toy',
+  'figure',
+  'barbie',
+  'plush',
+  'outfit',
+  'head',
+  'body',
+  'statue',
+  'collectible figure',
+  'book',
+  'cd',
+  'dvd',
+  'cassette'
+];
 const SECTION_FILTERS = {
   'israeli-vinyl': {
     includeGroups: [
-      ['israel', 'israeli', 'hebrew', 'judaica', 'jewish'],
+      ['israel', 'israeli', 'hebrew', 'jewish', 'judaica'],
       ...VINYL_INCLUDE_GROUPS
     ],
     exclude: VINYL_EXCLUDE_TERMS
   },
   'japanese-vinyl': {
     includeGroups: [
-      ['japan', 'japanese', 'obi'],
+      ['japan', 'japanese', 'obi', 'pressing'],
       ...VINYL_INCLUDE_GROUPS
     ],
     exclude: VINYL_EXCLUDE_TERMS
   },
   'limited-edition-vinyl': {
-    includeGroups: VINYL_INCLUDE_GROUPS,
+    includeGroups: [
+      ['vinyl', 'lp', 'record', 'album'],
+      ['limited', 'colored', 'colour', 'marble', 'splatter', 'sealed', 'numbered', 'rsd', 'exclusive', 'picture disc']
+    ],
     exclude: VINYL_EXCLUDE_TERMS
   },
   posters: {
     includeGroups: [
       ['poster', 'print', 'concert', 'tour']
     ],
-    exclude: ['funko', 'barbie', 'doll', 'toy', 'figure', 'book', 'cd', 'dvd', 'cassette']
+    exclude: NON_MEDIA_EXCLUDE_TERMS
   }
 };
 
@@ -112,6 +138,7 @@ function normalizeItem(item) {
     '/vinyl-placeholder.jpg';
 
   return {
+    itemId: item.itemId || '',
     title: item.title || 'LucyLP Collector Find',
     image: imageUrl,
     imageUrl,
@@ -119,6 +146,40 @@ function normalizeItem(item) {
     condition: item.condition || '',
     url: appendAffiliateParams(item.itemWebUrl)
   };
+}
+
+function getRealImageUrl(item) {
+  return item.image?.imageUrl || item.thumbnailImages?.[0]?.imageUrl || '';
+}
+
+function hasRealImage(item) {
+  const imageUrl = getRealImageUrl(item);
+  return Boolean(imageUrl) && !imageUrl.includes('placeholder');
+}
+
+function getItemIdentity(item) {
+  const itemId = String(item.itemId || '').trim().toLowerCase();
+
+  if (itemId) {
+    return `id:${itemId}`;
+  }
+
+  return `title:${String(item.title || '').trim().toLowerCase()}`;
+}
+
+function removeDuplicateItems(items) {
+  const seen = new Set();
+
+  return items.filter((item) => {
+    const identity = getItemIdentity(item);
+
+    if (seen.has(identity)) {
+      return false;
+    }
+
+    seen.add(identity);
+    return true;
+  });
 }
 
 function titleMatchesFilter(item, filter) {
@@ -140,10 +201,14 @@ function filterItemsForSection(items, sectionKey) {
   const filter = SECTION_FILTERS[sectionKey];
 
   if (!filter) {
-    return items;
+    return removeDuplicateItems(items.filter(hasRealImage));
   }
 
-  return items.filter((item) => titleMatchesFilter(item, filter));
+  return removeDuplicateItems(
+    items
+      .filter(hasRealImage)
+      .filter((item) => titleMatchesFilter(item, filter))
+  );
 }
 
 function buildDiagnosticPayload(response, data) {
