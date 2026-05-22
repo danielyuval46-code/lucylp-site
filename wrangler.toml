@@ -1,8 +1,0 @@
-name = "lucylp-site"
-compatibility_date = "2026-05-22"
-main = "_worker.js"
-
-[assets]
-directory = "."
-binding = "ASSETS"
-run_worker_first = ["/api/*"]
