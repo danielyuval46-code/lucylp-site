@@ -14,21 +14,43 @@ const AFFILIATE_PARAMS = {
 };
 
 const SECTION_QUERIES = {
-  'japanese-vinyl': 'Japanese vinyl record Japan press OBI -barbie -doll -toy',
-  'israeli-vinyl': 'Israeli vinyl record LP album -barbie -doll -toy',
-  'limited-edition-vinyl': 'vinyl record limited edition -barbie -doll -toy',
-  posters: 'collectible vintage concert movie poster'
+  'japanese-vinyl': 'Japan pressing rock metal vinyl LP obi -cd -dvd -book -poster',
+  'israeli-vinyl': 'Israeli vinyl record LP Israel Hebrew music -poster -cd -dvd -book -cassette -barbie -doll -toy',
+  'limited-edition-vinyl': 'limited edition vinyl record LP colored numbered sealed -doll -toy -barbie -figure -book -cd -dvd',
+  posters: 'vintage music poster concert poster Israel Japan rock'
 };
 
 const SECTION_LIMIT = 10;
-const DEFAULT_QUERY = 'vinyl record limited edition -barbie -doll -toy';
-const VINYL_SECTION_KEYS = new Set([
-  'japanese-vinyl',
-  'israeli-vinyl',
-  'limited-edition-vinyl'
-]);
-const VINYL_TITLE_TERMS = ['vinyl', 'lp', 'record', 'album'];
-const VINYL_EXCLUDE_TERMS = ['barbie', 'doll', 'toy', 'figure'];
+const SEARCH_LIMIT = 50;
+const DEFAULT_QUERY = SECTION_QUERIES['limited-edition-vinyl'];
+const SECTION_FILTERS = {
+  'israeli-vinyl': {
+    includeGroups: [
+      ['israel', 'israeli', 'hebrew', 'judaica', 'jewish'],
+      ['lp', 'vinyl', 'record']
+    ],
+    exclude: ['poster', 'cd', 'dvd', 'cassette', 'book', 'doll', 'toy', 'barbie']
+  },
+  'japanese-vinyl': {
+    includeGroups: [
+      ['japan', 'japanese', 'obi'],
+      ['vinyl', 'lp', 'record']
+    ],
+    exclude: ['cd', 'dvd', 'book', 'poster']
+  },
+  'limited-edition-vinyl': {
+    includeGroups: [
+      ['vinyl', 'lp', 'record', 'album']
+    ],
+    exclude: ['doll', 'toy', 'barbie', 'figure', 'book', 'cd', 'dvd']
+  },
+  posters: {
+    includeGroups: [
+      ['poster', 'print', 'concert', 'tour']
+    ],
+    exclude: []
+  }
+};
 
 function jsonResponse(body, init = {}) {
   const { cacheControl = 'public, max-age=900', headers = {}, status = 200 } = init;
@@ -80,25 +102,29 @@ function normalizeItem(item) {
   };
 }
 
-function titleMatchesVinyl(item) {
+function titleMatchesFilter(item, filter) {
   const title = String(item.title || '').toLowerCase();
-  const includesVinylTerm = VINYL_TITLE_TERMS.some((term) => title.includes(term));
-  const includesExcludedTerm = VINYL_EXCLUDE_TERMS.some((term) => title.includes(term));
+  const includesRequiredTerms = filter.includeGroups.every((group) => {
+    return group.some((term) => title.includes(term));
+  });
+  const includesExcludedTerm = filter.exclude.some((term) => title.includes(term));
 
-  return includesVinylTerm && !includesExcludedTerm;
+  return includesRequiredTerms && !includesExcludedTerm;
 }
 
 function isVinylQuery(query) {
   const normalizedQuery = String(query || '').toLowerCase();
-  return VINYL_TITLE_TERMS.some((term) => normalizedQuery.includes(term));
+  return ['vinyl', 'lp', 'record', 'album'].some((term) => normalizedQuery.includes(term));
 }
 
 function filterItemsForSection(items, sectionKey) {
-  if (!VINYL_SECTION_KEYS.has(sectionKey)) {
+  const filter = SECTION_FILTERS[sectionKey];
+
+  if (!filter) {
     return items;
   }
 
-  return items.filter(titleMatchesVinyl);
+  return items.filter((item) => titleMatchesFilter(item, filter));
 }
 
 function buildDiagnosticPayload(response, data) {
@@ -157,7 +183,7 @@ async function getAccessToken(env) {
 async function searchItems(accessToken, query, sectionKey) {
   const url = new URL(EBAY_SEARCH_URL);
   url.searchParams.set('q', query);
-  url.searchParams.set('limit', String(SECTION_LIMIT));
+  url.searchParams.set('limit', String(SEARCH_LIMIT));
   url.searchParams.set('sort', 'newlyListed');
 
   const response = await fetch(url.toString(), {
@@ -180,7 +206,7 @@ async function searchItems(accessToken, query, sectionKey) {
 async function searchBrowseApi(accessToken, query) {
   const url = new URL(EBAY_SEARCH_URL);
   url.searchParams.set('q', query || DEFAULT_QUERY);
-  url.searchParams.set('limit', String(SECTION_LIMIT));
+  url.searchParams.set('limit', String(SEARCH_LIMIT));
   url.searchParams.set('sort', 'newlyListed');
 
   const response = await fetch(url.toString(), {
@@ -196,7 +222,7 @@ async function searchBrowseApi(accessToken, query) {
   }
 
   const itemSummaries = isVinylQuery(query)
-    ? (data.itemSummaries || []).filter(titleMatchesVinyl)
+    ? filterItemsForSection(data.itemSummaries || [], 'limited-edition-vinyl')
     : data.itemSummaries || [];
 
   return buildDiagnosticPayload(response, {

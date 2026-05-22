@@ -1080,6 +1080,14 @@ footer{
   opacity:0.72;
 }
 
+.live-filter-note{
+  color:var(--gold-soft);
+  font-size:13px;
+  letter-spacing:0.7px;
+  margin:12px 0 0;
+  text-transform:uppercase;
+}
+
 .ebay-btn{
   background:linear-gradient(135deg, var(--gold), var(--gold-soft));
   border:1px solid rgba(246,231,176,0.58);
