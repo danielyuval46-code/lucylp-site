@@ -861,6 +861,15 @@ footer{
   transform:translate(-50%, -50%);
 }
 
+.product-image{
+  display:block;
+  width:100%;
+  aspect-ratio:1;
+  object-fit:cover;
+  background:#080808;
+  border-bottom:1px solid #302714;
+}
+
 .middle-east-placeholder{
   background:
     radial-gradient(circle at 50% 50%, #171717 0 31%, #050505 32% 38%, #2a2313 39% 41%, #080808 42% 100%),
@@ -976,6 +985,17 @@ footer{
   transform:translate(-50%, -50%);
 }
 
+.poster-image{
+  display:block;
+  width:100%;
+  aspect-ratio:2 / 3;
+  object-fit:cover;
+  background:#080808;
+  border:12px solid #101010;
+  border-radius:8px;
+  box-shadow:inset 0 0 0 1px rgba(212,175,55,0.34);
+}
+
 .poster-content{
   padding:20px;
 }
@@ -1021,6 +1041,22 @@ footer{
   font-size:15px;
   line-height:1.6;
   margin:0 0 18px;
+}
+
+.live-item-meta{
+  color:#9f9f9f;
+  font-size:13px;
+  letter-spacing:0.5px;
+  margin-bottom:8px;
+  text-transform:uppercase;
+}
+
+.live-item-price{
+  color:var(--gold-soft);
+  font-family:var(--serif);
+  font-size:22px;
+  font-weight:700;
+  margin-bottom:18px;
 }
 
 .ebay-btn{

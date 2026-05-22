@@ -7,7 +7,7 @@
 
   <title>LucyLP</title>
 
-  <link rel="stylesheet" href="style.css?v=value-checker">
+  <link rel="stylesheet" href="style.css?v=ebay-api-integration">
 </head>
 
 <body>
@@ -335,7 +335,7 @@
         </p>
       </div>
 
-      <div class="product-grid">
+      <div class="product-grid" data-ebay-section="japanese-vinyl">
         <article class="product-card">
           <div class="product-image-placeholder" aria-label="Image placeholder"></div>
           <div class="product-content">
@@ -568,7 +568,7 @@
         </p>
       </div>
 
-      <div class="product-grid">
+      <div class="product-grid" data-ebay-section="israeli-vinyl">
         <article class="product-card">
           <div class="product-image-placeholder israeli-placeholder" aria-label="Premium image placeholder"></div>
           <div class="product-content">
@@ -686,7 +686,7 @@
         </p>
       </div>
 
-      <div class="product-grid">
+      <div class="product-grid" data-ebay-section="limited-edition-vinyl">
         <article class="product-card">
           <div class="product-image-placeholder limited-placeholder" aria-label="Premium image placeholder"></div>
           <div class="product-content">
@@ -809,7 +809,7 @@
         </div>
       </div>
 
-      <div class="poster-grid">
+      <div class="poster-grid" data-ebay-section="posters">
         <article class="poster-card">
           <div class="poster-image-placeholder" aria-label="Poster image placeholder"></div>
           <div class="poster-content">
@@ -946,6 +946,84 @@
       event.preventDefault();
       document.getElementById('estimate-result').hidden = false;
     });
+
+    const sectionLabels = {
+      'japanese-vinyl': 'Japanese Press',
+      'israeli-vinyl': 'Israeli Vinyl',
+      'limited-edition-vinyl': 'Limited Edition',
+      posters: 'Collectible Poster'
+    };
+
+    function escapeHtml(value) {
+      return String(value || '').replace(/[&<>"']/g, function(character) {
+        return {
+          '&': '&amp;',
+          '<': '&lt;',
+          '>': '&gt;',
+          '"': '&quot;',
+          "'": '&#039;'
+        }[character];
+      });
+    }
+
+    function renderMarketplaceCard(item, sectionKey) {
+      const isPoster = sectionKey === 'posters';
+      const cardClass = isPoster ? 'poster-card' : 'product-card';
+      const contentClass = isPoster ? 'poster-content' : 'product-content';
+      const placeholderClass = isPoster ? 'poster-image-placeholder' : 'product-image-placeholder';
+      const imageClass = isPoster ? 'poster-image' : 'product-image';
+      const imageMarkup = item.image
+        ? `<img src="${escapeHtml(item.image)}" class="${imageClass}" alt="${escapeHtml(item.title)}" loading="lazy">`
+        : `<div class="${placeholderClass}" aria-label="Premium image placeholder"></div>`;
+
+      return `
+        <article class="${cardClass}">
+          ${imageMarkup}
+          <div class="${contentClass}">
+            <span class="product-label">${escapeHtml(sectionLabels[sectionKey])}</span>
+            <h3>${escapeHtml(item.title)}</h3>
+            <p class="live-item-meta">${escapeHtml(item.condition || 'Condition unavailable')}</p>
+            <p class="live-item-price">${escapeHtml(item.price || 'Price unavailable')}</p>
+            <a href="${escapeHtml(item.url)}" class="ebay-btn" target="_blank" rel="noopener sponsored">Discover This Find</a>
+          </div>
+        </article>
+      `;
+    }
+
+    async function loadLiveEbayFinds() {
+      const grids = document.querySelectorAll('[data-ebay-section]');
+
+      try {
+        const response = await fetch('/api/ebay', {
+          headers: {
+            Accept: 'application/json'
+          }
+        });
+
+        if (!response.ok) {
+          throw new Error('eBay API request failed');
+        }
+
+        const data = await response.json();
+
+        grids.forEach(function(grid) {
+          const sectionKey = grid.dataset.ebaySection;
+          const items = data.sections && data.sections[sectionKey];
+
+          if (!Array.isArray(items) || items.length === 0) {
+            return;
+          }
+
+          grid.innerHTML = items.map(function(item) {
+            return renderMarketplaceCard(item, sectionKey);
+          }).join('');
+        });
+      } catch (error) {
+        console.warn('LucyLP live eBay feed unavailable. Showing curated fallback cards.', error);
+      }
+    }
+
+    loadLiveEbayFinds();
   </script>
 </body>
 </html>
