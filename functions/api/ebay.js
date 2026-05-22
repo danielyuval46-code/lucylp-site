@@ -14,10 +14,10 @@ const AFFILIATE_PARAMS = {
 };
 
 const SECTION_QUERIES = {
-  'japanese-vinyl': 'Japan pressing rock metal vinyl LP obi -cd -dvd -book -poster -toy -figure',
-  'israeli-vinyl': 'Israeli vinyl record LP Hebrew Israel music -poster -cd -dvd -book -cassette -barbie -doll -toy',
+  'japanese-vinyl': 'Japanese vinyl LP Japan pressing obi rock metal',
+  'israeli-vinyl': 'Israel Israeli Hebrew vinyl LP record music',
   'limited-edition-vinyl': 'limited edition vinyl LP record colored sealed exclusive',
-  posters: 'vintage music concert poster Israel Japan rock'
+  posters: 'Israel Japan concert poster music poster vintage'
 };
 
 const SECTION_LIMIT = 6;
@@ -56,7 +56,10 @@ const LIMITED_EXCLUDE_TERMS = [
   'toy',
   'figure',
   'barbie',
-  'plush'
+  'plush',
+  'christmas',
+  'holiday',
+  'kids'
 ];
 const NON_MEDIA_EXCLUDE_TERMS = [
   'funko',
@@ -92,9 +95,11 @@ const SECTION_FILTERS = {
   },
   'limited-edition-vinyl': {
     includeGroups: [
-      ['vinyl', 'lp', 'record', 'album']
+      ['vinyl', 'lp', 'record', 'album'],
+      ['limited', 'exclusive', 'colored', 'colour', 'marble', 'swirl', 'splatter', 'sealed', 'rsd']
     ],
-    exclude: LIMITED_EXCLUDE_TERMS
+    exclude: LIMITED_EXCLUDE_TERMS,
+    excludeUnlessVinyl: ['soundtrack']
   },
   posters: {
     includeGroups: [
@@ -195,8 +200,11 @@ function titleMatchesFilter(item, filter) {
     return group.some((term) => title.includes(term));
   });
   const includesExcludedTerm = filter.exclude.some((term) => title.includes(term));
+  const includesConditionalExcludedTerm = (filter.excludeUnlessVinyl || []).some((term) => {
+    return title.includes(term) && !title.includes('vinyl');
+  });
 
-  return includesRequiredTerms && !includesExcludedTerm;
+  return includesRequiredTerms && !includesExcludedTerm && !includesConditionalExcludedTerm;
 }
 
 function isVinylQuery(query) {
@@ -236,13 +244,16 @@ function buildDiagnosticPayload(response, data) {
   };
 }
 
-function buildCategoryPayload(response, sectionKey, items) {
+function buildCategoryPayload(response, sectionKey, items, debugCounts) {
   const firstItem = items[0] || {};
 
   return {
     tokenOk: true,
     status: response.status,
     category: sectionKey,
+    categoryQueryUsed: SECTION_QUERIES[sectionKey],
+    rawCountBeforeFiltering: debugCounts.rawCountBeforeFiltering,
+    filteredCountAfterFiltering: debugCounts.filteredCountAfterFiltering,
     itemCount: items.length,
     firstTitle: firstItem.title || '',
     firstImageUrl: firstItem.imageUrl || firstItem.image || '',
@@ -323,11 +334,13 @@ async function searchCategory(accessToken, sectionKey) {
     accessToken,
     SECTION_QUERIES[sectionKey]
   );
-  const items = filterItemsForSection(itemSummaries, sectionKey)
-    .slice(0, SECTION_LIMIT)
-    .map(normalizeItem);
+  const filteredItems = filterItemsForSection(itemSummaries, sectionKey);
+  const items = filteredItems.slice(0, SECTION_LIMIT).map(normalizeItem);
 
-  return buildCategoryPayload(response, sectionKey, items);
+  return buildCategoryPayload(response, sectionKey, items, {
+    rawCountBeforeFiltering: itemSummaries.length,
+    filteredCountAfterFiltering: filteredItems.length
+  });
 }
 
 async function searchBrowseApi(accessToken, query) {
