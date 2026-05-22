@@ -91,6 +91,13 @@ function buildDiagnosticPayload(response, data) {
   };
 }
 
+function getEnvDebug(env) {
+  return {
+    hasEbayClientId: Boolean(env.EBAY_CLIENT_ID),
+    hasEbayClientSecret: Boolean(env.EBAY_CLIENT_SECRET)
+  };
+}
+
 async function getAccessToken(env) {
   if (!env.EBAY_CLIENT_ID || !env.EBAY_CLIENT_SECRET) {
     throw new Error('Missing eBay API credentials');
@@ -163,6 +170,9 @@ async function searchBrowseApi(accessToken, query) {
 
 export async function onRequest(context) {
   const { env, request } = context;
+  const envDebug = getEnvDebug(env);
+
+  console.log('LucyLP eBay env availability', envDebug);
 
   if (request.method !== 'GET') {
     return jsonResponse(
@@ -173,6 +183,7 @@ export async function onRequest(context) {
         firstTitle: '',
         firstImageUrl: '',
         items: [],
+        envDebug,
         error: 'Method not allowed',
         message: 'Use GET /api/ebay?q=vinyl%20limited%20edition'
       },
@@ -192,7 +203,12 @@ export async function onRequest(context) {
     const query = url.searchParams.get('q');
 
     if (query !== null) {
-      return jsonResponse(await searchBrowseApi(accessToken, query), {
+      const payload = await searchBrowseApi(accessToken, query);
+
+      return jsonResponse({
+        ...payload,
+        envDebug
+      }, {
         cacheControl: 'no-store'
       });
     }
@@ -217,6 +233,7 @@ export async function onRequest(context) {
         firstTitle: '',
         firstImageUrl: '',
         items: [],
+        envDebug,
         error: 'Live eBay feed unavailable',
         message: error.message
       },
