@@ -979,10 +979,13 @@
       const contentClass = isPoster ? 'poster-content' : 'product-content';
       const imageClass = isPoster ? 'poster-image' : 'product-image';
       const placeholderSrc = isPoster ? 'poster-placeholder.jpg' : 'vinyl-placeholder.jpg';
-      const placeholderAlt = isPoster
-        ? 'LucyLP collectible poster placeholder artwork'
-        : 'LucyLP luxury vinyl placeholder artwork';
-      const imageMarkup = `<img src="${placeholderSrc}" class="${imageClass}" alt="${placeholderAlt}">`;
+      const imageUrl = item.imageUrl || item.image || placeholderSrc;
+      const imageAlt = item.title || (
+        isPoster
+          ? 'LucyLP collectible poster placeholder artwork'
+          : 'LucyLP luxury vinyl placeholder artwork'
+      );
+      const imageMarkup = `<img src="${escapeHtml(imageUrl)}" class="${imageClass}" alt="${escapeHtml(imageAlt)}" data-fallback-src="${placeholderSrc}">`;
 
       return `
         <article class="${cardClass}">
@@ -1031,6 +1034,20 @@
         console.warn('LucyLP live eBay feed unavailable. Showing curated fallback cards.', error);
       }
     }
+
+    document.addEventListener('error', function(event) {
+      const image = event.target;
+
+      if (!(image instanceof HTMLImageElement) || !image.dataset.fallbackSrc) {
+        return;
+      }
+
+      if (image.src.endsWith(image.dataset.fallbackSrc)) {
+        return;
+      }
+
+      image.src = image.dataset.fallbackSrc;
+    }, true);
 
     loadLiveEbayFinds();
   </script>

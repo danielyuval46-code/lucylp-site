@@ -57,10 +57,15 @@ function normalizeItem(item) {
   const price = item.price
     ? `${item.price.currency || 'USD'} ${item.price.value}`
     : '';
+  const imageUrl =
+    item.image?.imageUrl ||
+    item.thumbnailImages?.[0]?.imageUrl ||
+    '/vinyl-placeholder.jpg';
 
   return {
     title: item.title || 'LucyLP Collector Find',
-    image: item.image && item.image.imageUrl ? item.image.imageUrl : '',
+    image: imageUrl,
+    imageUrl,
     price,
     condition: item.condition || '',
     url: appendAffiliateParams(item.itemWebUrl)
