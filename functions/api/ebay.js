@@ -21,6 +21,7 @@ const SECTION_QUERIES = {
 };
 
 const SECTION_LIMIT = 10;
+const DEFAULT_QUERY = 'vinyl limited edition';
 
 function jsonResponse(body, init = {}) {
   const { cacheControl = 'public, max-age=900', headers = {}, status = 200 } = init;
@@ -69,6 +70,24 @@ function normalizeItem(item) {
     price,
     condition: item.condition || '',
     url: appendAffiliateParams(item.itemWebUrl)
+  };
+}
+
+function buildDiagnosticPayload(response, data) {
+  const itemSummaries = data.itemSummaries || [];
+  const firstItem = itemSummaries[0] || {};
+  const firstImageUrl =
+    firstItem.image?.imageUrl ||
+    firstItem.thumbnailImages?.[0]?.imageUrl ||
+    '';
+
+  return {
+    tokenOk: true,
+    status: response.status,
+    itemCount: itemSummaries.length,
+    firstTitle: firstItem.title || '',
+    firstImageUrl,
+    items: itemSummaries.slice(0, SECTION_LIMIT).map(normalizeItem)
   };
 }
 
@@ -121,9 +140,39 @@ async function searchItems(accessToken, query) {
   return (data.itemSummaries || []).slice(0, SECTION_LIMIT).map(normalizeItem);
 }
 
-export async function onRequestGet({ env }) {
+async function searchBrowseApi(accessToken, query) {
+  const url = new URL(EBAY_SEARCH_URL);
+  url.searchParams.set('q', query || DEFAULT_QUERY);
+  url.searchParams.set('limit', String(SECTION_LIMIT));
+  url.searchParams.set('sort', 'newlyListed');
+
+  const response = await fetch(url.toString(), {
+    headers: {
+      authorization: `Bearer ${accessToken}`,
+      'x-ebay-c-marketplace-id': MARKETPLACE_ID
+    }
+  });
+  const data = await response.json().catch(() => ({}));
+
+  if (!response.ok) {
+    throw new Error(`eBay Browse search failed with ${response.status}: ${JSON.stringify(data)}`);
+  }
+
+  return buildDiagnosticPayload(response, data);
+}
+
+export async function onRequestGet({ env, request }) {
   try {
     const accessToken = await getAccessToken(env);
+    const url = new URL(request.url);
+    const query = url.searchParams.get('q');
+
+    if (query !== null) {
+      return jsonResponse(await searchBrowseApi(accessToken, query), {
+        cacheControl: 'no-store'
+      });
+    }
+
     const entries = await Promise.all(
       Object.entries(SECTION_QUERIES).map(async ([key, query]) => {
         const items = await searchItems(accessToken, query);
@@ -138,6 +187,12 @@ export async function onRequestGet({ env }) {
   } catch (error) {
     return jsonResponse(
       {
+        tokenOk: false,
+        status: 502,
+        itemCount: 0,
+        firstTitle: '',
+        firstImageUrl: '',
+        items: [],
         error: 'Live eBay feed unavailable',
         message: error.message
       },
