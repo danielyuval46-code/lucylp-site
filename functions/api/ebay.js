@@ -22,8 +22,17 @@ const SECTION_QUERIES = {
 };
 
 const SECTION_LIMIT = 6;
-const SEARCH_LIMIT = 50;
+const SEARCH_LIMIT = 30;
+const FALLBACK_THRESHOLD = 3;
+const RELAXED_THRESHOLD = 4;
 const DEFAULT_QUERY = SECTION_QUERIES.newreleases;
+const FALLBACK_QUERIES = {
+  pinkfloyd: 'Pink Floyd vinyl LP',
+  beatles: 'Beatles vinyl LP',
+  ledzeppelin: 'Led Zeppelin vinyl LP',
+  newreleases: 'new vinyl release',
+  posters: 'vintage concert poster'
+};
 const CATEGORY_TO_SECTION = {
   pinkfloyd: 'pinkfloyd',
   beatles: 'beatles',
@@ -42,6 +51,12 @@ const GLOBAL_EXCLUDE_TERMS = [
   'plush',
   'cassette',
   'dvd'
+];
+const POSTER_EXCLUDE_TERMS = [
+  'toy',
+  'doll',
+  'funko',
+  'plush'
 ];
 const SECTION_FILTERS = {
   pinkfloyd: {
@@ -75,6 +90,15 @@ const SECTION_FILTERS = {
   posters: {
     includeGroups: [
       ['poster', 'concert', 'tour', 'print']
+    ],
+    exclude: POSTER_EXCLUDE_TERMS
+  }
+};
+const RELAXED_SECTION_FILTERS = {
+  ...SECTION_FILTERS,
+  newreleases: {
+    includeGroups: [
+      ...VINYL_INCLUDE_GROUPS
     ],
     exclude: GLOBAL_EXCLUDE_TERMS
   }
@@ -137,7 +161,7 @@ function getRealImageUrl(item) {
 
 function hasRealImage(item) {
   const imageUrl = getRealImageUrl(item);
-  return Boolean(imageUrl);
+  return Boolean(imageUrl) && !imageUrl.toLowerCase().includes('placeholder');
 }
 
 function getItemIdentity(item) {
@@ -183,8 +207,8 @@ function isVinylQuery(query) {
   return ['vinyl', 'lp', 'record', 'album'].some((term) => normalizedQuery.includes(term));
 }
 
-function filterItemsForSection(items, sectionKey) {
-  const filter = SECTION_FILTERS[sectionKey];
+function filterItemsForSection(items, sectionKey, filters = SECTION_FILTERS) {
+  const filter = filters[sectionKey];
 
   if (!filter) {
     return removeDuplicateItems(items.filter(hasRealImage));
@@ -222,7 +246,7 @@ function buildCategoryPayload(response, sectionKey, items, debugCounts) {
     tokenOk: true,
     status: response.status,
     category: sectionKey,
-    categoryQueryUsed: SECTION_QUERIES[sectionKey],
+    categoryQueryUsed: debugCounts.categoryQueryUsed,
     rawCountBeforeFiltering: debugCounts.rawCountBeforeFiltering,
     filteredCountAfterFiltering: debugCounts.filteredCountAfterFiltering,
     itemCount: items.length,
@@ -301,14 +325,33 @@ async function searchItems(accessToken, query, sectionKey) {
 }
 
 async function searchCategory(accessToken, sectionKey) {
-  const { response, itemSummaries } = await fetchBrowseSummaries(
+  const primary = await fetchBrowseSummaries(
     accessToken,
     SECTION_QUERIES[sectionKey]
   );
-  const filteredItems = filterItemsForSection(itemSummaries, sectionKey);
+  let itemSummaries = primary.itemSummaries;
+  let queryUsed = SECTION_QUERIES[sectionKey];
+  let filteredItems = filterItemsForSection(itemSummaries, sectionKey);
+
+  if (filteredItems.length < FALLBACK_THRESHOLD && FALLBACK_QUERIES[sectionKey]) {
+    const fallback = await fetchBrowseSummaries(accessToken, FALLBACK_QUERIES[sectionKey]);
+    itemSummaries = removeDuplicateItems([...itemSummaries, ...fallback.itemSummaries]);
+    queryUsed = `${queryUsed} | fallback: ${FALLBACK_QUERIES[sectionKey]}`;
+    filteredItems = filterItemsForSection(itemSummaries, sectionKey);
+  }
+
+  if (filteredItems.length < RELAXED_THRESHOLD) {
+    const relaxedItems = filterItemsForSection(itemSummaries, sectionKey, RELAXED_SECTION_FILTERS);
+
+    if (relaxedItems.length > filteredItems.length) {
+      filteredItems = relaxedItems;
+    }
+  }
+
   const items = filteredItems.slice(0, SECTION_LIMIT).map(normalizeItem);
 
-  return buildCategoryPayload(response, sectionKey, items, {
+  return buildCategoryPayload(primary.response, sectionKey, items, {
+    categoryQueryUsed: queryUsed,
     rawCountBeforeFiltering: itemSummaries.length,
     filteredCountAfterFiltering: filteredItems.length
   });
