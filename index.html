@@ -7,7 +7,7 @@
 
   <title>LucyLP</title>
 
-  <link rel="stylesheet" href="style.css?v=legendary-collector-feeds">
+  <link rel="stylesheet" href="style.css?v=collector-mvp-polish">
 </head>
 
 <body>
@@ -20,7 +20,7 @@
 
       <div class="collector-banner" aria-label="LucyLP marketplace focus">
         <strong>Curated Vinyl &amp; Poster Finds</strong>
-        <span>Rare records &bull; Posters &bull; Limited Editions &bull; Global nostalgia</span>
+        <span>Legendary records &bull; Vintage posters &bull; Worldwide pressings</span>
       </div>
     </div>
 
@@ -47,7 +47,7 @@
     </h2>
 
     <p class="description">
-      Rare Vinyl &bull; Posters &bull; Limited Editions
+      Rare Vinyl &bull; Posters &bull; Collector Editions
     </p>
 
     <p class="hero-note">
@@ -64,26 +64,44 @@
   <section class="cards">
 
     <div class="card">
-      <h3>Trending Vinyl</h3>
+      <h3>Legendary Pressings</h3>
       <p>
-        Follow records gaining collector attention and rising market value.
+        Follow iconic records from Pink Floyd, The Beatles, and Led Zeppelin.
       </p>
     </div>
 
     <div class="card">
-      <h3>Rare Finds</h3>
+      <h3>New Release Radar</h3>
       <p>
-        Discover limited editions, first pressings, and hidden gems.
+        Discover colored vinyl, remasters, exclusives, and modern collector drops.
       </p>
     </div>
 
     <div class="card">
-      <h3>Collector Radar</h3>
+      <h3>Vintage Poster Finds</h3>
       <p>
-        Insights, trends, and future tools for vinyl collectors.
+        Explore concert posters, tour prints, and classic rock nostalgia.
       </p>
     </div>
 
+  </section>
+
+  <section class="featured-collector" aria-labelledby="featured-title">
+    <div class="market-inner">
+      <div class="market-header">
+        <div>
+          <p class="market-kicker">Featured Collector Pick</p>
+          <h2 id="featured-title">LucyLP Featured Collector Pick</h2>
+        </div>
+        <p class="market-copy">
+          Hand-picked collector finds and rare worldwide pressings.
+        </p>
+      </div>
+
+      <div id="featured-pick" class="featured-pick" aria-live="polite">
+        <p class="live-grid-message">Loading collector finds...</p>
+      </div>
+    </div>
   </section>
 
   <section class="category-showcase" aria-labelledby="category-title">
@@ -194,7 +212,7 @@
         <p class="market-kicker">Estimated Collector Range:</p>
         <strong>$25 &ndash; $120</strong>
         <p>
-          This is a demo estimate. Full market data and real-time eBay/Discogs
+          This is a preview estimate. Full market data and real-time eBay/Discogs
           analysis are coming soon.
         </p>
         <a href="#pink-floyd-worldwide" class="ebay-btn">Discover Rare Finds</a>
@@ -209,9 +227,7 @@
           <p class="market-kicker">Legendary Collector Radar</p>
           <h2 id="pink-floyd-products-title">Pink Floyd Around The World</h2>
         </div>
-        <p class="market-copy">
-          Curated live collector finds from eBay.
-        </p>
+        <p class="market-copy">Curated live collector finds from eBay.</p>
         <p class="live-filter-note">Live eBay results are automatically filtered for collector relevance.</p>
       </div>
 
@@ -227,9 +243,7 @@
           <p class="market-kicker">Legendary Collector Radar</p>
           <h2 id="beatles-products-title">Beatles Worldwide Pressings</h2>
         </div>
-        <p class="market-copy">
-          Curated live collector finds from eBay.
-        </p>
+        <p class="market-copy">Curated live collector finds from eBay.</p>
         <p class="live-filter-note">Live eBay results are automatically filtered for collector relevance.</p>
       </div>
 
@@ -245,9 +259,7 @@
           <p class="market-kicker">Legendary Collector Radar</p>
           <h2 id="led-zeppelin-products-title">Led Zeppelin Collector Editions</h2>
         </div>
-        <p class="market-copy">
-          Curated live collector finds from eBay.
-        </p>
+        <p class="market-copy">Curated live collector finds from eBay.</p>
         <p class="live-filter-note">Live eBay results are automatically filtered for collector relevance.</p>
       </div>
 
@@ -263,9 +275,7 @@
           <p class="market-kicker">Fresh Collector Radar</p>
           <h2 id="new-releases-products-title">New Vinyl Releases</h2>
         </div>
-        <p class="market-copy">
-          Curated live collector finds from eBay.
-        </p>
+        <p class="market-copy">Curated live collector finds from eBay.</p>
         <p class="live-filter-note">Live eBay results are automatically filtered for collector relevance.</p>
       </div>
 
@@ -379,11 +389,25 @@
       `;
     }
 
+    function renderFeaturedCard(item) {
+      return `
+        <article class="featured-product">
+          <img src="${escapeHtml(item.imageUrl)}" class="featured-image" alt="${escapeHtml(item.title)}">
+          <div class="featured-content">
+            <p class="market-kicker">LucyLP Featured Collector Pick</p>
+            <h3>${escapeHtml(item.title)}</h3>
+            <p>Hand-picked collector finds and rare worldwide pressings.</p>
+            <p class="live-item-meta">${escapeHtml(item.condition || 'Condition unavailable')}</p>
+            <p class="live-item-price">${escapeHtml(item.price || 'Price unavailable')}</p>
+            <a href="${escapeHtml(item.url)}" class="featured-btn" target="_blank" rel="noopener sponsored">Discover This Find</a>
+          </div>
+        </article>
+      `;
+    }
+
     function hasRealImageUrl(item) {
       const imageUrl = String(item.imageUrl || '').trim();
-      return imageUrl !== ''
-        && !imageUrl.startsWith('/vinyl-placeholder')
-        && !imageUrl.startsWith('/poster-placeholder');
+      return imageUrl !== '';
     }
 
     function prepareApiItems(items) {
@@ -405,30 +429,59 @@
       grid.innerHTML = `<p class="live-grid-message">${escapeHtml(message)}</p>`;
     }
 
+    const categoryRequests = {};
+
+    async function fetchCategoryItems(category) {
+      if (!categoryRequests[category]) {
+        categoryRequests[category] = fetch(`/api/ebay?category=${encodeURIComponent(category)}`, {
+          headers: {
+            Accept: 'application/json'
+          }
+        }).then(function(response) {
+          if (!response.ok) {
+            throw new Error('eBay API request failed');
+          }
+
+          return response.json();
+        }).then(function(data) {
+          return Array.isArray(data.items) ? prepareApiItems(data.items) : [];
+        });
+      }
+
+      return categoryRequests[category];
+    }
+
+    async function loadFeaturedPick() {
+      const featuredPick = document.getElementById('featured-pick');
+
+      try {
+        const items = await fetchCategoryItems('pinkfloyd');
+
+        if (items.length === 0) {
+          renderGridMessage(featuredPick, 'No curated finds available right now.');
+          return;
+        }
+
+        featuredPick.innerHTML = renderFeaturedCard(items[0]);
+      } catch (error) {
+        renderGridMessage(featuredPick, 'No curated finds available right now.');
+        console.warn('LucyLP featured collector pick unavailable.', error);
+      }
+    }
+
     async function loadLiveEbayFinds() {
       const grids = document.querySelectorAll('[data-ebay-section]');
 
       grids.forEach(function(grid) {
         grid.setAttribute('aria-busy', 'true');
-        renderGridMessage(grid, 'Loading live finds...');
+        renderGridMessage(grid, 'Loading collector finds...');
       });
 
       await Promise.all(Array.from(grids).map(async function(grid) {
         try {
           const sectionKey = grid.dataset.ebaySection;
           const category = sectionCategories[sectionKey];
-          const response = await fetch(`/api/ebay?category=${encodeURIComponent(category)}`, {
-            headers: {
-              Accept: 'application/json'
-            }
-          });
-
-          if (!response.ok) {
-            throw new Error('eBay API request failed');
-          }
-
-          const data = await response.json();
-          const items = Array.isArray(data.items) ? prepareApiItems(data.items) : [];
+          const items = await fetchCategoryItems(category);
           const firstImageUrl = items[0] ? items[0].imageUrl : '';
 
           console.log('LucyLP live category rendered', {
@@ -462,6 +515,7 @@
       }));
     }
 
+    loadFeaturedPick();
     loadLiveEbayFinds();
   </script>
 </body>

@@ -118,7 +118,7 @@ function normalizeItem(item) {
   const imageUrl =
     item.image?.imageUrl ||
     item.thumbnailImages?.[0]?.imageUrl ||
-    '/vinyl-placeholder.jpg';
+    '';
 
   return {
     itemId: item.itemId || '',
@@ -137,7 +137,7 @@ function getRealImageUrl(item) {
 
 function hasRealImage(item) {
   const imageUrl = getRealImageUrl(item);
-  return Boolean(imageUrl) && !imageUrl.includes('placeholder');
+  return Boolean(imageUrl);
 }
 
 function getItemIdentity(item) {

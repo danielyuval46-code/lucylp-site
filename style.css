@@ -339,7 +339,7 @@ footer{
   border-top:1px solid #1f1f1f;
 }
 
-.market{
+.featured-collector{
   background:#050505;
   border-top:1px solid #1f1f1f;
   border-bottom:1px solid #1f1f1f;
@@ -368,7 +368,7 @@ footer{
   margin:0 0 10px;
 }
 
-.market h2{
+.featured-collector h2{
   font-family:var(--serif);
   font-size:36px;
   font-weight:700;
@@ -387,18 +387,21 @@ footer{
   grid-template-columns:minmax(280px, 0.95fr) minmax(280px, 1.05fr);
   align-items:center;
   gap:34px;
-  background:#101010;
-  border:1px solid #302714;
-  border-radius:8px;
-  box-shadow:0 24px 70px rgba(0,0,0,0.38);
-  margin:0 0 34px;
+  background:
+    radial-gradient(circle at 18% 18%, rgba(212,175,55,0.16), transparent 30%),
+    linear-gradient(145deg, #141414, #070707);
+  border:1px solid rgba(212,175,55,0.32);
+  border-radius:16px;
+  box-shadow:0 24px 70px rgba(0,0,0,0.42), 0 0 42px rgba(212,175,55,0.08);
+  margin:0;
   overflow:hidden;
   padding:24px;
-  transition:0.3s;
+  transition:transform 0.32s ease, border-color 0.32s ease, box-shadow 0.32s ease;
 }
 
 .featured-product:hover{
   border-color:#d4af37;
+  box-shadow:0 32px 92px rgba(0,0,0,0.55), 0 0 52px rgba(212,175,55,0.14);
   transform:translateY(-4px);
 }
 
@@ -407,7 +410,8 @@ footer{
   width:100%;
   aspect-ratio:1.28;
   object-fit:cover;
-  border-radius:8px;
+  border:1px solid rgba(212,175,55,0.34);
+  border-radius:14px;
   background:#050505;
 }
 
@@ -454,102 +458,8 @@ footer{
   transform:translateY(-2px);
 }
 
-.vinyl-grid{
-  display:grid;
-  grid-template-columns:repeat(3, 1fr);
-  gap:22px;
-}
-
-.vinyl-card{
-  background:#111111;
-  border:1px solid #2b2b2b;
-  border-radius:8px;
-  overflow:hidden;
-  transition:0.3s;
-}
-
-.vinyl-card:hover{
-  transform:translateY(-4px);
-  border-color:#d4af37;
-}
-
-.album-cover{
-  display:block;
-  width:100%;
-  aspect-ratio:1;
-  object-fit:cover;
-  background:#080808;
-}
-
-.vinyl-info{
-  padding:22px;
-}
-
-.vinyl-meta{
-  display:flex;
-  justify-content:space-between;
-  gap:16px;
-  align-items:start;
-  margin-bottom:18px;
-}
-
-.vinyl-card h3{
-  color:white;
-  font-family:var(--serif);
-  font-size:20px;
-  margin:0 0 6px;
-}
-
-.pressing{
-  color:#9f9f9f;
-  font-size:14px;
-  margin:0;
-}
-
-.trend{
-  color:var(--gold);
-  background:#211b0b;
-  border:1px solid #6d5719;
-  border-radius:999px;
-  font-size:13px;
-  font-weight:bold;
-  padding:7px 10px;
-  white-space:nowrap;
-}
-
-.vinyl-actions{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:14px;
-}
-
-.price{
-  color:#f6e7b0;
-  font-size:24px;
-  font-weight:bold;
-}
-
-.buy-btn{
-  background:linear-gradient(135deg, var(--gold), var(--gold-soft));
-  border:1px solid rgba(246,231,176,0.58);
-  border-radius:8px;
-  color:#050505;
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  font-weight:bold;
-  min-height:44px;
-  padding:0 18px;
-  text-decoration:none;
-  transition:0.3s;
-}
-
-.buy-btn:hover{
-  background:#f6e7b0;
-  border-color:#f6e7b0;
-  box-shadow:0 0 22px rgba(212,175,55,0.34);
-  transform:translateY(-2px);
+.featured-pick .live-grid-message{
+  min-height:260px;
 }
 
 .category-showcase{
@@ -785,34 +695,25 @@ footer{
 }
 
 .collector-products{
-  background:#050505;
+  background:
+    radial-gradient(circle at 10% 0%, rgba(212,175,55,0.06), transparent 26%),
+    #050505;
   border-top:1px solid #1f1f1f;
   border-bottom:1px solid #1f1f1f;
-  padding:72px 20px;
-}
-
-.middle-eastern-products{
-  background:#0b0b0b;
-  border-bottom:1px solid #1f1f1f;
-  padding:72px 20px;
-}
-
-.israeli-products{
-  background:#050505;
-  border-bottom:1px solid #1f1f1f;
-  padding:72px 20px;
-}
-
-.limited-products{
-  background:#0b0b0b;
-  border-bottom:1px solid #1f1f1f;
-  padding:72px 20px;
+  padding:84px 20px;
 }
 
 .product-grid{
+  background:
+    radial-gradient(circle at top right, rgba(212,175,55,0.08), transparent 32%),
+    linear-gradient(145deg, rgba(12,12,12,0.94), rgba(5,5,5,0.96));
+  border:1px solid rgba(212,175,55,0.12);
+  border-radius:18px;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,0.03), 0 22px 70px rgba(0,0,0,0.26);
   display:grid;
   grid-template-columns:repeat(4, 1fr);
   gap:22px;
+  padding:18px;
 }
 
 .product-card{
@@ -821,50 +722,18 @@ footer{
     linear-gradient(145deg, #151515, #090909);
   border:1px solid #2f2815;
   border-radius:18px;
+  display:flex;
+  flex-direction:column;
   box-shadow:0 20px 60px rgba(0,0,0,0.34);
   overflow:hidden;
-  transition:0.3s;
+  min-height:100%;
+  transition:transform 0.32s ease, border-color 0.32s ease, box-shadow 0.32s ease;
 }
 
 .product-card:hover{
   transform:translateY(-6px);
   border-color:#d4af37;
   box-shadow:0 28px 82px rgba(0,0,0,0.5);
-}
-
-.product-image-placeholder{
-  position:relative;
-  width:100%;
-  height:240px;
-  margin-bottom:18px;
-  background:
-    radial-gradient(circle at 50% 45%, rgba(246,231,176,0.12) 0 12%, transparent 13%),
-    radial-gradient(circle, #161616 0 34%, #050505 35% 40%, #1b1b1b 41% 42%, #080808 43% 100%);
-  border:1px solid rgba(212,175,55,0.42);
-  border-radius:16px;
-  box-shadow:0 18px 42px rgba(0,0,0,0.38), inset 0 0 36px rgba(212,175,55,0.08);
-  overflow:hidden;
-}
-
-.product-image-placeholder::before{
-  content:"";
-  position:absolute;
-  inset:24px;
-  border:1px solid rgba(212,175,55,0.42);
-  border-radius:8px;
-}
-
-.product-image-placeholder::after{
-  content:"LucyLP";
-  position:absolute;
-  left:50%;
-  top:50%;
-  color:#d4af37;
-  font-size:12px;
-  font-weight:bold;
-  letter-spacing:2px;
-  text-transform:uppercase;
-  transform:translate(-50%, -50%);
 }
 
 .product-image{
@@ -879,40 +748,12 @@ footer{
   box-shadow:0 18px 42px rgba(0,0,0,0.38);
 }
 
-.middle-east-placeholder{
-  background:
-    radial-gradient(circle at 50% 50%, #171717 0 31%, #050505 32% 38%, #2a2313 39% 41%, #080808 42% 100%),
-    linear-gradient(145deg, rgba(212,175,55,0.14), transparent);
-}
-
-.middle-eastern-products .product-card{
-  border-color:#302714;
-}
-
-.israeli-placeholder{
-  background:
-    radial-gradient(circle at 50% 50%, #181818 0 30%, #050505 31% 37%, #2f2815 38% 40%, #080808 41% 100%),
-    radial-gradient(circle at top right, rgba(212,175,55,0.16), transparent 42%);
-}
-
-.israeli-products .product-card{
-  border-color:#302714;
-}
-
-.limited-placeholder{
-  background:
-    radial-gradient(circle at 50% 50%, #191919 0 29%, #050505 30% 36%, #3a3017 37% 39%, #080808 40% 100%),
-    radial-gradient(circle at top left, rgba(246,231,176,0.14), transparent 42%);
-}
-
-.limited-products .product-card{
-  border-color:#302714;
-}
-
 .poster-products{
-  background:#050505;
+  background:
+    radial-gradient(circle at 80% 0%, rgba(212,175,55,0.06), transparent 28%),
+    #050505;
   border-bottom:1px solid #1f1f1f;
-  padding:72px 20px;
+  padding:84px 20px;
 }
 
 .poster-header{
@@ -947,9 +788,16 @@ footer{
 }
 
 .poster-grid{
+  background:
+    radial-gradient(circle at top left, rgba(212,175,55,0.08), transparent 32%),
+    linear-gradient(145deg, rgba(12,12,12,0.94), rgba(5,5,5,0.96));
+  border:1px solid rgba(212,175,55,0.12);
+  border-radius:18px;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,0.03), 0 22px 70px rgba(0,0,0,0.26);
   display:grid;
   grid-template-columns:repeat(5, 1fr);
   gap:22px;
+  padding:18px;
 }
 
 .poster-card{
@@ -958,42 +806,18 @@ footer{
     linear-gradient(145deg, #151515, #080808);
   border:1px solid #302714;
   border-radius:18px;
+  display:flex;
+  flex-direction:column;
   box-shadow:0 24px 70px rgba(0,0,0,0.42);
   overflow:hidden;
-  transition:0.3s;
+  min-height:100%;
+  transition:transform 0.32s ease, border-color 0.32s ease, box-shadow 0.32s ease;
 }
 
 .poster-card:hover{
   transform:translateY(-6px);
   border-color:#d4af37;
   box-shadow:0 34px 96px rgba(0,0,0,0.56);
-}
-
-.poster-image-placeholder{
-  position:relative;
-  width:100%;
-  height:340px;
-  margin-bottom:18px;
-  background:
-    radial-gradient(circle at top left, rgba(246,231,176,0.22), transparent 34%),
-    radial-gradient(circle at bottom right, rgba(212,175,55,0.18), transparent 36%),
-    linear-gradient(145deg, #202020, #070707 70%);
-  border:12px solid #101010;
-  border-radius:16px;
-  box-shadow:inset 0 0 0 1px rgba(212,175,55,0.34), 0 18px 48px rgba(0,0,0,0.42);
-}
-
-.poster-image-placeholder::after{
-  content:"Poster";
-  position:absolute;
-  left:50%;
-  top:50%;
-  color:#d4af37;
-  font-size:12px;
-  font-weight:bold;
-  letter-spacing:2px;
-  text-transform:uppercase;
-  transform:translate(-50%, -50%);
 }
 
 .poster-image{
@@ -1009,14 +833,22 @@ footer{
 }
 
 .poster-content{
+  display:flex;
+  flex:1;
+  flex-direction:column;
   padding:0 20px 20px;
 }
 
 .poster-card h3{
   color:white;
+  display:-webkit-box;
   font-size:20px;
+  -webkit-box-orient:vertical;
+  -webkit-line-clamp:3;
   line-height:1.25;
   margin:0 0 10px;
+  min-height:75px;
+  overflow:hidden;
 }
 
 .poster-card p{
@@ -1027,6 +859,9 @@ footer{
 }
 
 .product-content{
+  display:flex;
+  flex:1;
+  flex-direction:column;
   padding:0 22px 22px;
 }
 
@@ -1042,10 +877,15 @@ footer{
 
 .product-card h3{
   color:white;
+  display:-webkit-box;
   font-family:var(--serif);
   font-size:20px;
+  -webkit-box-orient:vertical;
+  -webkit-line-clamp:3;
   line-height:1.25;
   margin:0 0 10px;
+  min-height:75px;
+  overflow:hidden;
 }
 
 .product-card p{
@@ -1053,6 +893,11 @@ footer{
   font-size:15px;
   line-height:1.6;
   margin:0 0 18px;
+}
+
+.product-card .ebay-btn,
+.poster-card .ebay-btn{
+  margin-top:auto;
 }
 
 .live-item-meta{
@@ -1071,15 +916,6 @@ footer{
   margin-bottom:18px;
 }
 
-.live-status-card{
-  border-style:dashed;
-}
-
-.live-status-card .product-image,
-.live-status-card .poster-image{
-  opacity:0.72;
-}
-
 .live-filter-note{
   color:var(--gold-soft);
   font-size:13px;
@@ -1093,6 +929,7 @@ footer{
   background:linear-gradient(145deg, rgba(12,12,12,0.94), rgba(32,27,16,0.86));
   border:1px solid rgba(212,175,55,0.28);
   border-radius:16px;
+  grid-column:1 / -1;
   box-shadow:0 18px 45px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.04);
   color:var(--gold-soft);
   display:flex;
@@ -1259,10 +1096,6 @@ footer{
     flex-direction:column;
   }
 
-  .vinyl-grid{
-    grid-template-columns:1fr;
-  }
-
   .featured-product{
     grid-template-columns:1fr;
   }
@@ -1352,7 +1185,7 @@ footer{
   }
 
   .hero h2,
-  .market h2,
+  .featured-collector h2,
   .category-heading h2{
     font-size:32px;
   }
@@ -1389,9 +1222,6 @@ footer{
   }
 
   .collector-products,
-  .middle-eastern-products,
-  .israeli-products,
-  .limited-products,
   .poster-products,
   .value-checker,
   .app-coming-soon{
@@ -1423,15 +1253,10 @@ footer{
     font-size:16px;
   }
 
-  .product-image-placeholder{
-    height:220px;
-  }
-
   .product-image{
     height:220px;
   }
 
-  .poster-image-placeholder,
   .poster-image{
     height:300px;
   }
@@ -1458,15 +1283,6 @@ footer{
 
   .featured-content p:not(.market-kicker){
     font-size:16px;
-  }
-
-  .vinyl-actions{
-    align-items:stretch;
-    flex-direction:column;
-  }
-
-  .buy-btn{
-    width:100%;
   }
 
   .featured-btn{
