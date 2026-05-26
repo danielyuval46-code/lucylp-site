@@ -14,94 +14,70 @@ const AFFILIATE_PARAMS = {
 };
 
 const SECTION_QUERIES = {
-  'japanese-vinyl': 'Japanese vinyl LP Japan pressing obi rock metal',
-  'israeli-vinyl': 'Israel Israeli Hebrew vinyl LP record music',
-  'limited-edition-vinyl': 'limited edition vinyl LP record colored sealed exclusive',
-  posters: 'concert poster'
+  pinkfloyd: 'Pink Floyd vinyl LP Japan UK Germany Israel pressing',
+  beatles: 'Beatles vinyl LP mono stereo Japan UK Germany',
+  ledzeppelin: 'Led Zeppelin vinyl LP first pressing remaster Japan',
+  newreleases: 'new vinyl release colored vinyl LP exclusive',
+  posters: 'vintage concert poster Pink Floyd Beatles Led Zeppelin'
 };
 
 const SECTION_LIMIT = 6;
 const SEARCH_LIMIT = 50;
-const DEFAULT_QUERY = SECTION_QUERIES['limited-edition-vinyl'];
+const DEFAULT_QUERY = SECTION_QUERIES.newreleases;
 const CATEGORY_TO_SECTION = {
-  japanese: 'japanese-vinyl',
-  israeli: 'israeli-vinyl',
-  limited: 'limited-edition-vinyl',
+  pinkfloyd: 'pinkfloyd',
+  beatles: 'beatles',
+  ledzeppelin: 'ledzeppelin',
+  newreleases: 'newreleases',
   posters: 'posters'
 };
 const VINYL_INCLUDE_GROUPS = [
   ['vinyl', 'lp', 'record', 'album']
 ];
-const VINYL_EXCLUDE_TERMS = [
+const GLOBAL_EXCLUDE_TERMS = [
   'funko',
   'doll',
   'toy',
   'figure',
-  'barbie',
   'plush',
-  'outfit',
-  'head',
-  'body',
-  'statue',
-  'collectible figure',
-  'book',
-  'cd',
-  'dvd',
   'cassette',
-  'poster'
-];
-const LIMITED_EXCLUDE_TERMS = [
-  'funko',
-  'doll',
-  'toy',
-  'figure',
-  'barbie',
-  'plush',
-  'christmas',
-  'holiday',
-  'kids'
-];
-const NON_MEDIA_EXCLUDE_TERMS = [
-  'funko',
-  'doll',
-  'toy',
-  'figure',
-  'barbie',
-  'plush',
-  'outfit',
-  'head',
-  'body',
-  'statue',
-  'collectible figure',
-  'book',
-  'cd',
-  'dvd',
-  'cassette'
+  'dvd'
 ];
 const SECTION_FILTERS = {
-  'israeli-vinyl': {
+  pinkfloyd: {
     includeGroups: [
-      ['israel', 'israeli', 'hebrew', 'jewish', 'judaica'],
+      ['pink floyd'],
       ...VINYL_INCLUDE_GROUPS
     ],
-    exclude: VINYL_EXCLUDE_TERMS
+    exclude: GLOBAL_EXCLUDE_TERMS
   },
-  'japanese-vinyl': {
+  beatles: {
     includeGroups: [
-      ['japan', 'japanese', 'obi', 'pressing'],
+      ['beatles'],
       ...VINYL_INCLUDE_GROUPS
     ],
-    exclude: VINYL_EXCLUDE_TERMS
+    exclude: GLOBAL_EXCLUDE_TERMS
   },
-  'limited-edition-vinyl': {
+  ledzeppelin: {
     includeGroups: [
-      ['vinyl', 'lp', 'record', 'album'],
-      ['limited', 'exclusive', 'colored', 'colour', 'marble', 'swirl', 'splatter', 'sealed', 'rsd']
+      ['led zeppelin'],
+      ...VINYL_INCLUDE_GROUPS
     ],
-    exclude: LIMITED_EXCLUDE_TERMS,
-    excludeUnlessVinyl: ['soundtrack']
+    exclude: GLOBAL_EXCLUDE_TERMS
   },
-  posters: null
+  newreleases: {
+    includeGroups: [
+      ...VINYL_INCLUDE_GROUPS,
+      ['new', 'release', 'colored', 'remaster', 'anniversary', 'exclusive']
+    ],
+    exclude: GLOBAL_EXCLUDE_TERMS
+  },
+  posters: {
+    includeGroups: [
+      ['poster', 'concert', 'tour', 'print']
+    ],
+    exclude: GLOBAL_EXCLUDE_TERMS
+  }
 };
 
 function jsonResponse(body, init = {}) {
@@ -357,7 +333,7 @@ async function searchBrowseApi(accessToken, query) {
   }
 
   const itemSummaries = isVinylQuery(query)
-    ? filterItemsForSection(data.itemSummaries || [], 'limited-edition-vinyl')
+    ? filterItemsForSection(data.itemSummaries || [], 'newreleases')
     : data.itemSummaries || [];
 
   return buildDiagnosticPayload(response, {
@@ -383,7 +359,7 @@ export async function onRequest(context) {
         items: [],
         envDebug,
         error: 'Method not allowed',
-        message: 'Use GET /api/ebay?q=vinyl%20limited%20edition'
+        message: 'Use GET /api/ebay?q=new%20vinyl%20release'
       },
       {
         status: 405,
@@ -415,7 +391,7 @@ export async function onRequest(context) {
             items: [],
             envDebug,
             error: 'Invalid category',
-            message: 'Use category=limited, israeli, japanese, or posters'
+            message: 'Use category=pinkfloyd, beatles, ledzeppelin, newreleases, or posters'
           },
           {
             status: 400,
