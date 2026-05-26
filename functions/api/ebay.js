@@ -12,6 +12,13 @@ const AFFILIATE_PARAMS = {
   toolid: '10001',
   mkevt: '1'
 };
+const REQUIRED_AFFILIATE_PARAMS = [
+  'campid',
+  'customid',
+  'mkcid',
+  'toolid',
+  'mkevt'
+];
 
 const SECTION_QUERIES = {
   pinkfloyd: 'Pink Floyd vinyl LP Japan UK Germany Israel pressing',
@@ -123,15 +130,28 @@ function appendAffiliateParams(itemUrl) {
   }
 
   try {
-    const url = new URL(itemUrl);
+    const url = new URL(itemUrl, 'https://www.ebay.com');
 
     Object.entries(AFFILIATE_PARAMS).forEach(([key, value]) => {
       url.searchParams.set(key, value);
     });
 
-    return url.toString();
+    const affiliateUrl = url.toString();
+    return hasRequiredAffiliateParams(affiliateUrl) ? affiliateUrl : itemUrl;
   } catch (_error) {
     return itemUrl;
+  }
+}
+
+function hasRequiredAffiliateParams(itemUrl) {
+  try {
+    const url = new URL(itemUrl, 'https://www.ebay.com');
+
+    return REQUIRED_AFFILIATE_PARAMS.every((key) => {
+      return url.searchParams.get(key) === AFFILIATE_PARAMS[key];
+    });
+  } catch (_error) {
+    return false;
   }
 }
 
