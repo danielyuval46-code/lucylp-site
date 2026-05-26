@@ -7,7 +7,7 @@
 
   <title>LucyLP</title>
 
-  <link rel="stylesheet" href="style.css?v=collector-mvp-polish">
+  <link rel="stylesheet" href="style.css?v=collector-tool-lucy">
 </head>
 
 <body>
@@ -158,34 +158,40 @@
   <section class="value-checker" aria-labelledby="value-checker-title">
     <div class="value-checker-inner">
       <div class="value-checker-copy">
-        <p class="market-kicker">Free Collector Tool</p>
-        <h2 id="value-checker-title">LucyLP Value Checker</h2>
+        <div class="tool-presenter">
+          <img src="logo3.gif" class="tool-mascot" alt="Lucy Viking mascot presenting the LucyLP Collector Tool">
+          <div>
+            <p class="tool-presenter-label">Presented by Lucy</p>
+            <h2 id="value-checker-title">Free Collector Tool</h2>
+          </div>
+        </div>
+        <p class="collector-tool-name">LucyLP Collector Tool</p>
         <p>
-          Preview a smarter way to estimate vinyl value before you buy, sell,
-          or add a record to your watchlist.
+          Start with vinyl value checking. More collector formats are coming soon.
         </p>
+        <div class="tool-badges" aria-label="Collector formats">
+          <span>Vinyl</span>
+          <span>Cassettes coming soon</span>
+          <span>CDs coming soon</span>
+          <span>Posters coming soon</span>
+        </div>
       </div>
 
       <form class="value-form" id="value-checker-form">
         <div class="form-grid">
           <label>
-            <span>Artist name</span>
+            <span>Artist</span>
             <input type="text" name="artist" placeholder="Pink Floyd">
           </label>
 
           <label>
-            <span>Album title</span>
+            <span>Album</span>
             <input type="text" name="album" placeholder="The Dark Side of the Moon">
           </label>
 
           <label>
             <span>Country / pressing</span>
             <input type="text" name="pressing" placeholder="UK first press, remaster">
-          </label>
-
-          <label>
-            <span>Year</span>
-            <input type="text" name="year" placeholder="1973">
           </label>
 
           <label>
@@ -197,11 +203,6 @@
               <option>Very Good</option>
               <option>Good</option>
             </select>
-          </label>
-
-          <label class="form-notes">
-            <span>Optional notes</span>
-            <textarea name="notes" rows="4" placeholder="OBI included, promo copy, colored vinyl, inserts, sleeve marks..."></textarea>
           </label>
         </div>
 

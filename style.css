@@ -10,6 +10,7 @@
   --gold-soft:#f6e7b0;
   --gold-deep:#4a3b13;
   --muted:#cfcfcf;
+  --neon:#78ff8a;
   --serif:Georgia, "Times New Roman", serif;
   --sans:Arial, sans-serif;
 }
@@ -550,6 +551,7 @@ footer{
 
 .value-checker{
   background:
+    radial-gradient(circle at 12% 12%, rgba(120,255,138,0.13), transparent 24%),
     radial-gradient(circle at top left, rgba(212,175,55,0.12), transparent 34%),
     linear-gradient(180deg, #050505 0%, #0b0b0b 100%);
   border-top:1px solid #1f1f1f;
@@ -559,7 +561,7 @@ footer{
 
 .value-checker-inner{
   display:grid;
-  grid-template-columns:minmax(280px, 0.82fr) minmax(320px, 1.18fr);
+  grid-template-columns:minmax(320px, 0.92fr) minmax(320px, 1.08fr);
   gap:28px;
   align-items:start;
   max-width:1120px;
@@ -570,15 +572,50 @@ footer{
 .value-form,
 .estimate-result{
   background:
+    radial-gradient(circle at bottom left, rgba(120,255,138,0.07), transparent 34%),
     radial-gradient(circle at top right, rgba(246,231,176,0.1), transparent 36%),
     linear-gradient(145deg, #151515, #080808);
-  border:1px solid #302714;
-  border-radius:8px;
-  box-shadow:0 28px 82px rgba(0,0,0,0.42);
+  border:1px solid rgba(212,175,55,0.34);
+  border-radius:16px;
+  box-shadow:0 28px 82px rgba(0,0,0,0.42), 0 0 42px rgba(120,255,138,0.05);
 }
 
 .value-checker-copy{
   padding:32px;
+}
+
+.tool-presenter{
+  align-items:center;
+  display:grid;
+  gap:22px;
+  grid-template-columns:128px 1fr;
+  margin-bottom:20px;
+}
+
+.tool-mascot{
+  background:
+    radial-gradient(circle, rgba(120,255,138,0.16), transparent 58%),
+    #080808;
+  border:1px solid rgba(120,255,138,0.34);
+  border-radius:18px;
+  box-shadow:0 0 34px rgba(120,255,138,0.14), 0 18px 48px rgba(0,0,0,0.42);
+  display:block;
+  height:168px;
+  object-fit:contain;
+  object-position:center bottom;
+  padding:8px;
+  width:128px;
+}
+
+.tool-presenter-label,
+.collector-tool-name{
+  color:var(--neon);
+  font-size:12px;
+  font-weight:bold;
+  letter-spacing:1.8px;
+  margin:0 0 10px;
+  text-transform:uppercase;
+  text-shadow:0 0 14px rgba(120,255,138,0.28);
 }
 
 .value-checker-copy h2{
@@ -586,18 +623,37 @@ footer{
   font-family:var(--serif);
   font-size:38px;
   line-height:1.1;
-  margin:0 0 16px;
+  margin:0;
 }
 
 .value-checker-copy p:not(.market-kicker){
   color:#cfcfcf;
   font-size:18px;
   line-height:1.75;
-  margin:0;
+  margin:0 0 20px;
+}
+
+.tool-badges{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  margin-top:22px;
+}
+
+.tool-badges span{
+  background:rgba(120,255,138,0.07);
+  border:1px solid rgba(120,255,138,0.32);
+  border-radius:999px;
+  color:#d8ffdd;
+  font-size:12px;
+  font-weight:bold;
+  letter-spacing:0.9px;
+  padding:9px 12px;
+  text-transform:uppercase;
 }
 
 .value-form{
-  padding:24px;
+  padding:28px;
 }
 
 .form-grid{
@@ -621,8 +677,7 @@ footer{
 }
 
 .value-form input,
-.value-form select,
-.value-form textarea{
+.value-form select{
   background:#080808;
   border:1px solid #2f2815;
   border-radius:8px;
@@ -635,24 +690,15 @@ footer{
   width:100%;
 }
 
-.value-form textarea{
-  resize:vertical;
-}
-
 .value-form input:focus,
-.value-form select:focus,
-.value-form textarea:focus{
-  border-color:var(--gold);
-  box-shadow:0 0 0 3px rgba(212,175,55,0.12);
-}
-
-.form-notes{
-  grid-column:1 / -1;
+.value-form select:focus{
+  border-color:var(--neon);
+  box-shadow:0 0 0 3px rgba(120,255,138,0.1), 0 0 20px rgba(120,255,138,0.12);
 }
 
 .estimate-btn{
-  background:linear-gradient(135deg, var(--gold), var(--gold-soft));
-  border:1px solid rgba(246,231,176,0.58);
+  background:linear-gradient(135deg, var(--gold), var(--gold-soft) 58%, var(--neon));
+  border:1px solid rgba(120,255,138,0.34);
   border-radius:8px;
   color:#050505;
   cursor:pointer;
@@ -665,8 +711,8 @@ footer{
 }
 
 .estimate-btn:hover{
-  background:#f6e7b0;
-  box-shadow:0 0 26px rgba(212,175,55,0.34), 0 18px 44px rgba(0,0,0,0.36);
+  background:linear-gradient(135deg, #f6e7b0, #d7ffd9);
+  box-shadow:0 0 26px rgba(120,255,138,0.24), 0 18px 44px rgba(0,0,0,0.36);
   transform:translateY(-2px);
 }
 
@@ -1116,6 +1162,15 @@ footer{
     grid-template-columns:1fr;
   }
 
+  .tool-presenter{
+    grid-template-columns:112px 1fr;
+  }
+
+  .tool-mascot{
+    height:148px;
+    width:112px;
+  }
+
   .estimate-result{
     grid-column:auto;
   }
@@ -1232,6 +1287,21 @@ footer{
   .value-form,
   .estimate-result{
     padding:22px;
+  }
+
+  .tool-presenter{
+    grid-template-columns:1fr;
+    text-align:center;
+  }
+
+  .tool-mascot{
+    height:180px;
+    margin:0 auto;
+    width:140px;
+  }
+
+  .tool-badges{
+    justify-content:center;
   }
 
   .value-checker-copy h2,
