@@ -808,6 +808,13 @@ h1{
   transform:translateY(-2px);
 }
 
+.value-beta-note{
+  color:rgba(226,213,178,0.68);
+  font-size:13px;
+  line-height:1.6;
+  margin:16px 0 0;
+}
+
 .estimate-result{
   grid-column:1 / -1;
   padding:24px;
