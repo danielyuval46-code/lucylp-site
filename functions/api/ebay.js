@@ -62,6 +62,12 @@ const GLOBAL_EXCLUDE_TERMS = [
   'cassette',
   'dvd'
 ];
+const GENERIC_VINYL_EXCLUDE_TERMS = [
+  ...GLOBAL_EXCLUDE_TERMS,
+  'cd',
+  'book',
+  'poster'
+];
 const POSTER_EXCLUDE_TERMS = [
   'toy',
   'doll',
@@ -111,6 +117,10 @@ const SECTION_FILTERS = {
     ],
     exclude: POSTER_EXCLUDE_TERMS
   }
+};
+const GENERIC_VINYL_FILTER = {
+  includeGroups: VINYL_INCLUDE_GROUPS,
+  exclude: GENERIC_VINYL_EXCLUDE_TERMS
 };
 const RELAXED_SECTION_FILTERS = {
   ...SECTION_FILTERS
@@ -252,6 +262,14 @@ function filterItemsForSection(items, sectionKey, filters = SECTION_FILTERS) {
     items
       .filter(hasRealImage)
       .filter((item) => titleMatchesFilter(item, filter))
+  );
+}
+
+function filterGenericVinylItems(items) {
+  return removeDuplicateItems(
+    items
+      .filter(hasRealImage)
+      .filter((item) => titleMatchesFilter(item, GENERIC_VINYL_FILTER))
   );
 }
 
@@ -414,7 +432,7 @@ async function searchBrowseApi(accessToken, query) {
   if (isStylusQuery(query)) {
     itemSummaries = filterItemsForSection(itemSummaries, 'stylus');
   } else if (isVinylQuery(query)) {
-    itemSummaries = filterItemsForSection(itemSummaries, 'pinkfloyd');
+    itemSummaries = filterGenericVinylItems(itemSummaries);
   }
 
   return buildDiagnosticPayload(response, {

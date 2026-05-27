@@ -103,6 +103,7 @@
           <label>
             <span>Condition</span>
             <select name="condition">
+              <option value="">Any condition</option>
               <option>Mint</option>
               <option>Near Mint</option>
               <option>Very Good Plus</option>
@@ -116,13 +117,7 @@
       </form>
 
       <article class="estimate-result" id="estimate-result" aria-live="polite" hidden>
-        <p class="market-kicker">Estimated Collector Range:</p>
-        <strong>$25 &ndash; $120</strong>
-        <p>
-          This is a preview estimate. Full market data and real-time eBay/Discogs
-          analysis are coming soon.
-        </p>
-        <a href="#pink-floyd-worldwide" class="ebay-btn">Discover Rare Finds</a>
+        <p class="live-grid-message">Enter a record above to estimate collector value.</p>
       </article>
     </div>
   </section>
@@ -416,11 +411,6 @@
   </footer>
 
   <script>
-    document.getElementById('value-checker-form').addEventListener('submit', function(event) {
-      event.preventDefault();
-      document.getElementById('estimate-result').hidden = false;
-    });
-
     const sectionLabels = {
       pinkfloyd: 'Pink Floyd',
       beatles: 'Beatles',
@@ -469,9 +459,57 @@
       `;
     }
 
+    function renderValueResultCard(item) {
+      return `
+        <article class="product-card value-result-card">
+          <img src="${escapeHtml(item.imageUrl)}" class="product-image" alt="${escapeHtml(item.title)}">
+          <div class="product-content">
+            <span class="product-label">Live eBay Match</span>
+            <h3>${escapeHtml(item.title)}</h3>
+            <p class="live-item-meta">${escapeHtml(item.condition || 'Condition unavailable')}</p>
+            <p class="live-item-price">${escapeHtml(item.price || 'Price unavailable')}</p>
+            <a href="${escapeHtml(item.url)}" class="ebay-btn" target="_blank" rel="noopener sponsored">View Collector Find</a>
+          </div>
+        </article>
+      `;
+    }
+
     function hasRealImageUrl(item) {
       const imageUrl = String(item.imageUrl || '').trim();
       return imageUrl !== '';
+    }
+
+    function isVinylResult(item) {
+      const title = String(item.title || '').toLowerCase();
+      const hasVinylTerm = ['vinyl', 'lp', 'record', 'album'].some(function(term) {
+        return title.includes(term);
+      });
+      const hasBlockedTerm = ['toy', 'doll', 'poster', 'cd', 'dvd', 'cassette', 'book'].some(function(term) {
+        return title.includes(term);
+      });
+
+      return hasVinylTerm && !hasBlockedTerm;
+    }
+
+    function parsePriceValue(price) {
+      const match = String(price || '').match(/(\d+(?:\.\d+)?)/);
+      return match ? Number(match[1]) : null;
+    }
+
+    function formatEstimateRange(items) {
+      const prices = items.map(function(item) {
+        return parsePriceValue(item.price);
+      }).filter(function(value) {
+        return Number.isFinite(value);
+      });
+
+      if (prices.length === 0) {
+        return '';
+      }
+
+      const low = Math.min.apply(null, prices);
+      const high = Math.max.apply(null, prices);
+      return `$${Math.round(low)} &ndash; $${Math.round(high)}`;
     }
 
     function prepareApiItems(items) {
@@ -488,6 +526,99 @@
         return true;
       }).slice(0, 6);
     }
+
+    function prepareValueCheckerItems(items) {
+      return prepareApiItems(items).filter(isVinylResult).slice(0, 6);
+    }
+
+    function buildValueCheckerQuery(form) {
+      const formData = new FormData(form);
+      return [
+        formData.get('artist'),
+        formData.get('album'),
+        formData.get('pressing'),
+        formData.get('condition'),
+        'vinyl LP record album'
+      ].map(function(value) {
+        return String(value || '').trim();
+      }).filter(Boolean).join(' ');
+    }
+
+    function renderEstimateLoading(container) {
+      container.hidden = false;
+      container.innerHTML = '<p class="live-grid-message">Checking live eBay collector matches...</p>';
+    }
+
+    function renderNoEstimate(container) {
+      container.hidden = false;
+      container.innerHTML = `
+        <p class="market-kicker">Estimated Collector Range</p>
+        <strong>No reliable estimate found</strong>
+        <p>No live vinyl matches with usable images and prices were found for this search.</p>
+      `;
+    }
+
+    function renderValueEstimate(container, items) {
+      const estimateRange = formatEstimateRange(items);
+
+      if (!estimateRange) {
+        renderNoEstimate(container);
+        return;
+      }
+
+      container.hidden = false;
+      container.innerHTML = `
+        <p class="market-kicker">Estimated Collector Range</p>
+        <strong>${estimateRange}</strong>
+        <p>${items.length} live eBay matches found.</p>
+        <div class="value-results-grid">
+          ${items.map(renderValueResultCard).join('')}
+        </div>
+      `;
+    }
+
+    async function fetchValueEstimate(query) {
+      const response = await fetch(`/api/ebay?q=${encodeURIComponent(query)}`, {
+        headers: {
+          Accept: 'application/json'
+        }
+      });
+
+      if (!response.ok) {
+        throw new Error('Value checker request failed');
+      }
+
+      const data = await response.json();
+      return Array.isArray(data.items) ? prepareValueCheckerItems(data.items) : [];
+    }
+
+    document.getElementById('value-checker-form').addEventListener('submit', async function(event) {
+      event.preventDefault();
+
+      const estimateResult = document.getElementById('estimate-result');
+      const query = buildValueCheckerQuery(event.currentTarget);
+
+      if (!query.trim()) {
+        renderNoEstimate(estimateResult);
+        return;
+      }
+
+      renderEstimateLoading(estimateResult);
+
+      try {
+        const items = await fetchValueEstimate(query);
+
+        if (items.length === 0) {
+          renderNoEstimate(estimateResult);
+          return;
+        }
+
+        renderValueEstimate(estimateResult, items);
+      } catch (error) {
+        console.warn('LucyLP value checker unavailable.', error);
+        renderNoEstimate(estimateResult);
+      }
+    });
 
     function renderGridMessage(grid, message) {
       grid.innerHTML = `<p class="live-grid-message">${escapeHtml(message)}</p>`;
