@@ -629,25 +629,6 @@ footer{
   transition:transform 0.32s ease, border-color 0.32s ease, box-shadow 0.32s ease;
 }
 
-.story-card::before{
-  content:"LucyLP Music Press";
-  position:absolute;
-  top:18px;
-  left:18px;
-  right:18px;
-  z-index:2;
-  color:#f6e7b0;
-  font-family:var(--serif);
-  font-size:22px;
-  font-weight:800;
-  line-height:1;
-  padding-bottom:10px;
-  text-align:center;
-  text-shadow:0 3px 16px rgba(0,0,0,0.8), 0 0 16px rgba(212,175,55,0.3);
-  text-transform:uppercase;
-  border-bottom:1px solid rgba(246,231,176,0.46);
-}
-
 .story-card:hover{
   border-color:var(--gold);
   box-shadow:0 38px 98px rgba(0,0,0,0.58), 0 0 42px rgba(212,175,55,0.16), 0 0 38px rgba(111,23,23,0.2);
@@ -655,7 +636,7 @@ footer{
 }
 
 .story-image{
-  min-height:390px;
+  min-height:480px;
   border-bottom:3px double rgba(212,175,55,0.42);
   position:relative;
   overflow:hidden;
@@ -671,27 +652,107 @@ footer{
 .story-image::before{
   content:"";
   position:absolute;
-  inset:18px;
+  inset:16px;
   border:1px solid rgba(246,231,176,0.34);
-  box-shadow:inset 0 0 0 8px rgba(0,0,0,0.16);
-  z-index:1;
+  box-shadow:inset 0 0 0 8px rgba(0,0,0,0.18), 0 0 34px rgba(0,0,0,0.32);
+  z-index:2;
 }
 
 .story-image::after{
-  content:"Collector Issue";
+  content:"";
   position:absolute;
-  left:24px;
-  right:24px;
-  bottom:24px;
-  z-index:2;
-  color:var(--gold-soft);
-  font-family:var(--serif);
-  font-size:30px;
-  font-weight:900;
-  line-height:0.95;
-  max-width:260px;
+  inset:0;
+  z-index:1;
+  background:
+    radial-gradient(circle at 50% 28%, transparent 0 20%, rgba(0,0,0,0.26) 46%, rgba(0,0,0,0.82) 100%),
+    repeating-linear-gradient(0deg, rgba(255,255,255,0.055) 0 1px, transparent 1px 4px),
+    repeating-linear-gradient(90deg, rgba(0,0,0,0.08) 0 1px, transparent 1px 5px);
+  mix-blend-mode:screen;
+  opacity:0.54;
+  pointer-events:none;
+}
+
+.cover-masthead,
+.cover-issue,
+.cover-title,
+.cover-subtitle,
+.cover-line{
+  position:absolute;
+  z-index:3;
   text-transform:uppercase;
-  text-shadow:0 4px 16px rgba(0,0,0,0.86), 0 0 22px rgba(212,175,55,0.28);
+}
+
+.cover-masthead{
+  top:28px;
+  left:26px;
+  right:26px;
+  color:#f6e7b0;
+  font-family:var(--serif);
+  font-size:26px;
+  font-weight:900;
+  line-height:0.9;
+  padding-bottom:10px;
+  text-align:center;
+  text-shadow:0 4px 18px rgba(0,0,0,0.84), 0 0 20px rgba(212,175,55,0.28);
+  border-bottom:1px solid rgba(246,231,176,0.55);
+}
+
+.cover-issue{
+  top:80px;
+  right:28px;
+  background:rgba(7,7,7,0.76);
+  border:1px solid rgba(246,231,176,0.42);
+  color:var(--gold-soft);
+  font-size:10px;
+  font-weight:bold;
+  padding:7px 9px;
+}
+
+.cover-title{
+  left:26px;
+  right:24px;
+  bottom:106px;
+  color:#fff8d7;
+  font-family:var(--serif);
+  font-size:38px;
+  font-weight:900;
+  line-height:0.9;
+  text-shadow:0 5px 18px rgba(0,0,0,0.9), 0 0 28px rgba(212,175,55,0.34);
+}
+
+.cover-subtitle{
+  left:28px;
+  bottom:76px;
+  background:linear-gradient(135deg, #7a1717, #2b0707);
+  border:1px solid rgba(246,231,176,0.48);
+  color:#f6e7b0;
+  font-size:11px;
+  font-weight:bold;
+  padding:7px 10px;
+}
+
+.cover-line{
+  color:#f7e5b0;
+  font-size:10px;
+  font-weight:800;
+  line-height:1.25;
+  max-width:150px;
+  text-shadow:0 3px 14px rgba(0,0,0,0.86);
+}
+
+.cover-line-top{
+  top:122px;
+  left:28px;
+  border-left:3px solid #9a1d1d;
+  padding-left:9px;
+}
+
+.cover-line-bottom{
+  right:28px;
+  bottom:28px;
+  text-align:right;
+  border-right:3px solid var(--gold);
+  padding-right:9px;
 }
 
 .story-image-pink{
@@ -703,10 +764,6 @@ footer{
     linear-gradient(145deg, #221515, #060606 70%);
 }
 
-.story-image-pink::after{
-  content:"Pink Floyd Japan Pressings";
-}
-
 .story-image-beatles{
   background:
     linear-gradient(180deg, rgba(0,0,0,0.08), rgba(0,0,0,0.72)),
@@ -714,10 +771,6 @@ footer{
     radial-gradient(circle at 50% 18%, rgba(212,175,55,0.3), transparent 30%),
     repeating-linear-gradient(0deg, rgba(255,255,255,0.055) 0 1px, transparent 1px 6px),
     linear-gradient(145deg, #21110f, #050505);
-}
-
-.story-image-beatles::after{
-  content:"Beatles Touring History";
 }
 
 .story-image-zeppelin{
@@ -728,10 +781,6 @@ footer{
     radial-gradient(circle at 80% 20%, rgba(120,255,138,0.16), transparent 26%),
     repeating-linear-gradient(135deg, rgba(246,231,176,0.06) 0 1px, transparent 1px 8px),
     linear-gradient(145deg, #24110f, #050505);
-}
-
-.story-image-zeppelin::after{
-  content:"Led Zeppelin RL Mystery";
 }
 
 .story-content{
@@ -1518,7 +1567,7 @@ footer{
   }
 
   .story-image{
-    min-height:360px;
+    min-height:430px;
   }
 
   .category-card{
@@ -1657,20 +1706,42 @@ footer{
   }
 
   .story-image{
-    min-height:300px;
+    min-height:380px;
   }
 
-  .story-card::before{
-    font-size:17px;
+  .cover-masthead{
+    font-size:20px;
+    left:22px;
+    right:22px;
+    top:24px;
   }
 
-  .story-image::after{
-    font-size:24px;
+  .cover-issue{
+    top:72px;
+    right:22px;
+  }
+
+  .cover-title{
+    bottom:96px;
+    font-size:30px;
     max-width:220px;
   }
 
+  .cover-subtitle{
+    bottom:66px;
+  }
+
+  .cover-line{
+    font-size:9px;
+    max-width:128px;
+  }
+
+  .cover-line-top{
+    top:116px;
+  }
+
   .story-card h3{
-    font-size:26px;
+    font-size:24px;
   }
 
   .story-content,
