@@ -843,6 +843,17 @@ h1{
   text-align:left;
 }
 
+.value-related-title{
+  color:var(--gold-soft);
+  font-family:var(--serif);
+  font-size:22px;
+  margin:22px 0 0;
+}
+
+.value-related-grid{
+  margin-top:14px;
+}
+
 .collector-products{
   background:
     radial-gradient(circle at 10% 0%, rgba(212,175,55,0.06), transparent 26%),

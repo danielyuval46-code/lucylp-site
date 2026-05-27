@@ -87,12 +87,12 @@
         <div class="form-grid">
           <label>
             <span>Artist</span>
-            <input type="text" name="artist" placeholder="Pink Floyd">
+            <input type="text" name="artist" placeholder="Pink Floyd" required>
           </label>
 
           <label>
             <span>Album</span>
-            <input type="text" name="album" placeholder="The Dark Side of the Moon">
+            <input type="text" name="album" placeholder="The Dark Side of the Moon" required>
           </label>
 
           <label>
@@ -468,7 +468,7 @@
             <h3>${escapeHtml(item.title)}</h3>
             <p class="live-item-meta">${escapeHtml(item.condition || 'Condition unavailable')}</p>
             <p class="live-item-price">${escapeHtml(item.price || 'Price unavailable')}</p>
-            <a href="${escapeHtml(item.url)}" class="ebay-btn" target="_blank" rel="noopener sponsored">View Collector Find</a>
+            <a href="${escapeHtml(item.url)}" class="ebay-btn" target="_blank" rel="noopener sponsored">Discover This Find</a>
           </div>
         </article>
       `;
@@ -491,11 +491,12 @@
       return hasVinylTerm && !hasBlockedTerm;
     }
 
-    function getSearchKeyword(value) {
+    function getSearchKeywords(value) {
       const words = String(value || '').toLowerCase().match(/[a-z0-9]+/g) || [];
-      return words.find(function(word) {
-        return word.length >= 3;
-      }) || '';
+      const stopwords = ['the', 'and', 'for', 'with', 'from', 'you', 'your', 'here', 'there'];
+      return words.filter(function(word) {
+        return word.length >= 3 && !stopwords.includes(word);
+      });
     }
 
     function titleIncludesKeyword(item, keyword) {
@@ -504,6 +505,12 @@
       }
 
       return String(item.title || '').toLowerCase().includes(keyword);
+    }
+
+    function titleIncludesAnyKeyword(item, keywords) {
+      return keywords.some(function(keyword) {
+        return titleIncludesKeyword(item, keyword);
+      });
     }
 
     function parsePriceValue(price) {
@@ -544,15 +551,27 @@
       return Number.isFinite(limit) ? preparedItems.slice(0, limit) : preparedItems;
     }
 
-    function prepareValueCheckerItems(items, searchParts) {
-      const artistKeyword = getSearchKeyword(searchParts.artist);
-      const albumKeyword = getSearchKeyword(searchParts.album);
-
-      return prepareApiItems(items, Infinity).filter(function(item) {
-        return isVinylResult(item) &&
-          titleIncludesKeyword(item, artistKeyword) &&
-          titleIncludesKeyword(item, albumKeyword);
+    function getValueCheckerMatches(items, searchParts) {
+      const artistKeywords = getSearchKeywords(searchParts.artist);
+      const albumKeywords = getSearchKeywords(searchParts.album);
+      const vinylItems = prepareApiItems(items, Infinity).filter(isVinylResult);
+      const strongMatches = vinylItems.filter(function(item) {
+        return titleIncludesAnyKeyword(item, artistKeywords) ||
+          titleIncludesAnyKeyword(item, albumKeywords);
       }).slice(0, 6);
+      const strongTitles = new Set(strongMatches.map(function(item) {
+        return String(item.title || '').trim().toLowerCase();
+      }));
+      const relatedMatches = vinylItems.filter(function(item) {
+        return !strongTitles.has(String(item.title || '').trim().toLowerCase());
+      }).slice(0, 3);
+
+      return {
+        rawCount: Array.isArray(items) ? items.length : 0,
+        vinylItems,
+        strongMatches,
+        relatedMatches
+      };
     }
 
     function getValueCheckerSearchParts(form) {
@@ -579,12 +598,18 @@
       container.innerHTML = '<p class="live-grid-message">Checking live eBay collector matches...</p>';
     }
 
-    function renderNoEstimate(container) {
+    function renderNoEstimate(container, relatedMatches = []) {
       container.hidden = false;
       container.innerHTML = `
         <p class="market-kicker">Estimated Collector Range</p>
         <strong>No reliable estimate found</strong>
         <p>No reliable estimate found. Try adding country, pressing, or year.</p>
+        ${relatedMatches.length > 0 ? `
+          <p class="value-related-title">Related live matches</p>
+          <div class="value-results-grid value-related-grid">
+            ${relatedMatches.map(renderValueResultCard).join('')}
+          </div>
+        ` : ''}
       `;
     }
 
@@ -617,18 +642,44 @@
     }
 
     async function fetchValueEstimate(query, searchParts) {
+      console.log('LucyLP value checker API request', { query });
+
       const response = await fetch(`/api/ebay?q=${encodeURIComponent(query)}`, {
         headers: {
           Accept: 'application/json'
         }
       });
 
+      const data = await response.json().catch(function() {
+        return {};
+      });
+
       if (!response.ok) {
-        throw new Error('Value checker request failed');
+        console.log('LucyLP value checker API response', {
+          status: response.status,
+          ok: response.ok,
+          message: data.message || data.error || ''
+        });
+        throw new Error(data.message || 'Value checker request failed');
       }
 
-      const data = await response.json();
-      return Array.isArray(data.items) ? prepareValueCheckerItems(data.items, searchParts) : [];
+      const items = Array.isArray(data.items) ? data.items : [];
+      const matches = getValueCheckerMatches(items, searchParts);
+
+      console.log('LucyLP value checker API response', {
+        status: data.status,
+        itemCount: data.itemCount,
+        returnedItems: items.length,
+        firstTitle: data.firstTitle || ''
+      });
+      console.log('LucyLP value checker filtered results', {
+        rawCount: matches.rawCount,
+        vinylCount: matches.vinylItems.length,
+        strongCount: matches.strongMatches.length,
+        relatedCount: matches.relatedMatches.length
+      });
+
+      return matches;
     }
 
     document.getElementById('value-checker-form').addEventListener('submit', async function(event) {
@@ -637,26 +688,39 @@
       const estimateResult = document.getElementById('estimate-result');
       const searchParts = getValueCheckerSearchParts(event.currentTarget);
 
+      console.log('LucyLP value checker submit', searchParts);
+
       if (!searchParts.artist || !searchParts.album) {
         renderRequiredFieldsMessage(estimateResult);
         return;
       }
 
       const query = buildValueCheckerQuery(searchParts);
+      console.log('LucyLP value checker query', query);
       renderEstimateLoading(estimateResult);
 
       try {
-        const items = await fetchValueEstimate(query, searchParts);
+        const matches = await fetchValueEstimate(query, searchParts);
 
-        if (items.length < 2) {
-          renderNoEstimate(estimateResult);
+        if (matches.strongMatches.length < 2) {
+          renderNoEstimate(
+            estimateResult,
+            matches.strongMatches.concat(matches.relatedMatches).slice(0, 3)
+          );
           return;
         }
 
-        renderValueEstimate(estimateResult, items);
+        renderValueEstimate(estimateResult, matches.strongMatches);
       } catch (error) {
-        console.warn('LucyLP value checker unavailable.', error);
-        renderNoEstimate(estimateResult);
+        console.log('LucyLP value checker unavailable', {
+          message: error.message || 'Live eBay data is unavailable'
+        });
+        estimateResult.hidden = false;
+        estimateResult.innerHTML = `
+          <p class="market-kicker">Estimated Collector Range</p>
+          <strong>Value checker unavailable</strong>
+          <p>Live eBay data is unavailable right now. Please try again in a moment.</p>
+        `;
       }
     });
 
@@ -674,7 +738,7 @@
           }
         }).then(function(response) {
           if (!response.ok) {
-            throw new Error('eBay API request failed');
+            throw new Error(`eBay API request failed with ${response.status}`);
           }
 
           return response.json();
@@ -727,7 +791,10 @@
             rendered: 0,
             firstImageUrl: ''
           });
-          console.warn(`LucyLP live eBay feed unavailable for ${sectionKey}.`, error);
+          console.log('LucyLP live eBay feed unavailable', {
+            category,
+            message: error.message || 'Live eBay data is unavailable'
+          });
         }
       }));
     }
