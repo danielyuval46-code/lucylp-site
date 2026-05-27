@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 1260" role="img" aria-labelledby="title desc">
+  <title id="title">LucyLP Music Press Led Zeppelin RL Pressing Mystery Cover</title>
+  <desc id="desc">A vintage hard rock magazine cover with a live stage silhouette, lightning, gold-red print accents, and collector pressing mystery cover lines.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#230d0d"/>
+      <stop offset="0.5" stop-color="#050505"/>
+      <stop offset="1" stop-color="#151008"/>
+    </linearGradient>
+    <radialGradient id="light" cx="56%" cy="25%" r="67%">
+      <stop offset="0" stop-color="#f6e7b0" stop-opacity="0.68"/>
+      <stop offset="0.26" stop-color="#d4af37" stop-opacity="0.22"/>
+      <stop offset="1" stop-color="#000" stop-opacity="0.9"/>
+    </radialGradient>
+    <filter id="grain">
+      <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="4" seed="37"/>
+      <feColorMatrix type="saturate" values="0"/>
+      <feComponentTransfer><feFuncA type="table" tableValues="0 0.12"/></feComponentTransfer>
+    </filter>
+    <filter id="shadow"><feDropShadow dx="0" dy="12" stdDeviation="13" flood-color="#000" flood-opacity="0.78"/></filter>
+  </defs>
+  <rect width="900" height="1260" fill="url(#bg)"/>
+  <rect width="900" height="1260" fill="url(#light)"/>
+  <g filter="url(#shadow)">
+    <path d="M505 210 L406 504 L515 486 L365 935 L610 448 L488 468 Z" fill="#d4af37" opacity="0.72"/>
+    <path d="M528 218 L438 480 L546 462 L428 784" fill="none" stroke="#f6e7b0" stroke-width="8" opacity="0.46"/>
+    <circle cx="424" cy="494" r="96" fill="#7a1717" opacity="0.2"/>
+    <path d="M242 788 C320 672 424 692 486 788 L446 790 C420 748 350 750 318 790 Z" fill="#090909"/>
+    <circle cx="376" cy="654" r="54" fill="#0b0b0b" stroke="#d4af37" stroke-width="5"/>
+    <rect x="350" y="700" width="58" height="212" fill="#0a0a0a"/>
+    <path d="M560 804 C625 704 710 716 760 804 L720 806 C700 770 640 770 616 806 Z" fill="#090909"/>
+    <circle cx="666" cy="686" r="48" fill="#0b0b0b" stroke="#9b2020" stroke-width="5"/>
+    <rect x="642" y="728" width="52" height="188" fill="#0a0a0a"/>
+    <path d="M130 896 C310 832 596 836 780 896 L780 1008 L130 1008 Z" fill="#111" stroke="#d4af37" stroke-opacity="0.2"/>
+  </g>
+  <rect x="26" y="26" width="848" height="1208" fill="none" stroke="#f6e7b0" stroke-opacity="0.42" stroke-width="3"/>
+  <rect x="46" y="46" width="808" height="1168" fill="none" stroke="#d4af37" stroke-opacity="0.24" stroke-width="1"/>
+  <text x="450" y="116" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="72" font-weight="900" fill="#f6e7b0">LucyLP</text>
+  <text x="450" y="160" text-anchor="middle" font-family="Arial, sans-serif" font-size="30" font-weight="900" fill="#d4af37">MUSIC PRESS</text>
+  <line x1="72" y1="186" x2="828" y2="186" stroke="#f6e7b0" stroke-opacity="0.56" stroke-width="3"/>
+  <text x="72" y="232" font-family="Arial, sans-serif" font-size="24" font-weight="900" fill="#f6e7b0">ISSUE 03 / PRESSING MYSTERY</text>
+  <text x="828" y="232" text-anchor="end" font-family="Arial, sans-serif" font-size="24" font-weight="900" fill="#d4af37">HARD ROCK FILES</text>
+  <text x="70" y="350" font-family="Georgia, 'Times New Roman', serif" font-size="66" font-weight="900" fill="#fff6d7">LED</text>
+  <text x="70" y="435" font-family="Georgia, 'Times New Roman', serif" font-size="88" font-weight="900" fill="#fff6d7">ZEPPELIN</text>
+  <text x="70" y="522" font-family="Georgia, 'Times New Roman', serif" font-size="74" font-weight="900" fill="#d4af37">II</text>
+  <text x="70" y="600" font-family="Georgia, 'Times New Roman', serif" font-size="66" font-weight="900" fill="#fff6d7">THE RL</text>
+  <text x="70" y="672" font-family="Georgia, 'Times New Roman', serif" font-size="62" font-weight="900" fill="#fff6d7">MYSTERY</text>
+  <rect x="70" y="711" width="324" height="44" fill="#7a1717"/>
+  <text x="90" y="742" font-family="Arial, sans-serif" font-size="24" font-weight="900" fill="#f6e7b0">CLASSIC ROCK MAGAZINE</text>
+  <line x1="590" y1="508" x2="590" y2="706" stroke="#d4af37" stroke-width="7"/>
+  <text x="612" y="548" font-family="Arial, sans-serif" font-size="27" font-weight="900" fill="#f6e7b0">DEADWAX</text>
+  <text x="612" y="588" font-family="Arial, sans-serif" font-size="24" font-weight="900" fill="#d4af37">CLUES</text>
+  <text x="612" y="626" font-family="Arial, sans-serif" font-size="24" font-weight="900" fill="#d4af37">HOT CUT</text>
+  <text x="612" y="664" font-family="Arial, sans-serif" font-size="24" font-weight="900" fill="#d4af37">VALUE</text>
+  <text x="78" y="826" font-family="Arial, sans-serif" font-size="24" font-weight="900" fill="#f6e7b0">ONE TINY MARK. ONE LEGENDARY PRESSING.</text>
+  <text x="78" y="864" font-family="Arial, sans-serif" font-size="22" font-weight="900" fill="#d4af37">WHY COLLECTORS STILL HUNT THE RL</text>
+  <rect x="72" y="1056" width="756" height="82" fill="#080808" opacity="0.82" stroke="#d4af37" stroke-opacity="0.5"/>
+  <text x="450" y="1091" text-anchor="middle" font-family="Arial, sans-serif" font-size="24" font-weight="900" fill="#f6e7b0">HOT MASTERING / FIRST PRESSING LORE / COLLECTOR VALUE</text>
+  <text x="450" y="1124" text-anchor="middle" font-family="Arial, sans-serif" font-size="20" font-weight="900" fill="#9b2020">A LUCYLP PRESSING FILE</text>
+  <rect width="900" height="1260" filter="url(#grain)" opacity="0.62"/>
+</svg>
