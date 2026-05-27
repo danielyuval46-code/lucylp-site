@@ -7,7 +7,7 @@
 
   <title>LucyLP</title>
 
-  <link rel="stylesheet" href="style.css?v=collector-atmosphere">
+  <link rel="stylesheet" href="style.css?v=mvp-clean">
 </head>
 
 <body>
@@ -55,103 +55,114 @@
       limited drops, and global nostalgia worth watching.
     </p>
 
-    <aside class="now-spinning" aria-label="Now spinning">
-      <span>Now Spinning:</span>
-      <strong>Pink Floyd &mdash; Wish You Were Here</strong>
-    </aside>
-
     <a href="#pink-floyd-worldwide" class="btn">
       Explore Rare Finds
     </a>
 
   </section>
 
-  <section class="cards">
-
-    <div class="card">
-      <span class="lucy-note">Rare Pressing</span>
-      <h3>Legendary Pressings</h3>
-      <p>
-        Follow iconic records from Pink Floyd, The Beatles, and Led Zeppelin.
-      </p>
-    </div>
-
-    <div class="card">
-      <span class="lucy-note">Lucy Recommends</span>
-      <h3>New Release Radar</h3>
-      <p>
-        Discover colored vinyl, remasters, exclusives, and modern collector drops.
-      </p>
-    </div>
-
-    <div class="card">
-      <span class="lucy-note">Collector Archive</span>
-      <h3>Vintage Poster Finds</h3>
-      <p>
-        Explore concert posters, tour prints, and classic rock nostalgia.
-      </p>
-    </div>
-
-  </section>
-
-  <aside class="collector-quote">
-    <p>&ldquo;Every pressing tells a different story.&rdquo;</p>
-  </aside>
-
-  <section class="category-showcase" aria-labelledby="category-title">
-    <div class="category-inner">
-      <div class="category-heading">
-        <p class="market-kicker">Collector Categories</p>
-        <h2 id="category-title">Explore Rare Vinyl Worlds</h2>
+  <section class="value-checker" aria-labelledby="value-checker-title">
+    <div class="value-checker-inner">
+      <div class="value-checker-copy">
+        <div class="tool-presenter">
+          <img src="logo3.gif" class="tool-mascot" alt="Lucy Viking mascot presenting the LucyLP Collector Tool">
+          <div>
+            <p class="tool-presenter-label">Presented by Lucy</p>
+            <h2 id="value-checker-title">Free Collector Tool</h2>
+          </div>
+        </div>
+        <p class="collector-tool-name">LucyLP Collector Tool</p>
+        <p>
+          Start with vinyl value checking. More collector formats are coming soon.
+        </p>
+        <div class="tool-badges" aria-label="Collector formats">
+          <span>Vinyl</span>
+          <span>Cassettes coming soon</span>
+          <span>CDs coming soon</span>
+          <span>Posters coming soon</span>
+        </div>
       </div>
 
-      <div class="category-grid">
-        <section class="category-card" aria-labelledby="pink-floyd-title">
-          <span class="category-number">01</span>
-          <div>
-            <h3 id="pink-floyd-title">Pink Floyd Around The World</h3>
-            <p>Japan &bull; UK &bull; Germany &bull; Israel pressings</p>
-          </div>
-        </section>
+      <form class="value-form" id="value-checker-form">
+        <div class="form-grid">
+          <label>
+            <span>Artist</span>
+            <input type="text" name="artist" placeholder="Pink Floyd">
+          </label>
 
-        <section class="category-card" aria-labelledby="beatles-worldwide-title">
-          <span class="category-number">02</span>
-          <div>
-            <h3 id="beatles-worldwide-title">Beatles Worldwide Pressings</h3>
-            <p>Mono &bull; Stereo &bull; Japan &bull; UK &bull; Germany</p>
-          </div>
-        </section>
+          <label>
+            <span>Album</span>
+            <input type="text" name="album" placeholder="The Dark Side of the Moon">
+          </label>
 
-        <section class="category-card" aria-labelledby="led-zeppelin-title">
-          <span class="category-number">03</span>
-          <div>
-            <h3 id="led-zeppelin-title">Led Zeppelin Collector Editions</h3>
-            <p>First pressings &bull; Remasters &bull; Japan editions</p>
-          </div>
-        </section>
+          <label>
+            <span>Country / pressing</span>
+            <input type="text" name="pressing" placeholder="UK first press, remaster">
+          </label>
 
-        <section class="category-card" aria-labelledby="new-releases-title">
-          <span class="category-number">04</span>
-          <div>
-            <h3 id="new-releases-title">New Vinyl Releases</h3>
-            <p>Colored vinyl &bull; Exclusive drops &bull; Modern releases</p>
-          </div>
-        </section>
+          <label>
+            <span>Condition</span>
+            <select name="condition">
+              <option>Mint</option>
+              <option>Near Mint</option>
+              <option>Very Good Plus</option>
+              <option>Very Good</option>
+              <option>Good</option>
+            </select>
+          </label>
+        </div>
 
-        <section class="category-card" aria-labelledby="vintage-posters-title">
-          <span class="category-number">05</span>
-          <div>
-            <h3 id="vintage-posters-title">Vintage Posters</h3>
-            <p>Concert posters &bull; Tour prints &bull; Rock history</p>
-          </div>
-        </section>
-      </div>
+        <button type="submit" class="estimate-btn">Estimate Value</button>
+      </form>
+
+      <article class="estimate-result" id="estimate-result" aria-live="polite" hidden>
+        <p class="market-kicker">Estimated Collector Range:</p>
+        <strong>$25 &ndash; $120</strong>
+        <p>
+          This is a preview estimate. Full market data and real-time eBay/Discogs
+          analysis are coming soon.
+        </p>
+        <a href="#pink-floyd-worldwide" class="ebay-btn">Discover Rare Finds</a>
+      </article>
     </div>
   </section>
 
-  <aside class="collector-quote collector-quote-alt">
-    <p>&ldquo;Collectors don&rsquo;t just buy records. They preserve moments.&rdquo;</p>
-  </aside>
+  <section class="collector-mini-hub" aria-labelledby="collector-hub-title">
+    <div class="collector-hub-inner">
+      <div class="collector-hub-heading">
+        <p class="market-kicker">LucyLP Utilities</p>
+        <h2 id="collector-hub-title">Collector Hub</h2>
+        <p>Tools, stories, and collector utilities.</p>
+      </div>
+
+      <div class="collector-hub-grid">
+        <a href="#value-checker-title" class="hub-card">
+          <span class="hub-label">Collector Tool</span>
+          <strong>Quick Value Check</strong>
+        </a>
+
+        <a href="#app-title" class="hub-card">
+          <span class="hub-label">Audio Culture</span>
+          <strong>Stylus &amp; Audio Guides</strong>
+        </a>
+
+        <a href="#collector-world-title" class="hub-card">
+          <span class="hub-label">Coming Soon</span>
+          <strong>Collector World Map</strong>
+        </a>
+
+        <a href="#stories-title" class="hub-card">
+          <span class="hub-label">Editorial</span>
+          <strong>Latest Collector Story</strong>
+        </a>
+
+        <a href="#pink-floyd-worldwide" class="hub-card">
+          <span class="hub-label">Curated Pick</span>
+          <strong>Featured Pressing Of The Week</strong>
+        </a>
+      </div>
+    </div>
+  </section>
 
   <section class="collector-stories" aria-labelledby="stories-title">
     <div class="stories-inner">
@@ -260,102 +271,6 @@
     </div>
   </section>
 
-  <section class="value-checker" aria-labelledby="value-checker-title">
-    <div class="value-checker-inner">
-      <div class="value-checker-copy">
-        <div class="tool-presenter">
-          <img src="logo3.gif" class="tool-mascot" alt="Lucy Viking mascot presenting the LucyLP Collector Tool">
-          <div>
-            <p class="tool-presenter-label">Presented by Lucy</p>
-            <h2 id="value-checker-title">Free Collector Tool</h2>
-          </div>
-        </div>
-        <p class="collector-tool-name">LucyLP Collector Tool</p>
-        <p>
-          Start with vinyl value checking. More collector formats are coming soon.
-        </p>
-        <div class="tool-badges" aria-label="Collector formats">
-          <span>Vinyl</span>
-          <span>Cassettes coming soon</span>
-          <span>CDs coming soon</span>
-          <span>Posters coming soon</span>
-        </div>
-      </div>
-
-      <form class="value-form" id="value-checker-form">
-        <div class="form-grid">
-          <label>
-            <span>Artist</span>
-            <input type="text" name="artist" placeholder="Pink Floyd">
-          </label>
-
-          <label>
-            <span>Album</span>
-            <input type="text" name="album" placeholder="The Dark Side of the Moon">
-          </label>
-
-          <label>
-            <span>Country / pressing</span>
-            <input type="text" name="pressing" placeholder="UK first press, remaster">
-          </label>
-
-          <label>
-            <span>Condition</span>
-            <select name="condition">
-              <option>Mint</option>
-              <option>Near Mint</option>
-              <option>Very Good Plus</option>
-              <option>Very Good</option>
-              <option>Good</option>
-            </select>
-          </label>
-        </div>
-
-        <button type="submit" class="estimate-btn">Estimate Value</button>
-      </form>
-
-      <article class="estimate-result" id="estimate-result" aria-live="polite" hidden>
-        <p class="market-kicker">Estimated Collector Range:</p>
-        <strong>$25 &ndash; $120</strong>
-        <p>
-          This is a preview estimate. Full market data and real-time eBay/Discogs
-          analysis are coming soon.
-        </p>
-        <a href="#pink-floyd-worldwide" class="ebay-btn">Discover Rare Finds</a>
-      </article>
-    </div>
-  </section>
-
-  <section class="collector-pick-week" aria-labelledby="collector-pick-week-title">
-    <div class="collector-pick-inner">
-      <article class="collector-pick-card">
-        <div class="collector-pick-media">
-          <img
-            src="collector-pick-pink-floyd-obi.svg"
-            class="collector-pick-image"
-            alt="Dramatic vinyl collector artwork for a Pink Floyd Japanese OBI pressing"
-          >
-        </div>
-
-        <div class="collector-pick-copy">
-          <span class="lucy-note lucy-note-inline">Lucy Recommends</span>
-          <p class="market-kicker">LucyLP Featured Collector Pick</p>
-          <h2 id="collector-pick-week-title">Collector Pick Of The Week</h2>
-          <h3>Pink Floyd Japanese OBI Pressing</h3>
-          <p>
-            Rare Japanese pressing with original OBI strip and warm analog mastering
-            highly desired by collectors worldwide.
-          </p>
-          <a href="#pink-floyd-worldwide" class="featured-btn">View Collector Find</a>
-        </div>
-      </article>
-    </div>
-  </section>
-
-  <aside class="collector-quote">
-    <p>&ldquo;A shelf is never just storage. It is a personal archive.&rdquo;</p>
-  </aside>
-
   <section id="pink-floyd-worldwide" class="collector-products" aria-labelledby="pink-floyd-products-title">
     <div class="market-inner">
       <div class="market-header">
@@ -439,43 +354,6 @@
       </div>
 
       <div id="posters-grid" class="poster-grid" data-ebay-section="posters">
-      </div>
-    </div>
-  </section>
-
-  <section class="collector-mini-hub" aria-labelledby="collector-hub-title">
-    <div class="collector-hub-inner">
-      <div class="collector-hub-heading">
-        <p class="market-kicker">LucyLP Utilities</p>
-        <h2 id="collector-hub-title">Collector Hub</h2>
-        <p>Tools, stories, and collector utilities.</p>
-      </div>
-
-      <div class="collector-hub-grid">
-        <a href="#value-checker-title" class="hub-card">
-          <span class="hub-label">Collector Tool</span>
-          <strong>Quick Value Check</strong>
-        </a>
-
-        <a href="#app-title" class="hub-card">
-          <span class="hub-label">Audio Culture</span>
-          <strong>Stylus &amp; Audio Guides</strong>
-        </a>
-
-        <a href="#collector-world-title" class="hub-card">
-          <span class="hub-label">Coming Soon</span>
-          <strong>Collector World Map</strong>
-        </a>
-
-        <a href="#stories-title" class="hub-card">
-          <span class="hub-label">Editorial</span>
-          <strong>Latest Collector Story</strong>
-        </a>
-
-        <a href="#collector-pick-week-title" class="hub-card">
-          <span class="hub-label">Curated Pick</span>
-          <strong>Featured Pressing Of The Week</strong>
-        </a>
       </div>
     </div>
   </section>
