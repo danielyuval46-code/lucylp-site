@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 850" role="img" aria-labelledby="title desc">
+  <title id="title">Pink Floyd Japanese OBI Pressing Collector Artwork</title>
+  <desc id="desc">A cinematic black and gold vinyl collector artwork with a Japanese OBI strip, prism light, and premium editorial lighting.</desc>
+  <defs>
+    <radialGradient id="stageGlow" cx="28%" cy="18%" r="72%">
+      <stop offset="0" stop-color="#f6e7b0" stop-opacity="0.5"/>
+      <stop offset="0.24" stop-color="#d4af37" stop-opacity="0.18"/>
+      <stop offset="0.62" stop-color="#180909" stop-opacity="0.6"/>
+      <stop offset="1" stop-color="#020202"/>
+    </radialGradient>
+    <radialGradient id="record" cx="50%" cy="50%" r="50%">
+      <stop offset="0" stop-color="#202020"/>
+      <stop offset="0.11" stop-color="#0a0a0a"/>
+      <stop offset="0.22" stop-color="#1b1b1b"/>
+      <stop offset="0.38" stop-color="#050505"/>
+      <stop offset="0.55" stop-color="#151515"/>
+      <stop offset="0.72" stop-color="#050505"/>
+      <stop offset="1" stop-color="#151515"/>
+    </radialGradient>
+    <linearGradient id="obi" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#f6e7b0"/>
+      <stop offset="0.35" stop-color="#d4af37"/>
+      <stop offset="1" stop-color="#7a1717"/>
+    </linearGradient>
+    <linearGradient id="sleeve" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#241010"/>
+      <stop offset="0.5" stop-color="#070707"/>
+      <stop offset="1" stop-color="#151008"/>
+    </linearGradient>
+    <filter id="shadow" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="26" stdDeviation="24" flood-color="#000" flood-opacity="0.76"/>
+    </filter>
+    <filter id="grain">
+      <feTurbulence type="fractalNoise" baseFrequency="0.78" numOctaves="4" seed="61"/>
+      <feColorMatrix type="saturate" values="0"/>
+      <feComponentTransfer>
+        <feFuncA type="table" tableValues="0 0.11"/>
+      </feComponentTransfer>
+    </filter>
+  </defs>
+
+  <rect width="1200" height="850" fill="#050505"/>
+  <rect width="1200" height="850" fill="url(#stageGlow)"/>
+  <path d="M0 685 C240 590 385 760 610 672 C830 586 1002 624 1200 538 L1200 850 L0 850 Z" fill="#030303" opacity="0.78"/>
+  <path d="M0 712 C230 628 406 784 634 706 C826 640 1012 658 1200 598" fill="none" stroke="#d4af37" stroke-opacity="0.16" stroke-width="10"/>
+
+  <g filter="url(#shadow)">
+    <g transform="translate(170 124) rotate(-7 316 316)">
+      <rect x="0" y="0" width="632" height="632" rx="18" fill="url(#sleeve)" stroke="#d4af37" stroke-opacity="0.34" stroke-width="4"/>
+      <rect x="28" y="28" width="576" height="576" rx="8" fill="none" stroke="#f6e7b0" stroke-opacity="0.22" stroke-width="2"/>
+      <path d="M116 336 L316 210 L516 336 L316 462 Z" fill="#0a0a0a" stroke="#f6e7b0" stroke-width="7"/>
+      <path d="M0 336 L116 336" stroke="#f6e7b0" stroke-width="8"/>
+      <path d="M516 336 L632 286" stroke="#7a1717" stroke-width="8"/>
+      <path d="M516 336 L632 336" stroke="#d4af37" stroke-width="8"/>
+      <path d="M516 336 L632 392" stroke="#78ff8a" stroke-width="8" opacity="0.7"/>
+      <circle cx="316" cy="336" r="48" fill="#f6e7b0" opacity="0.15"/>
+      <rect x="512" y="0" width="82" height="632" fill="url(#obi)" opacity="0.96"/>
+      <text x="552" y="78" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="32" font-weight="900" fill="#120707" transform="rotate(90 552 78)">JAPAN OBI</text>
+      <text x="552" y="266" text-anchor="middle" font-family="Arial, sans-serif" font-size="22" font-weight="900" fill="#120707" transform="rotate(90 552 266)">ANALOG MASTERING</text>
+      <text x="552" y="506" text-anchor="middle" font-family="Arial, sans-serif" font-size="20" font-weight="900" fill="#120707" transform="rotate(90 552 506)">LUCYLP ARCHIVE</text>
+    </g>
+
+    <g transform="translate(604 152)">
+      <circle cx="250" cy="250" r="248" fill="url(#record)" stroke="#d4af37" stroke-opacity="0.2" stroke-width="5"/>
+      <circle cx="250" cy="250" r="206" fill="none" stroke="#f6e7b0" stroke-opacity="0.12" stroke-width="3"/>
+      <circle cx="250" cy="250" r="166" fill="none" stroke="#f6e7b0" stroke-opacity="0.1" stroke-width="2"/>
+      <circle cx="250" cy="250" r="116" fill="none" stroke="#f6e7b0" stroke-opacity="0.09" stroke-width="2"/>
+      <circle cx="250" cy="250" r="72" fill="#7a1717" stroke="#d4af37" stroke-width="5"/>
+      <circle cx="250" cy="250" r="16" fill="#050505"/>
+      <path d="M60 138 C176 64 350 86 444 196" fill="none" stroke="#f6e7b0" stroke-opacity="0.16" stroke-width="12"/>
+    </g>
+  </g>
+
+  <g>
+    <rect x="762" y="84" width="290" height="54" fill="#080808" opacity="0.86" stroke="#d4af37" stroke-opacity="0.5"/>
+    <text x="907" y="120" text-anchor="middle" font-family="Arial, sans-serif" font-size="24" font-weight="900" fill="#f6e7b0">COLLECTOR PICK OF THE WEEK</text>
+    <text x="80" y="745" font-family="Georgia, 'Times New Roman', serif" font-size="66" font-weight="900" fill="#fff6d7">Pink Floyd</text>
+    <text x="80" y="805" font-family="Georgia, 'Times New Roman', serif" font-size="46" font-weight="900" fill="#d4af37">Japanese OBI Pressing</text>
+    <text x="760" y="706" font-family="Arial, sans-serif" font-size="24" font-weight="900" fill="#f6e7b0">WARM ANALOG MASTERING</text>
+    <text x="760" y="742" font-family="Arial, sans-serif" font-size="22" font-weight="900" fill="#d4af37">ORIGINAL OBI STRIP</text>
+    <text x="760" y="778" font-family="Arial, sans-serif" font-size="22" font-weight="900" fill="#d4af37">WORLDWIDE COLLECTOR DEMAND</text>
+  </g>
+
+  <rect x="22" y="22" width="1156" height="806" fill="none" stroke="#f6e7b0" stroke-opacity="0.18" stroke-width="2"/>
+  <rect width="1200" height="850" filter="url(#grain)" opacity="0.74"/>
+</svg>

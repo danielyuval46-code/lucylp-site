@@ -7,7 +7,7 @@
 
   <title>LucyLP</title>
 
-  <link rel="stylesheet" href="style.css?v=real-magazine-covers">
+  <link rel="stylesheet" href="style.css?v=collector-pick-week">
 </head>
 
 <body>
@@ -84,24 +84,6 @@
       </p>
     </div>
 
-  </section>
-
-  <section class="featured-collector" aria-labelledby="featured-title">
-    <div class="market-inner">
-      <div class="market-header">
-        <div>
-          <p class="market-kicker">Featured Collector Pick</p>
-          <h2 id="featured-title">LucyLP Featured Collector Pick</h2>
-        </div>
-        <p class="market-copy">
-          Hand-picked collector finds and rare worldwide pressings.
-        </p>
-      </div>
-
-      <div id="featured-pick" class="featured-pick" aria-live="polite">
-        <p class="live-grid-message">Loading collector finds...</p>
-      </div>
-    </div>
   </section>
 
   <section class="category-showcase" aria-labelledby="category-title">
@@ -264,6 +246,31 @@
           analysis are coming soon.
         </p>
         <a href="#pink-floyd-worldwide" class="ebay-btn">Discover Rare Finds</a>
+      </article>
+    </div>
+  </section>
+
+  <section class="collector-pick-week" aria-labelledby="collector-pick-week-title">
+    <div class="collector-pick-inner">
+      <article class="collector-pick-card">
+        <div class="collector-pick-media">
+          <img
+            src="collector-pick-pink-floyd-obi.svg"
+            class="collector-pick-image"
+            alt="Dramatic vinyl collector artwork for a Pink Floyd Japanese OBI pressing"
+          >
+        </div>
+
+        <div class="collector-pick-copy">
+          <p class="market-kicker">LucyLP Featured Collector Pick</p>
+          <h2 id="collector-pick-week-title">Collector Pick Of The Week</h2>
+          <h3>Pink Floyd Japanese OBI Pressing</h3>
+          <p>
+            Rare Japanese pressing with original OBI strip and warm analog mastering
+            highly desired by collectors worldwide.
+          </p>
+          <a href="#pink-floyd-worldwide" class="featured-btn">View Collector Find</a>
+        </div>
       </article>
     </div>
   </section>
@@ -437,22 +444,6 @@
       `;
     }
 
-    function renderFeaturedCard(item) {
-      return `
-        <article class="featured-product">
-          <img src="${escapeHtml(item.imageUrl)}" class="featured-image" alt="${escapeHtml(item.title)}">
-          <div class="featured-content">
-            <p class="market-kicker">LucyLP Featured Collector Pick</p>
-            <h3>${escapeHtml(item.title)}</h3>
-            <p>Hand-picked collector finds and rare worldwide pressings.</p>
-            <p class="live-item-meta">${escapeHtml(item.condition || 'Condition unavailable')}</p>
-            <p class="live-item-price">${escapeHtml(item.price || 'Price unavailable')}</p>
-            <a href="${escapeHtml(item.url)}" class="featured-btn" target="_blank" rel="noopener sponsored">Discover This Find</a>
-          </div>
-        </article>
-      `;
-    }
-
     function hasRealImageUrl(item) {
       const imageUrl = String(item.imageUrl || '').trim();
       return imageUrl !== '';
@@ -497,24 +488,6 @@
       }
 
       return categoryRequests[category];
-    }
-
-    async function loadFeaturedPick() {
-      const featuredPick = document.getElementById('featured-pick');
-
-      try {
-        const items = await fetchCategoryItems('pinkfloyd');
-
-        if (items.length === 0) {
-          renderGridMessage(featuredPick, 'No curated finds available right now.');
-          return;
-        }
-
-        featuredPick.innerHTML = renderFeaturedCard(items[0]);
-      } catch (error) {
-        renderGridMessage(featuredPick, 'No curated finds available right now.');
-        console.warn('LucyLP featured collector pick unavailable.', error);
-      }
     }
 
     async function loadLiveEbayFinds() {
@@ -563,7 +536,6 @@
       }));
     }
 
-    loadFeaturedPick();
     loadLiveEbayFinds();
   </script>
 </body>
