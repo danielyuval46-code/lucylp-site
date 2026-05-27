@@ -287,7 +287,7 @@ function buildDiagnosticPayload(response, data) {
     itemCount: itemSummaries.length,
     firstTitle: firstItem.title || '',
     firstImageUrl,
-    items: itemSummaries.slice(0, getSectionLimit('diagnostic')).map(normalizeItem)
+    items: itemSummaries.slice(0, SEARCH_LIMIT).map(normalizeItem)
   };
 }
 

@@ -491,6 +491,21 @@
       return hasVinylTerm && !hasBlockedTerm;
     }
 
+    function getSearchKeyword(value) {
+      const words = String(value || '').toLowerCase().match(/[a-z0-9]+/g) || [];
+      return words.find(function(word) {
+        return word.length >= 3;
+      }) || '';
+    }
+
+    function titleIncludesKeyword(item, keyword) {
+      if (!keyword) {
+        return false;
+      }
+
+      return String(item.title || '').toLowerCase().includes(keyword);
+    }
+
     function parsePriceValue(price) {
       const match = String(price || '').match(/(\d+(?:\.\d+)?)/);
       return match ? Number(match[1]) : null;
@@ -512,10 +527,10 @@
       return `$${Math.round(low)} &ndash; $${Math.round(high)}`;
     }
 
-    function prepareApiItems(items) {
+    function prepareApiItems(items, limit = 6) {
       const seenTitles = new Set();
 
-      return items.filter(hasRealImageUrl).filter(function(item) {
+      const preparedItems = items.filter(hasRealImageUrl).filter(function(item) {
         const titleKey = String(item.title || '').trim().toLowerCase();
 
         if (!titleKey || seenTitles.has(titleKey)) {
@@ -524,21 +539,36 @@
 
         seenTitles.add(titleKey);
         return true;
+      });
+
+      return Number.isFinite(limit) ? preparedItems.slice(0, limit) : preparedItems;
+    }
+
+    function prepareValueCheckerItems(items, searchParts) {
+      const artistKeyword = getSearchKeyword(searchParts.artist);
+      const albumKeyword = getSearchKeyword(searchParts.album);
+
+      return prepareApiItems(items, Infinity).filter(function(item) {
+        return isVinylResult(item) &&
+          titleIncludesKeyword(item, artistKeyword) &&
+          titleIncludesKeyword(item, albumKeyword);
       }).slice(0, 6);
     }
 
-    function prepareValueCheckerItems(items) {
-      return prepareApiItems(items).filter(isVinylResult).slice(0, 6);
+    function getValueCheckerSearchParts(form) {
+      const formData = new FormData(form);
+
+      return {
+        artist: String(formData.get('artist') || '').trim(),
+        album: String(formData.get('album') || '').trim()
+      };
     }
 
-    function buildValueCheckerQuery(form) {
-      const formData = new FormData(form);
+    function buildValueCheckerQuery(searchParts) {
       return [
-        formData.get('artist'),
-        formData.get('album'),
-        formData.get('pressing'),
-        formData.get('condition'),
-        'vinyl LP record album'
+        searchParts.artist,
+        searchParts.album,
+        'vinyl LP record'
       ].map(function(value) {
         return String(value || '').trim();
       }).filter(Boolean).join(' ');
@@ -554,7 +584,16 @@
       container.innerHTML = `
         <p class="market-kicker">Estimated Collector Range</p>
         <strong>No reliable estimate found</strong>
-        <p>No live vinyl matches with usable images and prices were found for this search.</p>
+        <p>No reliable estimate found. Try adding country, pressing, or year.</p>
+      `;
+    }
+
+    function renderRequiredFieldsMessage(container) {
+      container.hidden = false;
+      container.innerHTML = `
+        <p class="market-kicker">Estimated Collector Range</p>
+        <strong>Artist and album required</strong>
+        <p>Enter both artist and album to run a reliable collector estimate.</p>
       `;
     }
 
@@ -577,7 +616,7 @@
       `;
     }
 
-    async function fetchValueEstimate(query) {
+    async function fetchValueEstimate(query, searchParts) {
       const response = await fetch(`/api/ebay?q=${encodeURIComponent(query)}`, {
         headers: {
           Accept: 'application/json'
@@ -589,26 +628,27 @@
       }
 
       const data = await response.json();
-      return Array.isArray(data.items) ? prepareValueCheckerItems(data.items) : [];
+      return Array.isArray(data.items) ? prepareValueCheckerItems(data.items, searchParts) : [];
     }
 
     document.getElementById('value-checker-form').addEventListener('submit', async function(event) {
       event.preventDefault();
 
       const estimateResult = document.getElementById('estimate-result');
-      const query = buildValueCheckerQuery(event.currentTarget);
+      const searchParts = getValueCheckerSearchParts(event.currentTarget);
 
-      if (!query.trim()) {
-        renderNoEstimate(estimateResult);
+      if (!searchParts.artist || !searchParts.album) {
+        renderRequiredFieldsMessage(estimateResult);
         return;
       }
 
+      const query = buildValueCheckerQuery(searchParts);
       renderEstimateLoading(estimateResult);
 
       try {
-        const items = await fetchValueEstimate(query);
+        const items = await fetchValueEstimate(query, searchParts);
 
-        if (items.length === 0) {
+        if (items.length < 2) {
           renderNoEstimate(estimateResult);
           return;
         }
