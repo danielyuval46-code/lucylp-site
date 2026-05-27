@@ -24,27 +24,30 @@ const SECTION_QUERIES = {
   pinkfloyd: 'Pink Floyd vinyl LP Japan UK Germany Israel pressing',
   beatles: 'Beatles vinyl LP mono stereo Japan UK Germany',
   ledzeppelin: 'Led Zeppelin vinyl LP first pressing remaster Japan',
-  newreleases: 'new vinyl release colored vinyl LP exclusive',
+  stylus: 'turntable stylus needle cartridge vinyl record player',
   posters: 'vintage concert poster Pink Floyd Beatles Led Zeppelin'
 };
 
 const SECTION_LIMIT = 6;
+const SECTION_LIMITS = {
+  stylus: 8
+};
 const SEARCH_LIMIT = 30;
 const FALLBACK_THRESHOLD = 3;
 const RELAXED_THRESHOLD = 4;
-const DEFAULT_QUERY = SECTION_QUERIES.newreleases;
+const DEFAULT_QUERY = SECTION_QUERIES.stylus;
 const FALLBACK_QUERIES = {
   pinkfloyd: 'Pink Floyd vinyl LP',
   beatles: 'Beatles vinyl LP',
   ledzeppelin: 'Led Zeppelin vinyl LP',
-  newreleases: 'new vinyl release',
+  stylus: 'turntable stylus needle',
   posters: 'vintage concert poster'
 };
 const CATEGORY_TO_SECTION = {
   pinkfloyd: 'pinkfloyd',
   beatles: 'beatles',
   ledzeppelin: 'ledzeppelin',
-  newreleases: 'newreleases',
+  stylus: 'stylus',
   posters: 'posters'
 };
 const VINYL_INCLUDE_GROUPS = [
@@ -64,6 +67,15 @@ const POSTER_EXCLUDE_TERMS = [
   'doll',
   'funko',
   'plush'
+];
+const STYLUS_EXCLUDE_TERMS = [
+  'toy',
+  'doll',
+  'poster',
+  'cd',
+  'dvd',
+  'cassette',
+  'book'
 ];
 const SECTION_FILTERS = {
   pinkfloyd: {
@@ -87,12 +99,11 @@ const SECTION_FILTERS = {
     ],
     exclude: GLOBAL_EXCLUDE_TERMS
   },
-  newreleases: {
+  stylus: {
     includeGroups: [
-      ...VINYL_INCLUDE_GROUPS,
-      ['new', 'release', 'colored', 'remaster', 'anniversary', 'exclusive']
+      ['stylus', 'needle', 'cartridge']
     ],
-    exclude: GLOBAL_EXCLUDE_TERMS
+    exclude: STYLUS_EXCLUDE_TERMS
   },
   posters: {
     includeGroups: [
@@ -102,14 +113,12 @@ const SECTION_FILTERS = {
   }
 };
 const RELAXED_SECTION_FILTERS = {
-  ...SECTION_FILTERS,
-  newreleases: {
-    includeGroups: [
-      ...VINYL_INCLUDE_GROUPS
-    ],
-    exclude: GLOBAL_EXCLUDE_TERMS
-  }
+  ...SECTION_FILTERS
 };
+
+function getSectionLimit(sectionKey) {
+  return SECTION_LIMITS[sectionKey] || SECTION_LIMIT;
+}
 
 function jsonResponse(body, init = {}) {
   const { cacheControl = 'public, max-age=900', headers = {}, status = 200 } = init;
@@ -227,6 +236,11 @@ function isVinylQuery(query) {
   return ['vinyl', 'lp', 'record', 'album'].some((term) => normalizedQuery.includes(term));
 }
 
+function isStylusQuery(query) {
+  const normalizedQuery = String(query || '').toLowerCase();
+  return ['stylus', 'needle', 'cartridge'].some((term) => normalizedQuery.includes(term));
+}
+
 function filterItemsForSection(items, sectionKey, filters = SECTION_FILTERS) {
   const filter = filters[sectionKey];
 
@@ -255,7 +269,7 @@ function buildDiagnosticPayload(response, data) {
     itemCount: itemSummaries.length,
     firstTitle: firstItem.title || '',
     firstImageUrl,
-    items: itemSummaries.slice(0, SECTION_LIMIT).map(normalizeItem)
+    items: itemSummaries.slice(0, getSectionLimit('diagnostic')).map(normalizeItem)
   };
 }
 
@@ -340,7 +354,7 @@ async function searchItems(accessToken, query, sectionKey) {
   const { itemSummaries } = await fetchBrowseSummaries(accessToken, query);
 
   return filterItemsForSection(itemSummaries, sectionKey)
-    .slice(0, SECTION_LIMIT)
+    .slice(0, getSectionLimit(sectionKey))
     .map(normalizeItem);
 }
 
@@ -368,7 +382,7 @@ async function searchCategory(accessToken, sectionKey) {
     }
   }
 
-  const items = filteredItems.slice(0, SECTION_LIMIT).map(normalizeItem);
+  const items = filteredItems.slice(0, getSectionLimit(sectionKey)).map(normalizeItem);
 
   return buildCategoryPayload(primary.response, sectionKey, items, {
     categoryQueryUsed: queryUsed,
@@ -395,9 +409,13 @@ async function searchBrowseApi(accessToken, query) {
     throw new Error(`eBay Browse search failed with ${response.status}: ${JSON.stringify(data)}`);
   }
 
-  const itemSummaries = isVinylQuery(query)
-    ? filterItemsForSection(data.itemSummaries || [], 'newreleases')
-    : data.itemSummaries || [];
+  let itemSummaries = data.itemSummaries || [];
+
+  if (isStylusQuery(query)) {
+    itemSummaries = filterItemsForSection(itemSummaries, 'stylus');
+  } else if (isVinylQuery(query)) {
+    itemSummaries = filterItemsForSection(itemSummaries, 'pinkfloyd');
+  }
 
   return buildDiagnosticPayload(response, {
     ...data,
@@ -422,7 +440,7 @@ export async function onRequest(context) {
         items: [],
         envDebug,
         error: 'Method not allowed',
-        message: 'Use GET /api/ebay?q=new%20vinyl%20release'
+        message: 'Use GET /api/ebay?q=turntable%20stylus'
       },
       {
         status: 405,
@@ -454,7 +472,7 @@ export async function onRequest(context) {
             items: [],
             envDebug,
             error: 'Invalid category',
-            message: 'Use category=pinkfloyd, beatles, ledzeppelin, newreleases, or posters'
+            message: 'Use category=pinkfloyd, beatles, ledzeppelin, stylus, or posters'
           },
           {
             status: 400,
