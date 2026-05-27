@@ -763,6 +763,148 @@ footer{
   transform:translateY(-2px);
 }
 
+.collector-world{
+  background:
+    radial-gradient(circle at 16% 12%, rgba(212,175,55,0.11), transparent 30%),
+    radial-gradient(circle at 88% 16%, rgba(111,23,23,0.3), transparent 32%),
+    repeating-linear-gradient(0deg, rgba(255,255,255,0.022) 0 1px, transparent 1px 5px),
+    linear-gradient(180deg, #070707 0%, #130909 52%, #050505 100%);
+  border-top:1px solid #1f1f1f;
+  border-bottom:1px solid #1f1f1f;
+  overflow:hidden;
+  padding:82px 20px;
+  position:relative;
+}
+
+.collector-world::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:
+    linear-gradient(90deg, rgba(246,231,176,0.028) 0 1px, transparent 1px 36px),
+    linear-gradient(180deg, rgba(0,0,0,0.16), transparent 38%, rgba(0,0,0,0.34));
+  pointer-events:none;
+}
+
+.collector-world-inner{
+  max-width:1120px;
+  margin:0 auto;
+  position:relative;
+  z-index:1;
+}
+
+.collector-world-heading{
+  border-left:4px solid var(--gold);
+  display:grid;
+  gap:8px;
+  margin-bottom:30px;
+  max-width:830px;
+  padding-left:24px;
+}
+
+.collector-world-heading h2{
+  color:white;
+  font-family:var(--serif);
+  font-size:48px;
+  line-height:1.05;
+  margin:0;
+  text-transform:uppercase;
+}
+
+.collector-world-heading p:not(.market-kicker){
+  color:#cfcfcf;
+  font-size:18px;
+  line-height:1.7;
+  margin:0;
+}
+
+.collector-world-grid{
+  display:grid;
+  grid-template-columns:repeat(3, minmax(0, 1fr));
+  gap:24px;
+}
+
+.world-card{
+  background:
+    linear-gradient(135deg, rgba(246,231,176,0.08), transparent 22%),
+    linear-gradient(180deg, #15100f, #060606);
+  border:1px solid rgba(246,231,176,0.3);
+  border-radius:8px;
+  box-shadow:0 26px 74px rgba(0,0,0,0.46), 0 0 34px rgba(111,23,23,0.13);
+  overflow:hidden;
+  transition:transform 0.32s ease, border-color 0.32s ease, box-shadow 0.32s ease;
+}
+
+.world-card:hover{
+  border-color:var(--gold);
+  box-shadow:0 36px 94px rgba(0,0,0,0.58), 0 0 42px rgba(212,175,55,0.16);
+  transform:translateY(-7px);
+}
+
+.world-card-image{
+  aspect-ratio:1.45;
+  display:block;
+  object-fit:cover;
+  transform-origin:center;
+  transition:filter 0.4s ease, transform 0.48s ease;
+  width:100%;
+}
+
+.world-card:hover .world-card-image{
+  filter:contrast(1.06) saturate(1.08);
+  transform:scale(1.035);
+}
+
+.world-card-copy{
+  background:
+    linear-gradient(135deg, rgba(246,231,176,0.06), transparent 24%),
+    linear-gradient(180deg, #14100f, #070707);
+  border-top:3px double rgba(212,175,55,0.34);
+  min-height:250px;
+  padding:24px;
+  position:relative;
+}
+
+.world-card-copy::before{
+  content:"";
+  position:absolute;
+  inset:12px;
+  border:1px solid rgba(212,175,55,0.12);
+  pointer-events:none;
+}
+
+.world-label{
+  color:var(--gold-soft);
+  display:inline-flex;
+  background:linear-gradient(135deg, #7a1717, #270707);
+  border:1px solid rgba(246,231,176,0.36);
+  font-size:12px;
+  font-weight:bold;
+  margin:0 0 14px;
+  padding:8px 10px;
+  position:relative;
+  text-transform:uppercase;
+  z-index:1;
+}
+
+.world-card h3{
+  color:white;
+  font-family:var(--serif);
+  font-size:28px;
+  line-height:1.1;
+  margin:0 0 14px;
+  position:relative;
+  z-index:1;
+}
+
+.world-card p:not(.world-label){
+  color:#cfcfcf;
+  line-height:1.65;
+  margin:0;
+  position:relative;
+  z-index:1;
+}
+
 .value-checker{
   background:
     radial-gradient(circle at 12% 12%, rgba(120,255,138,0.13), transparent 24%),
@@ -1458,6 +1600,12 @@ footer{
     margin:0 auto;
   }
 
+  .collector-world-grid{
+    grid-template-columns:1fr;
+    max-width:620px;
+    margin:0 auto;
+  }
+
   .story-card{
     min-height:auto;
   }
@@ -1588,13 +1736,28 @@ footer{
     padding:56px 16px;
   }
 
-  .stories-heading{
+  .stories-heading,
+  .collector-world-heading{
     padding-left:16px;
   }
 
   .stories-heading h2,
+  .collector-world-heading h2,
   .story-page-title{
     font-size:32px;
+  }
+
+  .collector-world{
+    padding:56px 16px;
+  }
+
+  .world-card-copy{
+    min-height:auto;
+    padding:22px;
+  }
+
+  .world-card h3{
+    font-size:25px;
   }
 
   .story-article-body{

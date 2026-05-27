@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 620" role="img" aria-labelledby="title desc">
+  <title id="title">Buenos Aires Vinyl Culture</title>
+  <desc id="desc">A dark editorial illustration of Buenos Aires record culture with warm street lights, crates, and vinyl silhouettes.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#2a0808"/>
+      <stop offset="0.45" stop-color="#080808"/>
+      <stop offset="1" stop-color="#151008"/>
+    </linearGradient>
+    <radialGradient id="lamp" cx="29%" cy="20%" r="56%">
+      <stop offset="0" stop-color="#f6e7b0" stop-opacity="0.72"/>
+      <stop offset="0.24" stop-color="#d4af37" stop-opacity="0.2"/>
+      <stop offset="1" stop-color="#000" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="grain">
+      <feTurbulence type="fractalNoise" baseFrequency="0.78" numOctaves="3" seed="91"/>
+      <feColorMatrix type="saturate" values="0"/>
+      <feComponentTransfer><feFuncA type="table" tableValues="0 0.12"/></feComponentTransfer>
+    </filter>
+  </defs>
+  <rect width="900" height="620" fill="url(#bg)"/>
+  <rect width="900" height="620" fill="url(#lamp)"/>
+  <path d="M0 454 C170 392 292 480 448 430 C620 374 738 412 900 340 L900 620 L0 620 Z" fill="#030303" opacity="0.8"/>
+  <g opacity="0.64">
+    <path d="M82 174 L148 96 L216 174 Z" fill="#151515" stroke="#d4af37" stroke-opacity="0.32"/>
+    <rect x="98" y="174" width="100" height="180" fill="#0b0b0b" stroke="#f6e7b0" stroke-opacity="0.12"/>
+    <path d="M262 146 L336 78 L410 146 Z" fill="#17110f" stroke="#d4af37" stroke-opacity="0.24"/>
+    <rect x="280" y="146" width="110" height="210" fill="#0b0b0b" stroke="#f6e7b0" stroke-opacity="0.1"/>
+    <path d="M504 162 L576 86 L652 162 Z" fill="#160d0c" stroke="#d4af37" stroke-opacity="0.22"/>
+    <rect x="520" y="162" width="112" height="190" fill="#0b0b0b" stroke="#f6e7b0" stroke-opacity="0.1"/>
+  </g>
+  <g transform="translate(112 362)">
+    <rect x="0" y="58" width="260" height="92" fill="#120909" stroke="#d4af37" stroke-opacity="0.42"/>
+    <path d="M26 76 H234" stroke="#f6e7b0" stroke-opacity="0.22" stroke-width="4"/>
+    <circle cx="70" cy="32" r="56" fill="#080808" stroke="#d4af37" stroke-width="5"/>
+    <circle cx="70" cy="32" r="18" fill="#7a1717"/>
+    <circle cx="170" cy="32" r="56" fill="#080808" stroke="#d4af37" stroke-width="5"/>
+    <circle cx="170" cy="32" r="18" fill="#7a1717"/>
+  </g>
+  <g transform="translate(594 316)" opacity="0.9">
+    <rect x="0" y="58" width="188" height="140" fill="#0b0b0b" stroke="#d4af37" stroke-opacity="0.32"/>
+    <path d="M24 82 H164 M24 112 H164 M24 142 H164" stroke="#f6e7b0" stroke-opacity="0.18" stroke-width="8"/>
+    <circle cx="92" cy="40" r="62" fill="#080808" stroke="#9b2020" stroke-width="6"/>
+    <circle cx="92" cy="40" r="18" fill="#d4af37"/>
+  </g>
+  <text x="58" y="82" font-family="Georgia, 'Times New Roman', serif" font-size="48" font-weight="900" fill="#f6e7b0">Buenos Aires</text>
+  <text x="58" y="128" font-family="Arial, sans-serif" font-size="22" font-weight="900" fill="#d4af37">UNDERGROUND VINYL CULTURE</text>
+  <rect x="58" y="146" width="216" height="34" fill="#7a1717"/>
+  <text x="76" y="170" font-family="Arial, sans-serif" font-size="18" font-weight="900" fill="#f6e7b0">COLLECTOR JOURNAL</text>
+  <text x="570" y="532" font-family="Arial, sans-serif" font-size="20" font-weight="900" fill="#f6e7b0">SOUTH AMERICAN</text>
+  <text x="570" y="560" font-family="Arial, sans-serif" font-size="20" font-weight="900" fill="#d4af37">RECORD HUNTERS</text>
+  <rect x="24" y="24" width="852" height="572" fill="none" stroke="#f6e7b0" stroke-opacity="0.18" stroke-width="2"/>
+  <rect width="900" height="620" filter="url(#grain)" opacity="0.64"/>
+</svg>

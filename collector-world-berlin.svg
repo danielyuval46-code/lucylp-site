@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 620" role="img" aria-labelledby="title desc">
+  <title id="title">Berlin Flea Market Finds</title>
+  <desc id="desc">A dark editorial illustration of Berlin flea markets with vinyl crates, industrial silhouettes, and progressive rock collector cues.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#1f0b0b"/>
+      <stop offset="0.5" stop-color="#060606"/>
+      <stop offset="1" stop-color="#111008"/>
+    </linearGradient>
+    <radialGradient id="gold" cx="42%" cy="22%" r="60%">
+      <stop offset="0" stop-color="#f6e7b0" stop-opacity="0.62"/>
+      <stop offset="0.22" stop-color="#d4af37" stop-opacity="0.2"/>
+      <stop offset="1" stop-color="#000" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="grain">
+      <feTurbulence type="fractalNoise" baseFrequency="0.86" numOctaves="3" seed="73"/>
+      <feColorMatrix type="saturate" values="0"/>
+      <feComponentTransfer><feFuncA type="table" tableValues="0 0.12"/></feComponentTransfer>
+    </filter>
+  </defs>
+  <rect width="900" height="620" fill="url(#bg)"/>
+  <rect width="900" height="620" fill="url(#gold)"/>
+  <g opacity="0.65">
+    <rect x="70" y="160" width="90" height="230" fill="#0b0b0b" stroke="#f6e7b0" stroke-opacity="0.1"/>
+    <rect x="176" y="120" width="120" height="270" fill="#0b0b0b" stroke="#d4af37" stroke-opacity="0.18"/>
+    <rect x="320" y="190" width="88" height="200" fill="#0b0b0b" stroke="#f6e7b0" stroke-opacity="0.1"/>
+    <rect x="590" y="126" width="126" height="270" fill="#0b0b0b" stroke="#d4af37" stroke-opacity="0.16"/>
+    <path d="M72 160 L116 88 L160 160 Z M610 126 L654 62 L698 126 Z" fill="#111"/>
+  </g>
+  <g transform="translate(116 372)">
+    <rect x="0" y="34" width="300" height="120" fill="#110909" stroke="#d4af37" stroke-opacity="0.38"/>
+    <path d="M32 62 H270 M32 96 H270 M32 130 H270" stroke="#f6e7b0" stroke-opacity="0.18" stroke-width="8"/>
+    <circle cx="86" cy="28" r="62" fill="#080808" stroke="#9b2020" stroke-width="6"/>
+    <circle cx="86" cy="28" r="18" fill="#d4af37"/>
+  </g>
+  <g transform="translate(604 330)">
+    <rect x="0" y="76" width="190" height="120" fill="#0b0b0b" stroke="#d4af37" stroke-opacity="0.34"/>
+    <path d="M24 104 H164 M24 138 H164 M24 172 H164" stroke="#f6e7b0" stroke-opacity="0.16" stroke-width="8"/>
+    <circle cx="94" cy="52" r="70" fill="#080808" stroke="#d4af37" stroke-width="6"/>
+    <circle cx="94" cy="52" r="22" fill="#7a1717"/>
+  </g>
+  <path d="M0 488 C160 430 310 522 492 468 C650 420 776 420 900 372 L900 620 L0 620 Z" fill="#030303" opacity="0.8"/>
+  <text x="58" y="84" font-family="Georgia, 'Times New Roman', serif" font-size="50" font-weight="900" fill="#f6e7b0">Berlin</text>
+  <text x="58" y="134" font-family="Georgia, 'Times New Roman', serif" font-size="44" font-weight="900" fill="#fff6d7">Flea Market Finds</text>
+  <rect x="58" y="154" width="216" height="34" fill="#7a1717"/>
+  <text x="76" y="178" font-family="Arial, sans-serif" font-size="18" font-weight="900" fill="#f6e7b0">COLLECTOR JOURNAL</text>
+  <text x="570" y="532" font-family="Arial, sans-serif" font-size="20" font-weight="900" fill="#f6e7b0">KRAUTROCK</text>
+  <text x="570" y="560" font-family="Arial, sans-serif" font-size="20" font-weight="900" fill="#d4af37">PROGRESSIVE VINYL</text>
+  <rect x="24" y="24" width="852" height="572" fill="none" stroke="#f6e7b0" stroke-opacity="0.18" stroke-width="2"/>
+  <rect width="900" height="620" filter="url(#grain)" opacity="0.64"/>
+</svg>
