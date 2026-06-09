@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LucyLP Music Press | Vinyl Collector Magazine</title>
+  <meta name="description" content="Digital magazine for vinyl collectors featuring rare records, Japanese pressings, Beatles history, Led Zeppelin collectibles, collector stories and vinyl culture worldwide.">
+  <link rel="stylesheet" href="./music-press.css">
+</head>
+<body>
+  <header class="press-header">
+    <a href="/" class="home-link">Home</a>
+    <span>Music Press</span>
+  </header>
+
+  <main>
+    <section class="press-hero" aria-labelledby="press-title">
+      <div class="hero-cover">
+        <img src="./images/issue-1-cover.jpg" alt="LucyLP Music Press Issue No.1 cover" fetchpriority="high">
+      </div>
+      <div class="hero-copy">
+        <p class="eyebrow">Issue No.1 - June 2026</p>
+        <h1 id="press-title">LucyLP Music Press</h1>
+        <p class="subtitle">Collector Culture Worldwide</p>
+        <div class="hero-actions">
+          <a class="press-btn primary" href="#reader">Read Online</a>
+          <a class="press-btn" href="/public/music-press/pdf/lucylp-music-press-issue-1-june-2026.pdf" download>Download PDF</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="reader-section" id="reader" aria-labelledby="reader-title">
+      <div class="section-heading">
+        <p class="eyebrow">Online Magazine Reader</p>
+        <h2 id="reader-title">Issue No.1</h2>
+      </div>
+
+      <div class="reader-shell" id="reader-shell">
+        <div class="reader-toolbar" aria-label="Magazine controls">
+          <button type="button" class="icon-btn" id="prev-page" aria-label="Previous page">Prev</button>
+          <span class="page-count" id="page-count">Page 1 / 22</span>
+          <button type="button" class="icon-btn" id="next-page" aria-label="Next page">Next</button>
+          <button type="button" class="icon-btn" id="zoom-out" aria-label="Zoom out">-</button>
+          <span class="zoom-count" id="zoom-count">100%</span>
+          <button type="button" class="icon-btn" id="zoom-in" aria-label="Zoom in">+</button>
+          <button type="button" class="icon-btn wide" id="fullscreen-toggle">Full Screen</button>
+        </div>
+
+        <div class="reader-layout">
+          <aside class="thumb-strip" id="thumb-strip" aria-label="Page thumbnails"></aside>
+
+          <div class="magazine-stage" id="magazine-stage" tabindex="0" aria-label="LucyLP Music Press page reader. Use left and right arrow keys to turn pages.">
+            <div class="magazine-book" id="magazine-book">
+              <img class="magazine-page" id="magazine-page" src="./issue-1/page-001.png" alt="LucyLP Music Press page 1">
+              <img class="turning-page" id="turning-page" src="./issue-1/page-001.png" alt="" aria-hidden="true">
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="about-section" aria-labelledby="about-title">
+      <div>
+        <p class="eyebrow">Independent Digital Magazine</p>
+        <h2 id="about-title">About LucyLP Music Press</h2>
+      </div>
+      <p>
+        LucyLP Music Press is an independent digital magazine dedicated to vinyl culture, rare records, Japanese pressings, collector stories and record history from around the world.
+      </p>
+    </section>
+
+    <section class="next-issue" aria-labelledby="next-title">
+      <div class="next-copy">
+        <p class="eyebrow">Next Issue Preview</p>
+        <h2 id="next-title">Coming in Issue No.2</h2>
+        <ul>
+          <li>Promo Records</li>
+          <li>Valuable Beatles Pressings</li>
+          <li>Japanese Jazz Treasures</li>
+          <li>Hidden Record Stores of Europe</li>
+          <li>Collector Stories</li>
+        </ul>
+      </div>
+      <img src="./images/next-issue.jpg" alt="LucyLP Music Press next issue preview">
+    </section>
+  </main>
+
+  <script src="./reader.js"></script>
+</body>
+</html>

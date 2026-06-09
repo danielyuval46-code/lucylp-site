@@ -308,6 +308,104 @@ h1{
   transform:translateY(-2px);
 }
 
+.btn-secondary{
+  background:rgba(8,8,8,0.72);
+  color:var(--gold-soft);
+}
+
+.btn-secondary:hover{
+  color:#050505;
+}
+
+.music-press-promo{
+  position:relative;
+  padding:76px 20px;
+  background:
+    radial-gradient(circle at 76% 20%, rgba(246,231,176,0.14), transparent 24%),
+    radial-gradient(circle at 18% 90%, rgba(212,175,55,0.1), transparent 28%),
+    linear-gradient(135deg, rgba(17,11,7,0.94), rgba(5,5,5,0.98));
+  border-top:1px solid rgba(212,175,55,0.24);
+  border-bottom:1px solid rgba(212,175,55,0.16);
+  overflow:hidden;
+}
+
+.music-press-promo::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:
+    repeating-linear-gradient(90deg, rgba(126,74,28,0.12) 0 2px, transparent 2px 14px),
+    radial-gradient(ellipse at center, transparent 0 44%, rgba(0,0,0,0.34) 100%);
+  opacity:0.74;
+  pointer-events:none;
+}
+
+.music-press-promo-inner{
+  position:relative;
+  z-index:1;
+  display:grid;
+  grid-template-columns:minmax(0, 1fr) 230px;
+  gap:42px;
+  align-items:center;
+  max-width:1040px;
+  margin:0 auto;
+}
+
+.music-press-promo h2{
+  color:white;
+  font-family:var(--serif);
+  font-size:clamp(38px, 6vw, 68px);
+  line-height:1;
+  margin:0;
+}
+
+.music-press-issue{
+  color:var(--gold-soft);
+  font-family:var(--serif);
+  font-size:25px;
+  margin:16px 0 10px;
+}
+
+.music-press-text{
+  color:#d8d0bf;
+  font-size:18px;
+  line-height:1.7;
+  margin:0;
+}
+
+.music-press-actions{
+  display:flex;
+  flex-wrap:wrap;
+  gap:12px;
+  margin-top:4px;
+}
+
+.music-press-actions .btn{
+  margin-top:22px;
+}
+
+.music-press-cover-link{
+  display:block;
+  padding:8px;
+  background:linear-gradient(145deg, rgba(212,175,55,0.42), rgba(246,231,176,0.08));
+  border:1px solid rgba(246,231,176,0.26);
+  border-radius:8px;
+  box-shadow:0 24px 62px rgba(0,0,0,0.48);
+  transition:0.3s;
+}
+
+.music-press-cover-link:hover{
+  transform:translateY(-3px);
+  box-shadow:0 28px 72px rgba(0,0,0,0.58);
+}
+
+.music-press-cover{
+  width:100%;
+  aspect-ratio:0.72;
+  object-fit:cover;
+  border-radius:4px;
+}
+
 .market-inner{
   max-width:1120px;
   margin:0 auto;
@@ -1588,6 +1686,14 @@ h1{
     grid-template-columns:1fr;
   }
 
+  .music-press-promo-inner{
+    grid-template-columns:1fr;
+  }
+
+  .music-press-cover-link{
+    max-width:260px;
+  }
+
   .tool-presenter{
     grid-template-columns:112px 1fr;
   }
@@ -1687,6 +1793,23 @@ h1{
 
   .collector-stories{
     padding:56px 16px;
+  }
+
+  .music-press-promo{
+    padding:56px 16px;
+  }
+
+  .music-press-actions{
+    display:grid;
+    grid-template-columns:1fr;
+  }
+
+  .music-press-actions .btn{
+    text-align:center;
+  }
+
+  .music-press-cover-link{
+    max-width:220px;
   }
 
   .stories-heading,
