@@ -1,4 +1,6 @@
 from pathlib import Path
+import argparse
+import json
 import os
 import sys
 
@@ -10,19 +12,11 @@ from PIL import Image, ImageDraw, ImageFont, ImageFilter
 
 
 ROOT = Path(__file__).resolve().parents[1]
-OUTPUT = ROOT / "videos" / "lucylp-music-press-issue-1-tiktok-promo.mp4"
+ISSUES_FILE = ROOT / "data" / "magazine-issues.json"
 WIDTH = 1080
 HEIGHT = 1920
 FPS = 24
 SECONDS = 15
-
-ASSETS = [
-    ROOT / "music-press" / "images" / "issue-1-cover.jpg",
-    ROOT / "music-press" / "issue-1" / "page-009.png",
-    ROOT / "music-press" / "issue-1" / "page-014.png",
-    ROOT / "music-press" / "issue-1" / "page-016.png",
-    ROOT / "music-press" / "issue-1" / "page-019.png",
-]
 
 
 def font(size, bold=False):
@@ -39,8 +33,31 @@ def font(size, bold=False):
 
 
 TITLE_FONT = font(78, bold=True)
-SUBTITLE_FONT = font(42)
+SUBTITLE_FONT = font(46, bold=True)
 SMALL_FONT = font(31, bold=True)
+
+
+def site_path(path):
+    return ROOT / path.lstrip("/").replace("/", os.sep)
+
+
+def load_issue(issue_number):
+    with ISSUES_FILE.open("r", encoding="utf-8") as file:
+        issues = json.load(file)
+
+    for issue in issues:
+        if int(issue["issueNumber"]) == issue_number:
+            return issue
+
+    raise ValueError(f"Issue No.{issue_number} not found in {ISSUES_FILE}")
+
+
+def output_path(issue_number):
+    return ROOT / "videos" / f"lucylp-music-press-issue-{issue_number}-tiktok-promo.mp4"
+
+
+def page_path(issue_number, page_number):
+    return ROOT / "music-press" / f"issue-{issue_number}" / f"page-{page_number:03d}.png"
 
 
 def fit_image(image, box_width, box_height):
@@ -70,11 +87,10 @@ def draw_center(draw, text, y, selected_font, fill):
     draw.text((x, y), text, font=selected_font, fill=fill)
 
 
-def add_branding(frame, slide_index):
+def add_branding(frame, issue_number, slide_index):
     draw = ImageDraw.Draw(frame)
     gold = (216, 176, 87, 255)
     cream = (248, 238, 218, 255)
-    muted = (212, 202, 184, 255)
 
     draw.rounded_rectangle(
         (74, 68, WIDTH - 74, 176),
@@ -84,26 +100,23 @@ def add_branding(frame, slide_index):
         width=2,
     )
     draw.text((112, 92), "LucyLP", font=TITLE_FONT, fill=gold)
-    draw.text((112, 194), "MUSIC PRESS ISSUE NO.1", font=SMALL_FONT, fill=cream)
+    draw.text((112, 194), f"MUSIC PRESS ISSUE NO.{issue_number}", font=SMALL_FONT, fill=cream)
 
     slide_text = [
-        ("Free digital magazine", "for vinyl collectors"),
-        ("Rare records. Global stories.", ""),
-        ("Japanese pressings and collector culture.", ""),
-        ("Beatles, Zeppelin, vinyl history.", ""),
-        ("Read now at LucyLP.com", ""),
+        "Read Free",
+        "Rare records. Global stories.",
+        "Collector culture worldwide.",
+        "Vinyl history and pressings.",
+        "Read Free at LucyLP.com",
     ][slide_index]
 
-    draw_center(draw, slide_text[0], 1538 if not slide_text[1] else 1530, SUBTITLE_FONT, cream)
-    if slide_text[1]:
-        draw_center(draw, slide_text[1], 1588, SUBTITLE_FONT, muted)
-
-    draw.rounded_rectangle((250, 1686, WIDTH - 250, 1758), radius=36, fill=(216, 176, 87, 235))
-    draw_center(draw, "lucylp.com/music-press", 1700, SMALL_FONT, (6, 5, 4, 255))
+    draw_center(draw, slide_text, 1538, SUBTITLE_FONT, cream)
+    draw.rounded_rectangle((286, 1686, WIDTH - 286, 1758), radius=36, fill=(216, 176, 87, 235))
+    draw_center(draw, "LucyLP.com", 1700, SMALL_FONT, (6, 5, 4, 255))
     return frame
 
 
-def frame_for(image, slide_index, progress):
+def frame_for(image, issue_number, slide_index, progress):
     frame = make_background(image)
     fitted = fit_image(image, 790, 1040).convert("RGBA")
     zoom = 1 + 0.035 * progress
@@ -121,16 +134,24 @@ def frame_for(image, slide_index, progress):
     draw.rectangle((0, 1440, WIDTH, HEIGHT), fill=(0, 0, 0, 128))
     frame = Image.alpha_composite(frame, vignette)
 
-    return add_branding(frame, slide_index).convert("RGB")
+    return add_branding(frame, issue_number, slide_index).convert("RGB")
 
 
-def main():
-    OUTPUT.parent.mkdir(parents=True, exist_ok=True)
-    images = [Image.open(path) for path in ASSETS]
+def generate(issue_number, pages):
+    issue = load_issue(issue_number)
+    assets = [site_path(issue["coverImage"])] + [page_path(issue_number, page) for page in pages]
+    missing = [path for path in assets if not path.exists()]
+
+    if missing:
+        raise FileNotFoundError("Missing video source files: " + ", ".join(str(path) for path in missing))
+
+    output = output_path(issue_number)
+    output.parent.mkdir(parents=True, exist_ok=True)
+    images = [Image.open(path) for path in assets]
     frames_per_slide = FPS * SECONDS // len(images)
 
     with imageio.get_writer(
-        OUTPUT,
+        output,
         fps=FPS,
         codec="libx264",
         quality=8,
@@ -140,9 +161,17 @@ def main():
         for slide_index, image in enumerate(images):
             for frame_number in range(frames_per_slide):
                 progress = frame_number / max(1, frames_per_slide - 1)
-                writer.append_data(np.asarray(frame_for(image, slide_index, progress)))
+                writer.append_data(np.asarray(frame_for(image, issue_number, slide_index, progress)))
 
-    print(OUTPUT)
+    return output
+
+
+def main():
+    parser = argparse.ArgumentParser(description="Generate a LucyLP vertical TikTok promo MP4.")
+    parser.add_argument("--issue", type=int, default=1, help="Magazine issue number from data/magazine-issues.json.")
+    parser.add_argument("--pages", type=int, nargs=4, default=[9, 14, 16, 19], help="Four page numbers to include.")
+    args = parser.parse_args()
+    print(generate(args.issue, args.pages))
 
 
 if __name__ == "__main__":

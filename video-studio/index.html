@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LucyLP Video Studio</title>
+  <meta name="description" content="LucyLP Video Studio creates vertical TikTok promo videos for LucyLP Music Press issues.">
+  <link rel="stylesheet" href="./video-studio.css">
+</head>
+<body>
+  <main class="studio-shell">
+    <header class="studio-header">
+      <a href="/" class="home-link">Home</a>
+      <a href="/music-press/" class="home-link">Music Press</a>
+    </header>
+
+    <section class="studio-panel" aria-labelledby="studio-title">
+      <div class="studio-copy">
+        <p class="eyebrow">LucyLP Tools</p>
+        <h1 id="studio-title">Video Studio</h1>
+        <p>Create a 15-second vertical TikTok promo from a magazine cover and four selected pages.</p>
+      </div>
+
+      <form class="studio-form" id="studio-form">
+        <label>
+          <span>Magazine issue</span>
+          <select id="issue-select" name="issue"></select>
+        </label>
+
+        <fieldset>
+          <legend>Selected pages</legend>
+          <div class="page-grid">
+            <label>
+              <span>Page 1</span>
+              <input type="number" name="page" min="1" value="9">
+            </label>
+            <label>
+              <span>Page 2</span>
+              <input type="number" name="page" min="1" value="14">
+            </label>
+            <label>
+              <span>Page 3</span>
+              <input type="number" name="page" min="1" value="16">
+            </label>
+            <label>
+              <span>Page 4</span>
+              <input type="number" name="page" min="1" value="19">
+            </label>
+          </div>
+        </fieldset>
+
+        <button type="submit" class="studio-btn">Generate TikTok Promo</button>
+      </form>
+
+      <div class="studio-result" id="studio-result" aria-live="polite">
+        <p>Select an issue and generate a promo video.</p>
+      </div>
+
+      <video
+        class="studio-preview"
+        id="studio-preview"
+        controls
+        playsinline
+        preload="metadata"
+      ></video>
+    </section>
+  </main>
+
+  <script src="./video-studio.js"></script>
+</body>
+</html>
