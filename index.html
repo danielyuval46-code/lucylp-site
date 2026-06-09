@@ -7,7 +7,7 @@
 
   <title>LucyLP</title>
 
-  <link rel="stylesheet" href="style.css?v=music-press-compact">
+  <link rel="stylesheet" href="style.css?v=music-press-share">
 </head>
 
 <body>
@@ -78,6 +78,30 @@
           <a href="/music-press/#reader" class="btn">Read Online</a>
           <a href="/public/music-press/pdf/lucylp-music-press-issue-1-june-2026.pdf" class="btn" download>Download PDF</a>
           <a href="/music-press/" class="btn">Browse Magazine</a>
+        </div>
+        <div class="music-press-share" aria-label="Share LucyLP Music Press Issue No.1">
+          <a
+            href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Flucylp.com%2Fmusic-press"
+            class="share-btn"
+            data-share-action="facebook"
+            target="_blank"
+            rel="noopener"
+          >Share on Facebook</a>
+          <a
+            href="https://twitter.com/intent/tweet?url=https%3A%2F%2Flucylp.com%2Fmusic-press&text=LucyLP%20Music%20Press%20Issue%20No.1%20%E2%80%93%20Free%20digital%20magazine%20for%20vinyl%20collectors."
+            class="share-btn"
+            data-share-action="x"
+            target="_blank"
+            rel="noopener"
+          >Share on X / Twitter</a>
+          <a
+            href="https://wa.me/?text=LucyLP%20Music%20Press%20Issue%20No.1%20%E2%80%93%20Free%20digital%20magazine%20for%20vinyl%20collectors.%20https%3A%2F%2Flucylp.com%2Fmusic-press"
+            class="share-btn"
+            data-share-action="whatsapp"
+            target="_blank"
+            rel="noopener"
+          >Share on WhatsApp</a>
+          <button type="button" class="share-btn" data-copy-link>Copy Link</button>
         </div>
       </div>
     </div>
@@ -435,6 +459,66 @@
       <a href="#top">Back to top</a>
     </div>
   </footer>
+
+  <script>
+    (function() {
+      const shareUrl = 'https://lucylp.com/music-press';
+      const shareText = 'LucyLP Music Press Issue No.1 – Free digital magazine for vinyl collectors.';
+
+      document.querySelectorAll('[data-share-action]').forEach(function(button) {
+        button.addEventListener('click', async function(event) {
+          if (!navigator.share) return;
+
+          event.preventDefault();
+
+          try {
+            await navigator.share({
+              title: 'LucyLP Music Press Issue No.1',
+              text: shareText,
+              url: shareUrl
+            });
+          } catch (error) {
+            if (error && error.name !== 'AbortError') {
+              window.open(button.href, '_blank', 'noopener');
+            }
+          }
+        });
+      });
+
+      const copyButton = document.querySelector('[data-copy-link]');
+      if (!copyButton) return;
+
+      copyButton.addEventListener('click', async function() {
+        const originalText = copyButton.textContent;
+
+        try {
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            await navigator.clipboard.writeText(shareUrl);
+          } else {
+            const temporaryInput = document.createElement('input');
+            temporaryInput.value = shareUrl;
+            temporaryInput.setAttribute('readonly', '');
+            temporaryInput.style.position = 'fixed';
+            temporaryInput.style.opacity = '0';
+            document.body.appendChild(temporaryInput);
+            temporaryInput.select();
+            document.execCommand('copy');
+            document.body.removeChild(temporaryInput);
+          }
+
+          copyButton.textContent = 'Copied!';
+          window.setTimeout(function() {
+            copyButton.textContent = originalText;
+          }, 1800);
+        } catch (error) {
+          copyButton.textContent = 'Copy failed';
+          window.setTimeout(function() {
+            copyButton.textContent = originalText;
+          }, 1800);
+        }
+      });
+    }());
+  </script>
 
   <script>
     const sectionLabels = {
