@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LucyLP Admin | TikTok Promo</title>
+  <link rel="stylesheet" href="./admin.css">
+</head>
+<body>
+  <main class="admin-shell">
+    <a href="/" class="home-link">Home</a>
+
+    <section class="admin-panel" aria-labelledby="admin-title">
+      <div class="admin-copy">
+        <p class="eyebrow">LucyLP Admin</p>
+        <h1 id="admin-title">Generate TikTok Promo</h1>
+        <p>
+          Creates a 15-second vertical MP4 from the Issue No.1 cover and pages 9, 14, 16, and 19 with LucyLP branding.
+        </p>
+      </div>
+
+      <div class="admin-actions">
+        <button type="button" class="admin-btn" id="generate-tiktok-promo">
+          Generate TikTok Promo
+        </button>
+        <a class="admin-btn admin-btn-secondary" href="/videos/lucylp-music-press-issue-1-tiktok-promo.mp4" download>
+          Download MP4
+        </a>
+      </div>
+
+      <p class="status" id="promo-status" aria-live="polite">
+        Ready to generate from magazine cover, page 9, page 14, page 16, and page 19.
+      </p>
+
+      <video
+        class="promo-preview"
+        id="promo-preview"
+        src="/videos/lucylp-music-press-issue-1-tiktok-promo.mp4"
+        controls
+        playsinline
+        preload="metadata"
+        poster="/music-press/images/issue-1-cover.jpg"
+      ></video>
+    </section>
+  </main>
+
+  <script src="./admin.js"></script>
+</body>
+</html>
