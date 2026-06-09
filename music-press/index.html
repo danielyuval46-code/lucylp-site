@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>LucyLP Music Press | Vinyl Collector Magazine</title>
   <meta name="description" content="Digital magazine for vinyl collectors featuring rare records, Japanese pressings, Beatles history, Led Zeppelin collectibles, collector stories and vinyl culture worldwide.">
-  <link rel="stylesheet" href="./music-press.css?v=pdf-final">
+  <link rel="stylesheet" href="./music-press.css?v=issue-archive">
 </head>
 <body>
   <header class="press-header">
@@ -16,17 +16,27 @@
   <main>
     <section class="press-hero" aria-labelledby="press-title">
       <div class="hero-cover">
-        <img src="./images/issue-1-cover.jpg" alt="LucyLP Music Press Issue No.1 cover" fetchpriority="high">
+        <img
+          src="./images/issue-1-cover.jpg"
+          alt="LucyLP Music Press Issue No.1 cover"
+          data-featured-cover
+          fetchpriority="high"
+        >
       </div>
       <div class="hero-copy">
-        <p class="eyebrow">Issue No.1 - June 2026</p>
-        <p class="published-label">Published June 2026</p>
+        <p class="eyebrow" data-featured-issue>Issue No.1 - June 2026</p>
+        <p class="published-label" data-featured-published>Published June 2026</p>
         <h1 id="press-title">LucyLP Music Press</h1>
-        <p class="subtitle">Collector Culture Worldwide</p>
+        <p class="subtitle" data-featured-description>Collector Culture Worldwide</p>
         <div class="hero-actions">
-          <a class="press-btn primary" href="#reader">Read Online</a>
-          <a class="press-btn" href="/public/music-press/pdf/lucylp-music-press-issue-1-june-2026.pdf" download>
-            Download PDF <span class="file-size">12.8 MB</span>
+          <a class="press-btn primary" href="#reader" data-featured-read>Read Online</a>
+          <a
+            class="press-btn"
+            href="/public/music-press/pdf/lucylp-music-press-issue-1-june-2026.pdf"
+            download
+            data-featured-pdf
+          >
+            Download PDF <span class="file-size" data-featured-pdf-size>12.8 MB</span>
           </a>
         </div>
       </div>
@@ -62,6 +72,16 @@
       </div>
     </section>
 
+    <section class="archive-section" aria-labelledby="archive-title">
+      <div class="section-heading">
+        <p class="eyebrow">Magazine Archive</p>
+        <h2 id="archive-title">All Issues</h2>
+      </div>
+      <div class="issue-grid" id="issue-grid" aria-live="polite">
+        <p class="archive-loading">Loading magazine archive...</p>
+      </div>
+    </section>
+
     <section class="about-section" aria-labelledby="about-title">
       <div>
         <p class="eyebrow">Independent Digital Magazine</p>
@@ -89,5 +109,6 @@
   </main>
 
   <script src="./reader.js"></script>
+  <script src="./issue-archive.js"></script>
 </body>
 </html>
