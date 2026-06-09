@@ -7,7 +7,7 @@
 
   <title>LucyLP</title>
 
-  <link rel="stylesheet" href="style.css?v=music-press-share">
+  <link rel="stylesheet" href="style.css?v=music-press-share-copy">
 </head>
 
 <body>
@@ -488,22 +488,35 @@
       const copyButton = document.querySelector('[data-copy-link]');
       if (!copyButton) return;
 
+      function fallbackCopyLink() {
+        const temporaryInput = document.createElement('textarea');
+        temporaryInput.value = shareUrl;
+        temporaryInput.setAttribute('readonly', '');
+        temporaryInput.style.position = 'fixed';
+        temporaryInput.style.left = '-9999px';
+        temporaryInput.style.opacity = '0';
+        document.body.appendChild(temporaryInput);
+        temporaryInput.select();
+        const copied = document.execCommand('copy');
+        document.body.removeChild(temporaryInput);
+
+        if (!copied) {
+          throw new Error('Copy command failed');
+        }
+      }
+
       copyButton.addEventListener('click', async function() {
         const originalText = copyButton.textContent;
 
         try {
           if (navigator.clipboard && navigator.clipboard.writeText) {
-            await navigator.clipboard.writeText(shareUrl);
+            try {
+              await navigator.clipboard.writeText(shareUrl);
+            } catch (error) {
+              fallbackCopyLink();
+            }
           } else {
-            const temporaryInput = document.createElement('input');
-            temporaryInput.value = shareUrl;
-            temporaryInput.setAttribute('readonly', '');
-            temporaryInput.style.position = 'fixed';
-            temporaryInput.style.opacity = '0';
-            document.body.appendChild(temporaryInput);
-            temporaryInput.select();
-            document.execCommand('copy');
-            document.body.removeChild(temporaryInput);
+            fallbackCopyLink();
           }
 
           copyButton.textContent = 'Copied!';
