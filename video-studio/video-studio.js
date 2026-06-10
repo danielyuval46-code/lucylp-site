@@ -129,6 +129,7 @@ async function renderThumbnails(issueNumber) {
 async function loadIssues() {
   const response = await fetch('/data/magazine-issues.json', {
     headers: { Accept: 'application/json' },
+    cache: 'no-cache',
   });
   issues = await response.json();
   renderIssueOptions();
