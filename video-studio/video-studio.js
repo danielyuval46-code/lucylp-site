@@ -4,9 +4,37 @@ const studioResult = document.getElementById('studio-result');
 const studioPreview = document.getElementById('studio-preview');
 const thumbnailGrid = document.getElementById('thumbnail-grid');
 const pickerNote = document.getElementById('picker-note');
+const promoGrid = document.getElementById('promo-grid');
 
 let issues = [];
 let selectedPageSet = new Set([9, 14, 16, 19]);
+
+const presetPromos = [
+  {
+    title: 'Beatles Promo',
+    pages: [6, 7, 8],
+    duration: 15,
+    path: '/videos/lucylp-music-press-issue-1-tiktok-promo-15s-p6-7-8.mp4',
+  },
+  {
+    title: 'OBI Promo',
+    pages: [14, 15],
+    duration: 15,
+    path: '/videos/lucylp-music-press-issue-1-tiktok-promo-15s-p14-15.mp4',
+  },
+  {
+    title: 'RL Zeppelin Promo',
+    pages: [9, 10],
+    duration: 15,
+    path: '/videos/lucylp-music-press-issue-1-tiktok-promo-15s-p9-10.mp4',
+  },
+  {
+    title: 'Emotional Collector Promo',
+    pages: [16, 17, 18, 19],
+    duration: 15,
+    path: '/videos/lucylp-music-press-issue-1-tiktok-promo-15s-p16-17-18-19.mp4',
+  },
+];
 
 function pagePathFor(issueNumber, pageNumber) {
   return `/music-press/issue-${issueNumber}/page-${String(pageNumber).padStart(3, '0')}.png`;
@@ -28,6 +56,34 @@ function renderStatus(message, downloadUrl = '') {
     <p>${message}</p>
     ${downloadUrl ? `<a class="download-btn" href="${downloadUrl}" download>Download MP4</a>` : ''}
   `;
+}
+
+function previewPromo(promo) {
+  const issue = issues.find((item) => Number(item.issueNumber) === 1);
+  studioPreview.src = `${promo.path}?v=${Date.now()}`;
+  studioPreview.poster = issue ? issue.coverImage : '';
+  studioPreview.load();
+  renderStatus(`${promo.title} is ready: ${promo.duration}-second vertical MP4 using pages ${promo.pages.join(', ')}.`, promo.path);
+}
+
+function renderPresetPromos() {
+  promoGrid.innerHTML = presetPromos.map((promo) => `
+    <article class="promo-card">
+      <h3>${promo.title}</h3>
+      <p>Issue No.1 pages ${promo.pages.join(', ')} - ${promo.duration} sec</p>
+      <div class="promo-actions">
+        <button type="button" class="promo-btn" data-promo="${promo.title}">Preview</button>
+        <a class="download-btn" href="${promo.path}" download>Download MP4</a>
+      </div>
+    </article>
+  `).join('');
+
+  promoGrid.querySelectorAll('[data-promo]').forEach((button) => {
+    button.addEventListener('click', () => {
+      const promo = presetPromos.find((item) => item.title === button.dataset.promo);
+      if (promo) previewPromo(promo);
+    });
+  });
 }
 
 function selectedPages() {
@@ -134,6 +190,7 @@ async function loadIssues() {
   });
   issues = await response.json();
   renderIssueOptions();
+  renderPresetPromos();
   await renderThumbnails(Number(issueSelect.value));
 }
 
@@ -161,7 +218,7 @@ studioForm.addEventListener('submit', async function(event) {
   const exists = await videoExists(videoPath);
   if (!exists) {
     renderStatus(
-      `Promo source prepared for ${issue.title}. Generate and save it locally with: python scripts/generate_tiktok_promo.py --issue ${issueNumber} --duration ${duration} --pages ${pages.join(' ')}`
+      `No ready MP4 exists yet for ${issue.title} with pages ${pages.join(', ')} at ${duration} seconds. Use one of the prebuilt promo buttons below.`
     );
     return;
   }

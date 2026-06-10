@@ -120,8 +120,8 @@ def add_branding(frame, issue_number, slide_index):
     return frame
 
 
-def frame_for(image, issue_number, slide_index, progress):
-    frame = make_background(image)
+def frame_for(image, issue_number, slide_index, progress, background=None):
+    frame = background.copy() if background is not None else make_background(image)
     fitted = fit_image(image, 790, 1040).convert("RGBA")
     zoom = 1 + 0.035 * progress
     fitted = fitted.resize((int(fitted.width * zoom), int(fitted.height * zoom)), Image.Resampling.LANCZOS)
@@ -152,6 +152,7 @@ def generate(issue_number, pages, duration):
     output = output_path(issue_number, duration, pages)
     output.parent.mkdir(parents=True, exist_ok=True)
     images = [Image.open(path) for path in assets]
+    backgrounds = [make_background(image) for image in images]
     frames_per_slide = FPS * duration // len(images)
 
     with imageio.get_writer(
@@ -165,7 +166,7 @@ def generate(issue_number, pages, duration):
         for slide_index, image in enumerate(images):
             for frame_number in range(frames_per_slide):
                 progress = frame_number / max(1, frames_per_slide - 1)
-                writer.append_data(np.asarray(frame_for(image, issue_number, slide_index, progress)))
+                writer.append_data(np.asarray(frame_for(image, issue_number, slide_index, progress, backgrounds[slide_index])))
 
     return output
 
