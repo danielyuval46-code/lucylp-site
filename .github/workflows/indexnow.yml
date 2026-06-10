@@ -1,0 +1,30 @@
+name: Submit IndexNow URLs
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "index.html"
+      - "music-press/**"
+      - "video-studio/**"
+      - "stories/**"
+      - "sitemap.xml"
+      - "public/sitemap.xml"
+      - "scripts/submit-indexnow.ps1"
+      - "99f7affa86b6db83f25d5e75f00b4710.txt"
+  workflow_dispatch:
+
+jobs:
+  submit-indexnow:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out site
+        uses: actions/checkout@v4
+
+      - name: Wait for Pages deployment
+        run: sleep 90
+
+      - name: Submit sitemap URLs to IndexNow
+        shell: pwsh
+        run: ./scripts/submit-indexnow.ps1
