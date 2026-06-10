@@ -249,6 +249,30 @@ select{
   box-shadow:0 20px 54px rgba(0,0,0,0.45);
 }
 
+.studio-footer{
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  gap:12px;
+  width:min(1040px, calc(100% - 32px));
+  margin:0 auto 42px;
+  padding:22px 0 0;
+  border-top:1px solid rgba(212,175,55,0.2);
+}
+
+.studio-footer a{
+  color:var(--muted);
+  font-size:12px;
+  font-weight:700;
+  letter-spacing:1.2px;
+  text-decoration:none;
+  text-transform:uppercase;
+}
+
+.studio-footer a:hover{
+  color:var(--gold);
+}
+
 @media (max-width:760px){
   .studio-panel{
     grid-template-columns:1fr;

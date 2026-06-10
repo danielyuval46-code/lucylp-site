@@ -638,6 +638,30 @@ h1{
   transform:translateY(-2px);
 }
 
+.story-footer{
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  gap:12px;
+  max-width:980px;
+  margin:0 auto 42px;
+  padding:24px 16px 0;
+  border-top:1px solid rgba(212,175,55,0.2);
+}
+
+.story-footer a{
+  color:#cfcfcf;
+  font-size:12px;
+  font-weight:bold;
+  letter-spacing:1.2px;
+  text-decoration:none;
+  text-transform:uppercase;
+}
+
+.story-footer a:hover{
+  color:var(--gold);
+}
+
 .collector-world{
   background:
     radial-gradient(circle at 16% 12%, rgba(212,175,55,0.11), transparent 30%),

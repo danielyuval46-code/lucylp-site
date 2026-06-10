@@ -427,6 +427,30 @@ h2{font-size:clamp(34px, 5vw, 58px)}
   box-shadow:0 22px 54px rgba(0,0,0,0.48);
 }
 
+.press-footer{
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  gap:12px;
+  width:min(1180px, calc(100% - 32px));
+  margin:0 auto 42px;
+  padding:22px 0 0;
+  border-top:1px solid rgba(216,176,87,0.2);
+}
+
+.press-footer a{
+  color:var(--muted);
+  font-size:12px;
+  font-weight:700;
+  letter-spacing:1.2px;
+  text-decoration:none;
+  text-transform:uppercase;
+}
+
+.press-footer a:hover{
+  color:var(--gold);
+}
+
 .reader-shell:fullscreen{
   width:100vw;
   height:100vh;
