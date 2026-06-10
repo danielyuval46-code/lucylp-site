@@ -41,7 +41,8 @@ function selectedDuration() {
 async function videoExists(path) {
   try {
     const response = await fetch(path, { method: 'HEAD' });
-    return response.ok;
+    const contentType = response.headers.get('content-type') || '';
+    return response.ok && contentType.toLowerCase().includes('video');
   } catch (error) {
     return false;
   }
