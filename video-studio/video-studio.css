@@ -42,7 +42,7 @@ body{
 
 .studio-panel{
   display:grid;
-  grid-template-columns:minmax(280px, 0.95fr) minmax(280px, 1.05fr);
+  grid-template-columns:minmax(260px, 0.7fr) minmax(340px, 1.3fr);
   gap:28px;
   align-items:start;
   padding:34px;
@@ -107,7 +107,7 @@ label span,legend{
   text-transform:uppercase;
 }
 
-select,input{
+select{
   width:100%;
   min-height:44px;
   padding:10px 12px;
@@ -118,10 +118,92 @@ select,input{
   font:inherit;
 }
 
-.page-grid{
+.duration-options{
   display:grid;
-  grid-template-columns:repeat(4, 1fr);
+  grid-template-columns:repeat(3, 1fr);
   gap:10px;
+}
+
+.duration-options label{
+  position:relative;
+}
+
+.duration-options input{
+  position:absolute;
+  opacity:0;
+  pointer-events:none;
+}
+
+.duration-options span{
+  align-items:center;
+  background:rgba(5,5,5,0.78);
+  border:1px solid rgba(212,175,55,0.36);
+  border-radius:8px;
+  color:var(--gold-soft);
+  cursor:pointer;
+  display:flex;
+  justify-content:center;
+  min-height:44px;
+  padding:10px;
+}
+
+.duration-options input:checked + span{
+  background:linear-gradient(135deg, var(--gold), var(--gold-soft));
+  color:#050505;
+}
+
+.page-picker-fieldset{
+  grid-column:1 / -1;
+}
+
+.picker-note{
+  color:var(--muted);
+  font-size:14px;
+  line-height:1.5;
+  margin:0;
+}
+
+.thumbnail-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill, minmax(96px, 1fr));
+  gap:10px;
+  max-height:520px;
+  overflow:auto;
+  padding:4px;
+}
+
+.page-thumb{
+  appearance:none;
+  background:rgba(5,5,5,0.78);
+  border:1px solid rgba(212,175,55,0.26);
+  border-radius:8px;
+  color:var(--muted);
+  cursor:pointer;
+  display:grid;
+  gap:7px;
+  padding:7px;
+  text-align:left;
+}
+
+.page-thumb img{
+  width:100%;
+  aspect-ratio:0.72;
+  object-fit:cover;
+  border-radius:5px;
+}
+
+.page-thumb span{
+  color:inherit;
+  font-size:11px;
+  font-weight:700;
+  letter-spacing:1px;
+  text-transform:uppercase;
+}
+
+.page-thumb[aria-pressed="true"]{
+  border-color:rgba(246,231,176,0.82);
+  box-shadow:0 0 0 2px rgba(212,175,55,0.22);
+  color:var(--gold-soft);
 }
 
 .studio-btn,.download-btn{
@@ -173,13 +255,12 @@ select,input{
     padding:24px;
   }
 
-  .page-grid{
-    grid-template-columns:1fr 1fr;
-  }
-}
-
-@media (max-width:480px){
-  .page-grid{
+  .duration-options{
     grid-template-columns:1fr;
+  }
+
+  .thumbnail-grid{
+    grid-template-columns:repeat(3, 1fr);
+    max-height:none;
   }
 }

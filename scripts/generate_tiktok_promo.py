@@ -52,8 +52,12 @@ def load_issue(issue_number):
     raise ValueError(f"Issue No.{issue_number} not found in {ISSUES_FILE}")
 
 
-def output_path(issue_number):
-    return ROOT / "videos" / f"lucylp-music-press-issue-{issue_number}-tiktok-promo.mp4"
+def output_path(issue_number, duration, pages):
+    if issue_number == 1 and duration == 15 and pages == [9, 14, 16, 19]:
+        return ROOT / "videos" / "lucylp-music-press-issue-1-tiktok-promo.mp4"
+
+    page_slug = "-".join(str(page) for page in pages)
+    return ROOT / "videos" / f"lucylp-music-press-issue-{issue_number}-tiktok-promo-{duration}s-p{page_slug}.mp4"
 
 
 def page_path(issue_number, page_number):
@@ -137,7 +141,7 @@ def frame_for(image, issue_number, slide_index, progress):
     return add_branding(frame, issue_number, slide_index).convert("RGB")
 
 
-def generate(issue_number, pages):
+def generate(issue_number, pages, duration):
     issue = load_issue(issue_number)
     assets = [site_path(issue["coverImage"])] + [page_path(issue_number, page) for page in pages]
     missing = [path for path in assets if not path.exists()]
@@ -145,10 +149,10 @@ def generate(issue_number, pages):
     if missing:
         raise FileNotFoundError("Missing video source files: " + ", ".join(str(path) for path in missing))
 
-    output = output_path(issue_number)
+    output = output_path(issue_number, duration, pages)
     output.parent.mkdir(parents=True, exist_ok=True)
     images = [Image.open(path) for path in assets]
-    frames_per_slide = FPS * SECONDS // len(images)
+    frames_per_slide = FPS * duration // len(images)
 
     with imageio.get_writer(
         output,
@@ -169,9 +173,10 @@ def generate(issue_number, pages):
 def main():
     parser = argparse.ArgumentParser(description="Generate a LucyLP vertical TikTok promo MP4.")
     parser.add_argument("--issue", type=int, default=1, help="Magazine issue number from data/magazine-issues.json.")
-    parser.add_argument("--pages", type=int, nargs=4, default=[9, 14, 16, 19], help="Four page numbers to include.")
+    parser.add_argument("--duration", type=int, choices=[15, 30, 60], default=15, help="Video duration in seconds.")
+    parser.add_argument("--pages", type=int, nargs="+", default=[9, 14, 16, 19], help="One or more page numbers to include.")
     args = parser.parse_args()
-    print(generate(args.issue, args.pages))
+    print(generate(args.issue, args.pages, args.duration))
 
 
 if __name__ == "__main__":

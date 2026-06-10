@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>LucyLP Video Studio</title>
   <meta name="description" content="LucyLP Video Studio creates vertical TikTok promo videos for LucyLP Music Press issues.">
-  <link rel="stylesheet" href="./video-studio.css">
+  <link rel="stylesheet" href="./video-studio.css?v=visual-pages">
 </head>
 <body>
   <main class="studio-shell">
@@ -18,7 +18,7 @@
       <div class="studio-copy">
         <p class="eyebrow">LucyLP Tools</p>
         <h1 id="studio-title">Video Studio</h1>
-        <p>Create a 15-second vertical TikTok promo from a magazine cover and four selected pages.</p>
+        <p>Create a vertical TikTok promo from a magazine cover and selected issue pages.</p>
       </div>
 
       <form class="studio-form" id="studio-form">
@@ -28,25 +28,27 @@
         </label>
 
         <fieldset>
-          <legend>Selected pages</legend>
-          <div class="page-grid">
+          <legend>Duration</legend>
+          <div class="duration-options" role="radiogroup" aria-label="Video duration">
             <label>
-              <span>Page 1</span>
-              <input type="number" name="page" min="1" value="9">
+              <input type="radio" name="duration" value="15" checked>
+              <span>15 sec</span>
             </label>
             <label>
-              <span>Page 2</span>
-              <input type="number" name="page" min="1" value="14">
+              <input type="radio" name="duration" value="30">
+              <span>30 sec</span>
             </label>
             <label>
-              <span>Page 3</span>
-              <input type="number" name="page" min="1" value="16">
-            </label>
-            <label>
-              <span>Page 4</span>
-              <input type="number" name="page" min="1" value="19">
+              <input type="radio" name="duration" value="60">
+              <span>60 sec</span>
             </label>
           </div>
+        </fieldset>
+
+        <fieldset class="page-picker-fieldset">
+          <legend>Choose pages</legend>
+          <p class="picker-note" id="picker-note">Select any issue pages to include after the cover.</p>
+          <div class="thumbnail-grid" id="thumbnail-grid" aria-live="polite"></div>
         </fieldset>
 
         <button type="submit" class="studio-btn">Generate TikTok Promo</button>
