@@ -84,6 +84,11 @@ function togglePage(pageNumber) {
 }
 
 async function detectPageCount(issueNumber) {
+  const issue = issues.find((item) => Number(item.issueNumber) === issueNumber);
+  if (issue && Number(issue.pageCount) > 0) {
+    return Number(issue.pageCount);
+  }
+
   let count = 0;
 
   for (let page = 1; page <= 80; page += 1) {
