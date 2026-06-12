@@ -95,22 +95,19 @@
             href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Flucylp.com%2Fmusic-press"
             class="share-btn"
             data-share-action="facebook"
-            target="_blank"
-            rel="noopener"
+            target="_blank" rel="noopener noreferrer"
           >Share on Facebook</a>
           <a
             href="https://twitter.com/intent/tweet?url=https%3A%2F%2Flucylp.com%2Fmusic-press&text=LucyLP%20Music%20Press%20Issue%20No.1%20%E2%80%93%20Free%20digital%20magazine%20for%20vinyl%20collectors."
             class="share-btn"
             data-share-action="x"
-            target="_blank"
-            rel="noopener"
+            target="_blank" rel="noopener noreferrer"
           >Share on X / Twitter</a>
           <a
             href="https://wa.me/?text=LucyLP%20Music%20Press%20Issue%20No.1%20%E2%80%93%20Free%20digital%20magazine%20for%20vinyl%20collectors.%20https%3A%2F%2Flucylp.com%2Fmusic-press"
             class="share-btn"
             data-share-action="whatsapp"
-            target="_blank"
-            rel="noopener"
+            target="_blank" rel="noopener noreferrer"
           >Share on WhatsApp</a>
           <button type="button" class="share-btn" data-copy-link>Copy Link</button>
         </div>
@@ -456,8 +453,12 @@
         <a href="#stories-title">Collector Stories</a>
         <a href="#collector-world-title">Collector World</a>
         <a href="#app-title">Future App</a>
+        <a href="/privacy-policy/">Privacy Policy</a>
+        <a href="/affiliate-disclosure/">Affiliate Disclosure</a>
+        <a href="/terms/">Terms</a>
+        <a href="https://www.facebook.com/profile.php?id=61590425563261" target="_blank" rel="noopener noreferrer" aria-label="LucyLP Music Press on Facebook">Facebook</a>
         <a href="#" aria-label="LucyLP Instagram coming soon">Instagram</a>
-        <a href="https://www.tiktok.com/@lucylpmusicpress" target="_blank" rel="noopener" aria-label="LucyLP Music Press on TikTok">TikTok</a>
+        <a href="https://www.tiktok.com/@lucylpmusicpress" target="_blank" rel="noopener noreferrer" aria-label="LucyLP Music Press on TikTok">TikTok</a>
         <a href="#" aria-label="LucyLP YouTube coming soon">YouTube</a>
         <a href="mailto:hello@lucylp.com">Contact</a>
       </nav>
@@ -492,7 +493,7 @@
             });
           } catch (error) {
             if (error && error.name !== 'AbortError') {
-              window.open(button.href, '_blank', 'noopener');
+              window.open(button.href, '_blank', 'noopener,noreferrer');
             }
           }
         });
@@ -589,7 +590,7 @@
             <h3>${escapeHtml(item.title)}</h3>
             <p class="live-item-meta">${escapeHtml(item.condition || 'Condition unavailable')}</p>
             <p class="live-item-price">${escapeHtml(item.price || 'Price unavailable')}</p>
-            <a href="${escapeHtml(item.url)}" class="ebay-btn" target="_blank" rel="noopener sponsored">Discover This Find</a>
+            <a href="${escapeHtml(item.url)}" class="ebay-btn" target="_blank" rel="noopener noreferrer sponsored">Discover This Find</a>
           </div>
         </article>
       `;
@@ -604,7 +605,7 @@
             <h3>${escapeHtml(item.title)}</h3>
             <p class="live-item-meta">${escapeHtml(item.condition || 'Condition unavailable')}</p>
             <p class="live-item-price">${escapeHtml(item.price || 'Price unavailable')}</p>
-            <a href="${escapeHtml(item.url)}" class="ebay-btn" target="_blank" rel="noopener sponsored">Discover This Find</a>
+            <a href="${escapeHtml(item.url)}" class="ebay-btn" target="_blank" rel="noopener noreferrer sponsored">Discover This Find</a>
           </div>
         </article>
       `;
