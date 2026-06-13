@@ -439,7 +439,7 @@ h1{
 }
 
 .homepage-collector-list{
-  padding:34px 20px 54px;
+  padding:70px 20px 78px;
   background:
     radial-gradient(circle at 18% 22%, rgba(212,175,55,0.12), transparent 28%),
     linear-gradient(180deg, #080604 0%, #050505 100%);
@@ -447,12 +447,12 @@ h1{
 
 .homepage-collector-list-inner{
   display:grid;
-  grid-template-columns:minmax(260px, 0.9fr) minmax(300px, 1fr);
-  gap:26px;
-  align-items:center;
-  width:min(1000px, 100%);
+  grid-template-columns:1fr;
+  gap:24px;
+  justify-items:center;
+  width:min(860px, 100%);
   margin:0 auto;
-  padding:26px;
+  padding:36px;
   background:rgba(8,6,5,0.74);
   border:1px solid rgba(212,175,55,0.28);
   border-radius:8px;
@@ -462,21 +462,27 @@ h1{
 .collector-list-copy{
   display:grid;
   gap:6px;
+  max-width:680px;
+  text-align:center;
 }
 
 .collector-list-copy h3{
   color:#fff;
   font-family:var(--serif);
-  font-size:22px;
+  font-size:clamp(28px, 4vw, 42px);
   line-height:1.12;
   margin:0;
 }
 
 .collector-list-copy p{
   color:#d8d0bf;
-  font-size:14px;
-  line-height:1.55;
+  font-size:16px;
+  line-height:1.65;
   margin:0;
+}
+
+.homepage-collector-list .collector-list-form{
+  max-width:600px;
 }
 
 .collector-list-form label{
@@ -2063,6 +2069,7 @@ h1{
 
   .homepage-collector-list-inner{
     grid-template-columns:1fr;
+    padding:28px 20px;
   }
 
   .share-btn{

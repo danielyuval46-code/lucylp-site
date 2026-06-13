@@ -158,19 +158,25 @@ h2{font-size:clamp(34px, 5vw, 58px)}
   opacity:0.9;
 }
 
-.reader-section,.archive-section,.collector-list-section,.about-section,.next-issue{
+.reader-section,.archive-section,.about-section{
   width:min(1180px, calc(100% - 32px));
   margin:0 auto 88px;
+}
+
+.collector-list-section,.next-issue{
+  width:min(880px, calc(100% - 40px));
+  margin:0 auto 104px;
 }
 
 .section-heading{margin-bottom:22px}
 
 .collector-list-section{
   display:grid;
-  grid-template-columns:minmax(260px, 0.8fr) minmax(320px, 1fr);
-  gap:34px;
+  grid-template-columns:1fr;
+  gap:28px;
   align-items:center;
-  padding:34px;
+  justify-items:center;
+  padding:44px;
   background:
     radial-gradient(circle at top right, rgba(246,231,176,0.1), transparent 34%),
     linear-gradient(145deg, rgba(18,13,10,0.9), rgba(7,5,4,0.96));
@@ -182,12 +188,14 @@ h2{font-size:clamp(34px, 5vw, 58px)}
 .collector-list-copy{
   display:grid;
   gap:10px;
+  max-width:700px;
+  text-align:center;
 }
 
 .collector-list-copy h2{
   color:white;
   font-family:var(--serif);
-  font-size:clamp(34px, 5vw, 54px);
+  font-size:clamp(34px, 5vw, 50px);
   line-height:1;
   margin:0;
 }
@@ -202,10 +210,13 @@ h2{font-size:clamp(34px, 5vw, 58px)}
 .collector-list-form{
   display:grid;
   gap:12px;
+  width:100%;
+  max-width:600px;
   padding:20px;
   background:rgba(5,4,3,0.68);
   border:1px solid rgba(216,176,87,0.26);
   border-radius:8px;
+  box-shadow:0 22px 58px rgba(0,0,0,0.32);
 }
 
 .collector-list-form label{
@@ -503,8 +514,19 @@ h2{font-size:clamp(34px, 5vw, 58px)}
 }
 
 .next-issue{
-  grid-template-columns:minmax(0, 1fr) 320px;
+  grid-template-columns:minmax(0, 1fr) 260px;
   align-items:center;
+  max-width:880px;
+  padding:42px;
+  border:1px solid rgba(216,176,87,0.22);
+  border-radius:8px;
+  box-shadow:0 24px 64px rgba(0,0,0,0.34);
+}
+
+.next-issue h2{
+  font-size:clamp(32px, 5vw, 48px);
+  line-height:1.05;
+  margin:0;
 }
 
 .next-issue ul{
@@ -517,12 +539,12 @@ h2{font-size:clamp(34px, 5vw, 58px)}
 }
 
 .next-issue li{
-  padding:14px;
+  padding:12px 14px;
   background:rgba(216,176,87,0.08);
   border:1px solid rgba(216,176,87,0.18);
   color:#f3ead9;
   font-family:var(--serif);
-  font-size:18px;
+  font-size:17px;
 }
 
 .next-issue img{
@@ -611,7 +633,8 @@ h2{font-size:clamp(34px, 5vw, 58px)}
 
 @media (max-width:540px){
   .press-header{justify-content:flex-start}
-  .reader-section,.archive-section,.collector-list-section,.about-section,.next-issue{width:100%;margin-bottom:56px}
+  .reader-section,.archive-section,.about-section{width:100%;margin-bottom:56px}
+  .collector-list-section,.next-issue{width:min(calc(100% - 24px), 880px);margin-bottom:64px}
   .reader-toolbar{top:45px}
   .page-count{order:5;width:100%;text-align:left}
   .press-btn{width:100%;text-align:center}
