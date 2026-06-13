@@ -6,7 +6,7 @@
   <title>LucyLP Music Press | Vinyl Collector Magazine</title>
   <meta name="description" content="Digital magazine for vinyl collectors featuring rare records, Japanese pressings, Beatles history, Led Zeppelin collectibles, collector stories and vinyl culture worldwide.">
   <link rel="canonical" href="https://lucylp.com/music-press/">
-  <link rel="stylesheet" href="./music-press.css?v=issue-archive">
+  <link rel="stylesheet" href="./music-press.css?v=collector-list">
 </head>
 <body>
   <header class="press-header">
@@ -42,6 +42,28 @@
           </a>
         </div>
       </div>
+    </section>
+
+    <section class="collector-list-section" id="collector-list" aria-labelledby="collector-list-title">
+      <div class="collector-list-copy">
+        <p class="eyebrow">Future Issues</p>
+        <h2 id="collector-list-title">Join the LucyLP Collector List</h2>
+        <p>Get future issues, collector stories, rare record features, and LucyLP updates.</p>
+      </div>
+      <form
+        class="collector-list-form"
+        data-newsletter-form
+        data-newsletter-provider="mailto"
+        novalidate
+      >
+        <label>
+          <span>Email address</span>
+          <input type="email" name="email" placeholder="collector@example.com" autocomplete="email" required>
+        </label>
+        <button type="submit">Notify Me About Issue No.2</button>
+        <p class="privacy-note">No spam. Collector updates only.</p>
+        <p class="newsletter-status" data-newsletter-status aria-live="polite"></p>
+      </form>
     </section>
 
     <section class="reader-section" id="reader" aria-labelledby="reader-title">
@@ -113,6 +135,7 @@
   <footer class="press-footer" aria-label="LucyLP footer navigation">
     <a href="/">Home</a>
     <a href="/music-press/">Music Press</a>
+    <a href="/music-press/#collector-list">Collector List</a>
     <a href="/video-studio/">Video Studio</a>
     <a href="/privacy-policy/">Privacy Policy</a>
     <a href="/affiliate-disclosure/">Affiliate Disclosure</a>
@@ -123,5 +146,6 @@
 
   <script src="./reader.js"></script>
   <script src="./issue-archive.js"></script>
+  <script src="/newsletter.js?v=collector-list"></script>
 </body>
 </html>
