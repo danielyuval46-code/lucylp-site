@@ -21,21 +21,42 @@
     return `mailto:${mailtoAddress}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
   }
 
+  function handleSignup(event) {
+    const form = event.currentTarget.closest
+      ? event.currentTarget.closest('[data-newsletter-form]')
+      : event.currentTarget;
+
+    if (!form) return;
+
+    event.preventDefault();
+
+    const emailField = form.querySelector('input[type="email"]');
+    const email = emailField ? emailField.value.trim() : '';
+
+    if (!isValidEmail(email)) {
+      setStatus(form, invalidMessage, 'error');
+      if (emailField) emailField.focus();
+      return;
+    }
+
+    setStatus(form, successMessage, 'success');
+    window.location.href = signupUrl();
+  }
+
   document.querySelectorAll('[data-newsletter-form]').forEach(function(form) {
-    form.addEventListener('submit', function(event) {
-      event.preventDefault();
+    form.noValidate = true;
+    form.addEventListener('submit', handleSignup);
 
-      const emailField = form.querySelector('input[type="email"]');
-      const email = emailField ? emailField.value.trim() : '';
+    const button = form.querySelector('button[type="submit"]');
+    if (button) {
+      button.addEventListener('click', handleSignup);
+    }
 
-      if (!isValidEmail(email)) {
-        setStatus(form, invalidMessage, 'error');
-        if (emailField) emailField.focus();
-        return;
-      }
-
-      setStatus(form, successMessage, 'success');
-      window.location.href = signupUrl();
-    });
+    const emailField = form.querySelector('input[type="email"]');
+    if (emailField) {
+      emailField.addEventListener('input', function() {
+        setStatus(form, '', '');
+      });
+    }
   });
 }());
