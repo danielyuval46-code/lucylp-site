@@ -5,9 +5,10 @@ const studioPreview = document.getElementById('studio-preview');
 const thumbnailGrid = document.getElementById('thumbnail-grid');
 const pickerNote = document.getElementById('picker-note');
 const promoGrid = document.getElementById('promo-grid');
+const durationNote = document.getElementById('duration-note');
 
 let issues = [];
-let selectedPageSet = new Set([9, 14, 16, 19]);
+let selectedPageSet = new Set([6, 7, 8]);
 
 const presetPromos = [
   {
@@ -34,6 +35,12 @@ const presetPromos = [
     duration: 15,
     path: '/videos/lucylp-music-press-issue-1-tiktok-promo-15s-p16-17-18-19.mp4',
   },
+  {
+    title: 'Download 60s Promo',
+    pages: [6, 7, 8],
+    duration: 60,
+    path: '/videos/lucylp-music-press-issue-1-tiktok-promo-60s-p6-7-8.mp4',
+  },
 ];
 
 function pagePathFor(issueNumber, pageNumber) {
@@ -58,12 +65,33 @@ function renderStatus(message, downloadUrl = '') {
   `;
 }
 
+function localCommand(issueNumber, duration, pages) {
+  return `python scripts/generate_tiktok_promo.py --issue ${issueNumber} --duration ${duration} --pages ${pages.join(' ')}`;
+}
+
 function previewPromo(promo) {
   const issue = issues.find((item) => Number(item.issueNumber) === 1);
   studioPreview.src = `${promo.path}?v=${Date.now()}`;
   studioPreview.poster = issue ? issue.coverImage : '';
   studioPreview.load();
   renderStatus(`${promo.title} is ready: ${promo.duration}-second vertical MP4 using pages ${promo.pages.join(', ')}.`, promo.path);
+}
+
+function updateDurationNote() {
+  const duration = selectedDuration();
+  const pages = selectedPages();
+
+  if (duration === 60) {
+    durationNote.textContent = 'For 60-second promos, select 6–10 pages for better pacing.';
+    if (pages.length < 6 || pages.length > 10) {
+      durationNote.textContent += ` Current selection: ${pages.length} page${pages.length === 1 ? '' : 's'}.`;
+    }
+    return;
+  }
+
+  durationNote.textContent = duration === 30
+    ? '30-second promos are the default LucyLP format.'
+    : '15-second promos work best for short social teasers.';
 }
 
 function renderPresetPromos() {
@@ -124,6 +152,7 @@ function updatePickerNote() {
   pickerNote.textContent = pages.length > 0
     ? `Selected pages: ${pages.join(', ')}`
     : 'Select at least one issue page to include after the cover.';
+  updateDurationNote();
 }
 
 function togglePage(pageNumber) {
@@ -195,8 +224,12 @@ async function loadIssues() {
 }
 
 issueSelect.addEventListener('change', async function() {
-  selectedPageSet = new Set([9, 14, 16, 19]);
+  selectedPageSet = new Set([6, 7, 8]);
   await renderThumbnails(Number(issueSelect.value));
+});
+
+studioForm.querySelectorAll('input[name="duration"]').forEach((input) => {
+  input.addEventListener('change', updateDurationNote);
 });
 
 studioForm.addEventListener('submit', async function(event) {
@@ -207,6 +240,7 @@ studioForm.addEventListener('submit', async function(event) {
   const duration = selectedDuration();
   const issue = issues.find((item) => Number(item.issueNumber) === issueNumber);
   const videoPath = videoPathFor(issueNumber, duration, pages);
+  const command = localCommand(issueNumber, duration, pages);
 
   if (pages.length === 0) {
     renderStatus('Select at least one page before generating a promo.');
@@ -218,7 +252,7 @@ studioForm.addEventListener('submit', async function(event) {
   const exists = await videoExists(videoPath);
   if (!exists) {
     renderStatus(
-      `No ready MP4 exists yet for ${issue.title} with pages ${pages.join(', ')} at ${duration} seconds. Use one of the prebuilt promo buttons below.`
+      `No ready MP4 exists yet for ${issue.title} with pages ${pages.join(', ')} at ${duration} seconds. Local generation command: ${command}`
     );
     return;
   }
@@ -226,7 +260,7 @@ studioForm.addEventListener('submit', async function(event) {
   studioPreview.src = `${videoPath}?v=${Date.now()}`;
   studioPreview.poster = issue.coverImage;
   studioPreview.load();
-  renderStatus(`Generated ${duration}-second vertical promo saved to ${videoPath}`, videoPath);
+  renderStatus(`Generated ${duration}-second vertical promo saved to ${videoPath}. Local command: ${command}`, videoPath);
 });
 
 loadIssues().catch(function(error) {

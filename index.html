@@ -111,25 +111,31 @@
           >Share on WhatsApp</a>
           <button type="button" class="share-btn" data-copy-link>Copy Link</button>
         </div>
-        <form
-          class="collector-list-form compact"
-          data-newsletter-form
-          data-newsletter-provider="mailto"
-          novalidate
-        >
-          <div class="collector-list-copy">
-            <h3>Join the LucyLP Collector List</h3>
-            <p>Get future issues, collector stories, rare record features, and LucyLP updates.</p>
-          </div>
-          <label>
-            <span>Email address</span>
-            <input type="email" name="email" placeholder="collector@example.com" autocomplete="email" required>
-          </label>
-          <button type="submit">Notify Me About Issue No.2</button>
-          <p class="privacy-note">No spam. Collector updates only.</p>
-          <p class="newsletter-status" data-newsletter-status aria-live="polite"></p>
-        </form>
       </div>
+    </div>
+  </section>
+
+  <section class="homepage-collector-list" aria-labelledby="homepage-collector-list-title">
+    <div class="homepage-collector-list-inner">
+      <div class="collector-list-copy">
+        <p class="market-kicker">Future Issues</p>
+        <h2 id="homepage-collector-list-title">Join the LucyLP Collector List</h2>
+        <p>Get future issues, collector stories, rare record features, and LucyLP updates.</p>
+      </div>
+      <form
+        class="collector-list-form"
+        data-newsletter-form
+        data-newsletter-provider="mailto"
+        novalidate
+      >
+        <label>
+          <span>Email address</span>
+          <input type="email" name="email" placeholder="collector@example.com" autocomplete="email" required>
+        </label>
+        <button type="submit">Notify Me About Issue No.2</button>
+        <p class="privacy-note">No spam. Collector updates only.</p>
+        <p class="newsletter-status" data-newsletter-status aria-live="polite"></p>
+      </form>
     </div>
   </section>
 

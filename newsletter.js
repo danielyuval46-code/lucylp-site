@@ -1,7 +1,7 @@
 (function() {
   const mailtoAddress = 'lucy@lucylp.com';
   const subject = 'LucyLP Newsletter Signup';
-  const body = 'Please add me to the LucyLP collector list.';
+  const bodyPrefix = 'Please add me to the LucyLP collector list:';
   const successMessage = 'Thanks — you’re on the LucyLP collector list.';
   const invalidMessage = 'Please enter a valid email address.';
 
@@ -17,8 +17,8 @@
     status.dataset.state = type;
   }
 
-  function signupUrl() {
-    return `mailto:${mailtoAddress}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  function signupUrl(email) {
+    return `mailto:${mailtoAddress}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(`${bodyPrefix} ${email}`)}`;
   }
 
   function handleSignup(event) {
@@ -40,7 +40,7 @@
     }
 
     setStatus(form, successMessage, 'success');
-    window.location.href = signupUrl();
+    window.location.href = signupUrl(email);
   }
 
   document.querySelectorAll('[data-newsletter-form]').forEach(function(form) {

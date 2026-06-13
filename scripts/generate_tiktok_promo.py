@@ -16,7 +16,6 @@ ISSUES_FILE = ROOT / "data" / "magazine-issues.json"
 WIDTH = 1080
 HEIGHT = 1920
 FPS = 24
-SECONDS = 15
 
 
 def font(size, bold=False):
@@ -106,13 +105,14 @@ def add_branding(frame, issue_number, slide_index):
     draw.text((112, 92), "LucyLP", font=TITLE_FONT, fill=gold)
     draw.text((112, 194), f"MUSIC PRESS ISSUE NO.{issue_number}", font=SMALL_FONT, fill=cream)
 
-    slide_text = [
+    slide_messages = [
         "Read Free",
         "Rare records. Global stories.",
         "Collector culture worldwide.",
         "Vinyl history and pressings.",
         "Read Free at LucyLP.com",
-    ][slide_index]
+    ]
+    slide_text = slide_messages[slide_index % len(slide_messages)]
 
     draw_center(draw, slide_text, 1538, SUBTITLE_FONT, cream)
     draw.rounded_rectangle((286, 1686, WIDTH - 286, 1758), radius=36, fill=(216, 176, 87, 235))

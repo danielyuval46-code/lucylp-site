@@ -438,6 +438,27 @@ h1{
   margin-top:2px;
 }
 
+.homepage-collector-list{
+  padding:34px 20px 54px;
+  background:
+    radial-gradient(circle at 18% 22%, rgba(212,175,55,0.12), transparent 28%),
+    linear-gradient(180deg, #080604 0%, #050505 100%);
+}
+
+.homepage-collector-list-inner{
+  display:grid;
+  grid-template-columns:minmax(260px, 0.9fr) minmax(300px, 1fr);
+  gap:26px;
+  align-items:center;
+  width:min(1000px, 100%);
+  margin:0 auto;
+  padding:26px;
+  background:rgba(8,6,5,0.74);
+  border:1px solid rgba(212,175,55,0.28);
+  border-radius:8px;
+  box-shadow:0 22px 58px rgba(0,0,0,0.32);
+}
+
 .collector-list-copy{
   display:grid;
   gap:6px;
@@ -2038,6 +2059,10 @@ h1{
 
   .collector-list-form.compact{
     max-width:320px;
+  }
+
+  .homepage-collector-list-inner{
+    grid-template-columns:1fr;
   }
 
   .share-btn{
