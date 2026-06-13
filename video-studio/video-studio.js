@@ -12,6 +12,30 @@ let selectedPageSet = new Set([6, 7, 8]);
 
 const presetPromos = [
   {
+    title: 'Beatles 60s Promo',
+    pages: [6, 7, 8],
+    duration: 60,
+    path: '/videos/lucylp-music-press-issue-1-tiktok-promo-60s-p6-7-8.mp4',
+  },
+  {
+    title: 'RL Zeppelin 60s Promo',
+    pages: [9, 10],
+    duration: 60,
+    path: '/videos/lucylp-music-press-issue-1-tiktok-promo-60s-p9-10.mp4',
+  },
+  {
+    title: 'OBI Japan 60s Promo',
+    pages: [14, 15],
+    duration: 60,
+    path: '/videos/lucylp-music-press-issue-1-tiktok-promo-60s-p14-15.mp4',
+  },
+  {
+    title: 'Collector Stories 60s Promo',
+    pages: [16, 17, 18, 19],
+    duration: 60,
+    path: '/videos/lucylp-music-press-issue-1-tiktok-promo-60s-p16-17-18-19.mp4',
+  },
+  {
     title: 'Beatles Promo',
     pages: [6, 7, 8],
     duration: 15,
@@ -35,12 +59,6 @@ const presetPromos = [
     duration: 15,
     path: '/videos/lucylp-music-press-issue-1-tiktok-promo-15s-p16-17-18-19.mp4',
   },
-  {
-    title: 'Download 60s Promo',
-    pages: [6, 7, 8],
-    duration: 60,
-    path: '/videos/lucylp-music-press-issue-1-tiktok-promo-60s-p6-7-8.mp4',
-  },
 ];
 
 function pagePathFor(issueNumber, pageNumber) {
@@ -58,10 +76,16 @@ function videoPathFor(issueNumber, duration, pages) {
   return detailedPath;
 }
 
-function renderStatus(message, downloadUrl = '') {
+function renderStatus(message, downloadUrl = '', command = '') {
   studioResult.innerHTML = `
     <p>${message}</p>
     ${downloadUrl ? `<a class="download-btn" href="${downloadUrl}" download>Download MP4</a>` : ''}
+    ${command ? `
+      <details class="advanced-command">
+        <summary>Advanced local command</summary>
+        <code>${command}</code>
+      </details>
+    ` : ''}
   `;
 }
 
@@ -74,7 +98,11 @@ function previewPromo(promo) {
   studioPreview.src = `${promo.path}?v=${Date.now()}`;
   studioPreview.poster = issue ? issue.coverImage : '';
   studioPreview.load();
-  renderStatus(`${promo.title} is ready: ${promo.duration}-second vertical MP4 using pages ${promo.pages.join(', ')}.`, promo.path);
+  renderStatus(
+    `${promo.title} is ready: ${promo.duration}-second vertical MP4 using pages ${promo.pages.join(', ')}.`,
+    promo.path,
+    localCommand(1, promo.duration, promo.pages)
+  );
 }
 
 function updateDurationNote() {
@@ -252,7 +280,9 @@ studioForm.addEventListener('submit', async function(event) {
   const exists = await videoExists(videoPath);
   if (!exists) {
     renderStatus(
-      `No ready MP4 exists yet for ${issue.title} with pages ${pages.join(', ')} at ${duration} seconds. Local generation command: ${command}`
+      `No ready MP4 exists yet for ${issue.title} with pages ${pages.join(', ')} at ${duration} seconds. Choose one of the ready MP4 presets, or open the advanced command below.`,
+      '',
+      command
     );
     return;
   }
@@ -260,7 +290,7 @@ studioForm.addEventListener('submit', async function(event) {
   studioPreview.src = `${videoPath}?v=${Date.now()}`;
   studioPreview.poster = issue.coverImage;
   studioPreview.load();
-  renderStatus(`Generated ${duration}-second vertical promo saved to ${videoPath}. Local command: ${command}`, videoPath);
+  renderStatus(`Generated ${duration}-second vertical promo saved to ${videoPath}.`, videoPath, command);
 });
 
 loadIssues().catch(function(error) {
