@@ -159,7 +159,7 @@ def generate(issue_number, pages, duration):
         output,
         fps=FPS,
         codec="libx264",
-        quality=8,
+        quality=7,
         macro_block_size=1,
         ffmpeg_params=["-pix_fmt", "yuv420p", "-movflags", "+faststart"],
     ) as writer:
