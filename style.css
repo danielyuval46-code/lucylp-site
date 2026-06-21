@@ -432,6 +432,29 @@ h1{
   overflow:hidden;
 }
 
+.guide-book-image-cover{
+  background:#0b0906;
+  padding:0;
+}
+
+.guide-book-image-cover::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:linear-gradient(115deg, rgba(255,255,255,0.18), transparent 28%, transparent 72%, rgba(0,0,0,0.24));
+  pointer-events:none;
+  z-index:2;
+}
+
+.guide-book-image-cover img{
+  display:block;
+  height:100%;
+  min-height:250px;
+  object-fit:cover;
+  object-position:center top;
+  width:100%;
+}
+
 .guide-book-cover::after{
   content:"";
   position:absolute;
@@ -2144,6 +2167,10 @@ h1{
     min-height:232px;
   }
 
+  .guide-book-image-cover img{
+    min-height:232px;
+  }
+
   .guide-book-cover strong{
     font-size:18px;
   }
@@ -2416,6 +2443,14 @@ h1{
   .guide-book-cover{
     min-height:198px;
     padding:14px 10px;
+  }
+
+  .guide-book-image-cover{
+    padding:0;
+  }
+
+  .guide-book-image-cover img{
+    min-height:198px;
   }
 
   .guide-book-cover strong{
