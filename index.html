@@ -2,265 +2,191 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-  <title>LucyLP | Books That Build Curiosity</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LucyLP | We Build Curiosity</title>
   <meta
     name="description"
-    content="LucyLP is a content-first publishing platform for curious kids, families, and collectors. Explore books, stories, free printables, and vintage learning guides."
+    content="LucyLP is a vintage-style publishing platform for curiosity-building books, free printables, collector stories, and family learning."
   >
-  <meta property="og:title" content="LucyLP | Books That Build Curiosity">
+  <meta property="og:title" content="LucyLP | We Build Curiosity">
   <meta
     property="og:description"
-    content="We don't sell books. We build curiosity. Explore LucyLP books, articles, free printables, and collector resources."
+    content="We don't sell books. We build curiosity. Explore Baby Vintage School, My First Vinyl, Collector Guides, and future LucyLP series."
   >
-
   <link rel="canonical" href="https://lucylp.com/">
-  <link rel="stylesheet" href="style.css?v=website-engine-v2">
+  <link rel="stylesheet" href="style.css?v=website-v3">
 </head>
 
 <body>
-  <header class="site-header" id="top">
-    <a class="brand" href="#top" aria-label="LucyLP home">
-      <span class="brand-mark">LucyLP</span>
-      <span class="brand-line">Guides for curious minds</span>
+  <header class="topbar" id="top">
+    <a class="logo" href="#top" aria-label="LucyLP home">
+      <img src="assets/v3/lucylp-logo.png" alt="LucyLP Guides for curious minds">
     </a>
 
-    <nav class="site-nav" aria-label="Main menu">
-      <a href="#books">Books</a>
-      <a href="#blog">Blog</a>
-      <a href="#free">Free</a>
-      <a href="#about">About</a>
-      <a href="#collector-hub">Collector Hub</a>
+    <nav class="main-menu" aria-label="Main menu">
+      <a href="#books"><span class="menu-icon book-icon" aria-hidden="true"></span>Books</a>
+      <a href="#blog"><span class="menu-icon blog-icon" aria-hidden="true"></span>Blog</a>
+      <a href="#free"><span class="menu-icon gift-icon" aria-hidden="true"></span>Free</a>
+      <a href="#about"><span class="menu-icon heart-icon" aria-hidden="true"></span>About</a>
+      <a class="collector-menu" href="#collector-hub">Collector Hub <small>eBay Picks</small></a>
     </nav>
+
+    <div class="header-actions" aria-label="Site actions">
+      <button type="button" aria-label="Search">Search</button>
+      <button type="button" aria-label="Language selector">EN</button>
+      <button type="button" aria-label="Cart"><span class="cart-count">0</span>Bag</button>
+    </div>
   </header>
 
-  <main>
+  <main class="page-shell">
     <section class="hero" aria-labelledby="hero-title">
+      <div class="hero-illustration" aria-hidden="true">
+        <img src="assets/v3/hero-lucy-viking.png" alt="">
+      </div>
+
       <div class="hero-copy">
-        <p class="eyebrow">LucyLP Publishing</p>
-        <h1 id="hero-title">We don't sell books.<br>We build curiosity.</h1>
-        <p>
+        <p>LucyLP Publishing</p>
+        <h1 id="hero-title">We don't<br>sell books.<br><span>We build<br>curiosity.</span></h1>
+        <p class="hero-text">
           Stories, printables, and learning books that turn vintage objects,
           music, collecting, and everyday history into small adventures.
         </p>
-        <a class="primary-button" href="#books">Explore Books</a>
+        <a class="dark-button" href="#books">Explore Books <span aria-hidden="true">-&gt;</span></a>
       </div>
-      <div class="hero-visual" aria-label="Featured LucyLP books">
-        <img
-          src="BabyVintageSchool_Cameras_EN/Cover.jpg"
-          alt="Baby Vintage School Cameras book cover"
-        >
-        <div>
-          <strong>Featured Series</strong>
-          <span>Baby Vintage School</span>
+
+      <aside class="featured-book" aria-label="Featured book">
+        <img class="book-mockup" src="assets/v3/hero-book-cameras.png" alt="Baby Vintage School Cameras book mockup">
+        <div class="featured-panel">
+          <p>Featured Series</p>
+          <h2>Baby Vintage School</h2>
+          <p>Discover the amazing cameras kids used long before smartphones.</p>
+          <ul>
+            <li>20 Vintage Objects</li>
+            <li>Stories &amp; Activities</li>
+            <li>Digital Download</li>
+            <li>Ages 6+</li>
+          </ul>
+          <a href="#books">View This Book <span aria-hidden="true">-&gt;</span></a>
         </div>
-      </div>
+      </aside>
     </section>
 
-    <section class="section books-section" id="books" aria-labelledby="books-title">
-      <div class="section-heading">
-        <p class="eyebrow">Books</p>
-        <h2 id="books-title">LucyLP Series</h2>
-        <p>Every series starts with a question and leads toward a product only when the story is ready.</p>
-      </div>
+    <section class="content-band" aria-label="LucyLP books and collector hub">
+      <section class="books-panel" id="books" aria-labelledby="books-title">
+        <div class="panel-heading">
+          <h2 id="books-title"><span class="heading-icon" aria-hidden="true"></span>Our Books &amp; Guides</h2>
+          <a href="#books">View All Books <span aria-hidden="true">-&gt;</span></a>
+        </div>
 
-      <div class="series-grid">
-        <article class="series-card featured-card">
-          <img src="BabyVintageSchool_Cameras_EN/Cover.jpg" alt="Baby Vintage School Cameras cover">
-          <div>
-            <p class="card-label">Available now</p>
+        <div class="book-grid">
+          <article class="book-card">
+            <img src="assets/v3/book-baby-vintage.png" alt="Baby Vintage School book card">
             <h3>Baby Vintage School</h3>
-            <p>Vintage objects explained through stories, facts, guessing games, and printable activities.</p>
-            <a href="#product-cameras">Read the product story</a>
-          </div>
-        </article>
-
-        <article class="series-card">
-          <h3>My First Vinyl</h3>
-          <p>Beginner-friendly guides for record lovers, music families, and first collections.</p>
-          <a href="#blog">Read vinyl articles</a>
-        </article>
-
-        <article class="series-card">
-          <h3>Collector Guides</h3>
-          <p>Practical guides for understanding value, condition, pressings, and collector culture.</p>
-          <a href="#collector-hub">Visit Collector Hub</a>
-        </article>
-
-        <article class="series-card">
-          <h3>Future Series</h3>
-          <p>Radios, telephones, typewriters, aviation, space, and more curiosity paths are coming.</p>
-          <a href="#free">Try a free page</a>
-        </article>
-      </div>
-    </section>
-
-    <section class="section blog-section" id="blog" aria-labelledby="blog-title">
-      <div class="section-heading">
-        <p class="eyebrow">Blog</p>
-        <h2 id="blog-title">The center of LucyLP</h2>
-        <p>Articles teach first. Products appear naturally when they help the reader go deeper.</p>
-      </div>
-
-      <div class="article-layout">
-        <article class="article-feature">
-          <div class="article-image">
-            <img src="BabyVintageSchool_Cameras_EN/Mockup_Tablet.png" alt="Baby Vintage School Cameras tablet preview">
-          </div>
-          <div class="article-copy">
-            <p class="card-label">Featured article</p>
-            <h3>How Cameras Worked Before Smartphones</h3>
-            <p>
-              Before phones lived in pockets, cameras were boxes of glass, film, light,
-              patience, and surprise. This article introduces children to the magic of
-              taking a photograph when every picture mattered.
-            </p>
-            <p class="fact"><strong>Interesting fact:</strong> Early family cameras often made people wait days before they saw their photos.</p>
-            <a class="text-link" href="blog/how-cameras-worked-before-smartphones.html">Read article</a>
-            <a class="secondary-button" href="#product-cameras">Related book: Baby Vintage School - Cameras</a>
-          </div>
-        </article>
-
-        <div class="article-list" aria-label="Article templates and story ideas">
-          <article>
-            <span>Template</span>
-            <h3>Why Radios Felt Like Magic</h3>
-            <p>Story, interesting fact, CTA, and related book structure ready for Radios.</p>
+            <p>Ages 4-10</p>
           </article>
-          <article>
-            <span>Template</span>
-            <h3>What Telephones Taught Families</h3>
-            <p>A content path that naturally leads to a future Telephones book.</p>
+
+          <article class="book-card">
+            <img src="assets/v3/book-my-first-vinyl.png" alt="My First Vinyl book card">
+            <h3>My First Vinyl</h3>
+            <p>Ages 6-12</p>
           </article>
-          <article>
-            <span>Template</span>
-            <h3>How Vinyl Records Hold Sound</h3>
-            <p>A bridge from music curiosity to My First Vinyl and collector guides.</p>
+
+          <article class="book-card">
+            <img src="assets/v3/book-collector-guides.png" alt="Collector Guides book card">
+            <h3>Collector Guides</h3>
+            <p>For Collectors</p>
+          </article>
+
+          <article class="book-card">
+            <img src="assets/v3/book-future-series.png" alt="Future Series book card">
+            <h3>Future Series</h3>
+            <p>Coming Soon</p>
           </article>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <section class="section free-section" id="free" aria-labelledby="free-title">
-      <div class="section-heading">
-        <p class="eyebrow">Free</p>
-        <h2 id="free-title">Start with a printable</h2>
-        <p>Free resources are designed as gentle entry points into LucyLP books and articles.</p>
-      </div>
+      <section class="collector-panel" id="collector-hub" aria-labelledby="collector-title">
+        <div class="collector-heading">
+          <h2 id="collector-title">Collector Hub <span>eBay Picks</span></h2>
+          <a href="https://www.ebay.com/" target="_blank" rel="noopener noreferrer sponsored">View All <span aria-hidden="true">-&gt;</span></a>
+        </div>
 
-      <div class="free-grid">
-        <article>
-          <h3>Printable Pages</h3>
-          <p>Single activity pages from LucyLP learning worlds.</p>
-        </article>
-        <article>
-          <h3>Mini Books</h3>
-          <p>Short curiosity booklets for quick learning sessions.</p>
-        </article>
-        <article>
-          <h3>Coloring Pages</h3>
-          <p>Vintage objects and collector scenes for creative practice.</p>
-        </article>
-        <article>
-          <h3>Certificates</h3>
-          <p>Completion certificates for families, classrooms, and little explorers.</p>
-        </article>
-        <article>
-          <h3>Vintage Quiz</h3>
-          <p>Guess what old objects were used for before modern technology.</p>
-        </article>
-      </div>
-    </section>
-
-    <section class="section product-story" id="product-cameras" aria-labelledby="product-title">
-      <div class="product-media">
-        <img src="BabyVintageSchool_Cameras_EN/Mockup_Front.png" alt="Baby Vintage School Cameras front mockup">
-      </div>
-      <div class="product-copy">
-        <p class="eyebrow">Product Story</p>
-        <h2 id="product-title">Baby Vintage School - Cameras</h2>
-        <p>
-          This product page reads like an article because the point is not a shelf
-          of products. The point is a path: what cameras were, how they worked,
-          why families used them, and how kids can notice technology changing.
-        </p>
-
-        <div class="product-steps" aria-label="Product page structure">
+        <div class="pick-grid">
           <article>
-            <strong>Story</strong>
-            <span>Why cameras mattered before smartphones.</span>
+            <img src="assets/v3/ebay-pick-1.png" alt="Pink Floyd collector pick">
+            <h3>Pink Floyd<br>of 6oa Moon<br>(Japan Press)</h3>
+            <p>$89.99</p>
           </article>
           <article>
-            <strong>Preview</strong>
-            <span>Cover, welcome page, and three object pages.</span>
+            <img src="assets/v3/ebay-pick-2.png" alt="The Beatles collector pick">
+            <h3>The Beatles<br>Abbey Road<br>(UK Press)</h3>
+            <p>$64.99</p>
           </article>
           <article>
-            <strong>Reviews</strong>
-            <span>Space for parent, teacher, and collector feedback.</span>
+            <img src="assets/v3/ebay-pick-3.png" alt="Led Zeppelin collector pick">
+            <h3>Led Zeppelin<br>IV<br>(US Press)</h3>
+            <p>$79.99</p>
           </article>
           <article>
-            <strong>Download</strong>
-            <span>Digital product delivery after the reader understands the book.</span>
+            <img src="assets/v3/ebay-pick-4.png" alt="Queen collector pick">
+            <h3>Queen<br>A Night At<br>The Opera</h3>
+            <p>$74.99</p>
           </article>
         </div>
 
-        <a class="primary-button" href="BabyVintageSchool_Cameras_EN/BabyVintageSchool_Cameras_EN_Preview.pdf">Open Preview PDF</a>
-      </div>
+        <div class="collector-actions">
+          <a class="orange-button" href="https://www.ebay.com/" target="_blank" rel="noopener noreferrer sponsored">Browse eBay Picks <span aria-hidden="true">-&gt;</span></a>
+          <strong>eBay</strong>
+        </div>
+      </section>
     </section>
 
-    <section class="section about-section" id="about" aria-labelledby="about-title">
-      <div class="mission-card">
-        <p class="eyebrow">About</p>
-        <h2 id="about-title">LucyLP mission</h2>
-        <blockquote>
-          We don't sell books.<br>
-          We build curiosity.
-        </blockquote>
-        <p>
-          LucyLP creates learning worlds where children, families, and collectors
-          can notice ordinary objects again. A camera becomes a story. A record
-          becomes a memory. A guide becomes a way to ask better questions.
-        </p>
-      </div>
+    <section class="hidden-content" id="blog" aria-labelledby="blog-title">
+      <h2 id="blog-title">Blog</h2>
+      <p>Article templates connect every story to one related LucyLP product.</p>
     </section>
 
-    <section class="section collector-hub" id="collector-hub" aria-labelledby="collector-title">
-      <div class="section-heading">
-        <p class="eyebrow">Collector Hub</p>
-        <h2 id="collector-title">Collector tools, lighter touch</h2>
-        <p>Collector content stays useful, but the site now gives most of its space to books and articles.</p>
-      </div>
+    <section class="hidden-content" id="free" aria-labelledby="free-title">
+      <h2 id="free-title">Free</h2>
+      <p>Printable pages, mini books, coloring pages, certificates, and vintage quizzes.</p>
+    </section>
 
-      <div class="collector-grid">
-        <article>
-          <h3>Value Notes</h3>
-          <p>Simple guidance for condition, rarity, editions, and collector signals.</p>
-        </article>
-        <article>
-          <h3>eBay Finds</h3>
-          <p>A smaller curated area for discovery, not the center of the website.</p>
-          <a class="text-link" href="https://www.ebay.com/" target="_blank" rel="noopener noreferrer sponsored">Open eBay</a>
-        </article>
-        <article>
-          <h3>Collector Stories</h3>
-          <p>Articles about why people keep, remember, and pass down objects.</p>
-        </article>
-      </div>
+    <section class="hidden-content" id="about" aria-labelledby="about-title">
+      <h2 id="about-title">About</h2>
+      <p>We don't sell books. We build curiosity.</p>
     </section>
   </main>
 
-  <footer class="site-footer">
-    <strong>LucyLP</strong>
-    <nav aria-label="Footer navigation">
-      <a href="#books">Books</a>
-      <a href="#blog">Blog</a>
-      <a href="#free">Free</a>
-      <a href="#about">About</a>
-      <a href="#collector-hub">Collector Hub</a>
-    </nav>
-    <p>Built locally for Daniel approval. Not published.</p>
+  <footer class="footer-strip">
+    <article>
+      <span class="footer-icon download-icon" aria-hidden="true"></span>
+      <div>
+        <h2>Instant Digital Download</h2>
+        <p>Start reading right away.</p>
+      </div>
+    </article>
+    <article>
+      <span class="footer-icon footer-heart" aria-hidden="true"></span>
+      <div>
+        <h2>Made with Curiosity</h2>
+        <p>Books that inspire wonder.</p>
+      </div>
+    </article>
+    <article>
+      <span class="footer-icon globe-icon" aria-hidden="true"></span>
+      <div>
+        <h2>Available in 5 Languages</h2>
+        <p>EN - ES - DE - FR - HE</p>
+      </div>
+    </article>
+    <article>
+      <span class="footer-icon shield-icon" aria-hidden="true"></span>
+      <div>
+        <h2>Safe &amp; Secure Checkout</h2>
+        <p>Powered by Lemon Squeezy</p>
+      </div>
+    </article>
   </footer>
 </body>
 
