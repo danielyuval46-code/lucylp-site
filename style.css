@@ -52,6 +52,10 @@ a {
   color: var(--cream);
 }
 
+.topbar > * {
+  min-width: 0;
+}
+
 .logo img {
   width: 276px;
   height: 92px;
@@ -60,6 +64,7 @@ a {
 
 .main-menu {
   display: flex;
+  flex-wrap: wrap;
   justify-content: center;
   align-items: center;
   gap: clamp(20px, 4vw, 48px);
@@ -376,7 +381,7 @@ h1 span {
 
 .content-band {
   display: grid;
-  grid-template-columns: 57% 43%;
+  grid-template-columns: minmax(0, 1.32fr) minmax(0, 1fr);
   gap: 26px;
   padding: 0 24px 0 56px;
   border-bottom: 1px solid rgba(105, 65, 20, 0.18);
@@ -537,10 +542,13 @@ h1 span {
 
 .hidden-content {
   position: absolute;
-  left: -10000px;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
   width: 1px;
   height: 1px;
+  margin: -1px;
   overflow: hidden;
+  white-space: nowrap;
 }
 
 .footer-strip {

@@ -1,0 +1,69 @@
+%PDF-1.4
+% LucyLP Brand Guide
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [3 0 R] /Count 1 >>
+endobj
+3 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Resources << /Font << /F1 4 0 R >> >> /Contents 5 0 R >>
+endobj
+4 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>
+endobj
+5 0 obj
+<< /Length 684 >>
+stream
+BT
+/F1 24 Tf
+72 760 Td
+(LucyLP Brand Guide) Tj
+/F1 11 Tf
+0 -38 Td
+(Official master logo assets) Tj
+0 -18 Td
+() Tj
+0 -18 Td
+(Primary logo: brand/LucyLP_Logo_Master.svg) Tj
+0 -18 Td
+(Primary logo PNG: brand/LucyLP_Logo_Master.png) Tj
+0 -18 Td
+(Icon: brand/LucyLP_Logo_Icon.svg) Tj
+0 -18 Td
+(Favicon: brand/LucyLP_Favicon.svg) Tj
+0 -18 Td
+() Tj
+0 -18 Td
+(Logo contents:) Tj
+0 -18 Td
+(- Viking shield) Tj
+0 -18 Td
+(- LucyLP wordmark) Tj
+0 -18 Td
+(- Guides for Curious Minds tagline) Tj
+0 -18 Td
+() Tj
+0 -18 Td
+(Implementation rule:) Tj
+0 -18 Td
+(Use the master logo as one unified brand asset.) Tj
+0 -18 Td
+(Do not rebuild the logo from separate HTML text or image pieces.) Tj
+0 -18 Td
+ET
+endstream
+endobj
+xref
+0 6
+0000000000 65535 f 
+0000000030 00000 n 
+0000000079 00000 n 
+0000000136 00000 n 
+0000000262 00000 n 
+0000000332 00000 n 
+trailer
+<< /Size 6 /Root 1 0 R >>
+startxref
+1067
+%%EOF
