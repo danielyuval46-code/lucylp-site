@@ -3,67 +3,25 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>The World of LucyLP</title>
-  <meta name="description" content="Choose your path into the world of LucyLP: Vinyl Records or Manga.">
-  <link rel="stylesheet" href="/department-site.css?v=20260713-1">
+  <title>LucyLP World Board Prototype</title>
+  <style>
+    *{box-sizing:border-box}
+    html,body{width:100%;height:100%;margin:0;background:#171009;overflow:hidden}
+    main{position:relative;width:100vw;height:100vh}
+    img{display:block;width:100%;height:100%;object-fit:fill;user-select:none;-webkit-user-drag:none}
+    .world-link{position:absolute;display:block;background:transparent;text-indent:-9999px;overflow:hidden}
+    .world-link:focus-visible{outline:4px solid #f0a33b;outline-offset:3px}
+    .blog-link{left:38%;top:18%;width:31%;height:62%}
+    .vinyl-link{left:12%;top:39%;width:26%;height:29%}
+    .manga-link{left:70%;top:41%;width:22%;height:28%}
+  </style>
 </head>
 <body>
-  <header class="site-header">
-    <div class="header-inner">
-      <a class="brand-link" href="/" aria-label="LucyLP home">
-        <img src="/brand/LucyLP_Guides_Header_Logo.png?v=20260713-1" alt="LucyLP Guides">
-      </a>
-      <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="Open navigation">☰</button>
-      <nav class="site-nav" id="site-nav" aria-label="Primary navigation">
-        <a href="/">Home</a>
-        <a href="/world/" aria-current="page">World</a>
-        <a href="/vinyl/">Vinyl</a>
-        <a href="/manga/">Manga</a>
-      </nav>
-    </div>
-  </header>
-
-  <main class="world-main">
-    <header class="world-intro">
-      <p class="section-kicker">Choose your path</p>
-      <h1>The World of LucyLP</h1>
-      <p>Two collections. Two ways into the story. Follow the sound of rare records or open the next illustrated adventure.</p>
-    </header>
-
-    <div class="world-entries" aria-label="LucyLP departments">
-      <article class="world-entry">
-        <img src="/assets/departments/vinyl-banner-approved.png?v=20260713-1" alt="Lucy’s Vinyl Finds — rare records and real stories">
-        <div class="world-entry-copy">
-          <p class="section-kicker">Records &amp; stories</p>
-          <h2>Vinyl Records</h2>
-          <p>Japanese pressings, limited editions and records with stories worth keeping.</p>
-          <a class="world-entry-link" href="/vinyl/">Enter Vinyl Records →</a>
-        </div>
-      </article>
-
-      <article class="world-entry">
-        <img src="/assets/departments/manga-banner-approved.png?v=20260713-1" alt="Manga Adventures — stories that inspire and worlds that stay">
-        <div class="world-entry-copy">
-          <p class="section-kicker">Illustrated worlds</p>
-          <h2>Manga</h2>
-          <p>Classic series, Japanese originals and collectible stories from Japan.</p>
-          <a class="world-entry-link" href="/manga/">Enter Manga →</a>
-        </div>
-      </article>
-    </div>
+  <main aria-label="LucyLP World Board">
+    <img src="WEB002.png" alt="Welcome to LucyLP World Board">
+    <a class="world-link blog-link" href="/blog/how-cameras-worked-before-smartphones.html" aria-label="Blog and Community">Blog &amp; Community</a>
+    <a class="world-link vinyl-link" href="/vinyl/" aria-label="Vinyl Finds">Vinyl Finds</a>
+    <a class="world-link manga-link" href="/manga/" aria-label="Manga and Japan Finds">Manga &amp; Japan Finds</a>
   </main>
-
-  <footer class="site-footer">
-    <div class="footer-inner">
-      <p>LucyLP — choose a path into the story.</p>
-      <nav class="footer-nav" aria-label="Footer navigation">
-        <a href="/">Home</a>
-        <a href="/world/">World</a>
-        <a href="/vinyl/">Vinyl</a>
-        <a href="/manga/">Manga</a>
-      </nav>
-    </div>
-  </footer>
-  <script src="/department-site.js?v=20260713-1"></script>
 </body>
 </html>

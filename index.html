@@ -15,16 +15,15 @@
     }
 
     body {
-      display: grid;
-      place-items: center;
-      min-height: 100vh;
-      overflow-x: hidden;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
     }
 
     .portal-canvas {
       position: relative;
-      width: min(100vw, 1366px);
-      aspect-ratio: 1366 / 768;
+      width: 100vw;
+      height: 100vh;
       overflow: hidden;
       background: #e5cc98;
     }
@@ -39,9 +38,9 @@
       position: absolute;
       z-index: 1;
       left: 85.333%;
-      top: 3.593%;
+      top: 5.2%;
       width: 12.805%;
-      height: 34.388%;
+      height: 22.8%;
       pointer-events: none;
     }
 
@@ -77,9 +76,9 @@
       position: absolute;
       z-index: 2;
       left: 85.333%;
-      top: 3.593%;
+      top: 5.2%;
       width: 12.805%;
-      height: 34.388%;
+      height: 22.8%;
       overflow: hidden;
       background: transparent;
       -webkit-mask-image: radial-gradient(ellipse at center, #000 0 48%, rgba(0, 0, 0, 0.9) 58%, rgba(0, 0, 0, 0.38) 76%, transparent 100%);
@@ -108,9 +107,9 @@
       position: absolute;
       z-index: 3;
       left: 84.75%;
-      top: 2.8%;
+      top: 4.4%;
       width: 14.1%;
-      height: 36%;
+      height: 24.4%;
       overflow: visible;
       pointer-events: none;
     }
@@ -226,16 +225,16 @@
 </head>
 <body>
   <main class="portal-canvas" aria-label="LucyLP story portal">
-    <img class="portal-master" src="assets/portal/WEB001.svg?v=20260713-1" alt="LucyLP illustrated portal into the Gate 70 story world.">
+    <img class="portal-master" src="assets/portal/WEB001.svg" alt="LucyLP illustrated portal into the Gate 70 story world.">
 
     <div class="compass-glow" aria-hidden="true"></div>
 
     <div class="compass-motion" aria-hidden="true">
-      <img class="compass-poster" src="assets/portal/LucyLP_Memory_Compass_Portal_Poster.png?v=20260713-1" alt="">
+      <img class="compass-poster" src="assets/portal/LucyLP_Memory_Compass_Portal_Poster.png" alt="">
       <video
         id="memory-compass"
-        src="assets/portal/LucyLP_Memory_Compass_Portal_Web.mp4?v=20260713-1"
-        poster="assets/portal/LucyLP_Memory_Compass_Portal_Poster.png?v=20260713-1"
+        src="assets/portal/LucyLP_Memory_Compass_Portal_Web.mp4"
+        poster="assets/portal/LucyLP_Memory_Compass_Portal_Poster.png"
         autoplay
         muted
         loop
