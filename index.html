@@ -1,198 +1,326 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>LucyLP | We Build Curiosity</title>
-  <meta
-    name="description"
-    content="LucyLP is a vintage-style publishing platform for curiosity-building books, free printables, collector stories, and family learning."
-  >
-  <meta property="og:title" content="LucyLP | We Build Curiosity">
-  <meta
-    property="og:description"
-    content="We don't sell books. We build curiosity. Explore Baby Vintage School, My First Vinyl, Collector Guides, and future LucyLP series."
-  >
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://lucylp.com/">
-  <meta property="og:image" content="https://lucylp.com/assets/v3/hero-book-cameras.png">
-  <meta name="twitter:card" content="summary_large_image">
-  <link rel="canonical" href="https://lucylp.com/">
-  <link rel="icon" type="image/svg+xml" href="brand/LucyLP_Favicon.svg">
-  <link rel="stylesheet" href="style.css?v=website-v3">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>LucyLP WEB001 Portal Prototype</title>
+  <style>
+    * { box-sizing: border-box; }
+
+    html,
+    body {
+      margin: 0;
+      min-height: 100%;
+      background: #171009;
+    }
+
+    body {
+      display: grid;
+      place-items: center;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    .portal-canvas {
+      position: relative;
+      width: min(100vw, 1366px);
+      aspect-ratio: 1366 / 768;
+      overflow: hidden;
+      background: #e5cc98;
+    }
+
+    .portal-master {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+
+    .compass-glow {
+      position: absolute;
+      z-index: 1;
+      left: 85.333%;
+      top: 3.593%;
+      width: 12.805%;
+      height: 34.388%;
+      pointer-events: none;
+    }
+
+    .compass-glow::before,
+    .compass-glow::after {
+      content: "";
+      position: absolute;
+      inset: -7% -14%;
+      border-radius: 45% / 30%;
+      background:
+        radial-gradient(ellipse at center,
+          rgba(255, 240, 187, 0.18) 0 34%,
+          rgba(72, 214, 210, 0.2) 48%,
+          rgba(39, 183, 191, 0.12) 61%,
+          transparent 78%);
+      filter: blur(9px);
+      animation: compass-glow-pulse 7s ease-in-out infinite;
+    }
+
+    .compass-glow::after {
+      inset: -2% -8%;
+      background:
+        radial-gradient(ellipse at center,
+          transparent 44%,
+          rgba(205, 153, 64, 0.22) 58%,
+          rgba(229, 202, 139, 0.1) 69%,
+          transparent 80%);
+      filter: blur(5px);
+      animation-delay: -3.5s;
+    }
+
+    .compass-motion {
+      position: absolute;
+      z-index: 2;
+      left: 85.333%;
+      top: 3.593%;
+      width: 12.805%;
+      height: 34.388%;
+      overflow: hidden;
+      background: transparent;
+      -webkit-mask-image: radial-gradient(ellipse at center, #000 0 48%, rgba(0, 0, 0, 0.9) 58%, rgba(0, 0, 0, 0.38) 76%, transparent 100%);
+      mask-image: radial-gradient(ellipse at center, #000 0 48%, rgba(0, 0, 0, 0.9) 58%, rgba(0, 0, 0, 0.38) 76%, transparent 100%);
+      -webkit-mask-repeat: no-repeat;
+      mask-repeat: no-repeat;
+      -webkit-mask-size: 100% 100%;
+      mask-size: 100% 100%;
+    }
+
+    .compass-poster,
+    .compass-motion video {
+      position: absolute;
+      inset: 0;
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+    }
+
+    .compass-poster { z-index: 0; }
+    .compass-motion video { z-index: 1; }
+
+    .compass-magic {
+      position: absolute;
+      z-index: 3;
+      left: 84.75%;
+      top: 2.8%;
+      width: 14.1%;
+      height: 36%;
+      overflow: visible;
+      pointer-events: none;
+    }
+
+    .magic-particle {
+      position: absolute;
+      left: var(--x);
+      top: var(--y);
+      width: max(var(--size), 4px);
+      aspect-ratio: 1;
+      border-radius: 50%;
+      opacity: var(--opacity);
+      background: var(--color);
+      box-shadow: 0 0 5px 1px var(--color), 0 0 10px 2px var(--color);
+      animation: particle-drift var(--duration) ease-in-out var(--delay) infinite alternate;
+    }
+
+    .magic-trail {
+      position: absolute;
+      width: 34%;
+      height: 20%;
+      border: 1px solid transparent;
+      border-top-color: rgba(79, 215, 208, 0.24);
+      border-radius: 50%;
+      opacity: 0.72;
+      transform: rotate(var(--rotate));
+      animation: trail-breathe 8s ease-in-out var(--delay) infinite;
+    }
+
+    .magic-trail.gold {
+      border-top-color: rgba(205, 153, 64, 0.22);
+    }
+
+    @keyframes compass-glow-pulse {
+      0%, 100% { opacity: 0.68; transform: scale(0.98); }
+      50% { opacity: 0.9; transform: scale(1.025); }
+    }
+
+    @keyframes particle-drift {
+      from { transform: translate3d(0, 0, 0) scale(0.88); }
+      to { transform: translate3d(var(--dx), var(--dy), 0) scale(1.12); }
+    }
+
+    @keyframes trail-breathe {
+      0%, 100% { opacity: 0.3; }
+      50% { opacity: 0.68; }
+    }
+
+    .enter-world-hotspot {
+      position: absolute;
+      z-index: 4;
+      left: 18.3%;
+      top: 73.2%;
+      width: 31.5%;
+      height: 13.5%;
+      color: transparent;
+      background: transparent;
+      outline-offset: -5px;
+    }
+
+    .enter-world-hotspot:focus-visible {
+      outline: 4px solid #b9481d;
+    }
+
+    @media (max-width: 600px) {
+      body {
+        align-content: start;
+        background: #e5cc98;
+      }
+
+      .portal-canvas {
+        width: 100vw;
+      }
+
+      .enter-world-hotspot:focus-visible {
+        outline-width: 2px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .compass-motion video { display: none; }
+      .compass-glow::before,
+      .compass-glow::after,
+      .magic-particle,
+      .magic-trail {
+        animation: none;
+      }
+
+      .compass-glow::before,
+      .compass-glow::after { opacity: 0.72; }
+    }
+
+    html.reduced-motion-preview .compass-motion video { display: none; }
+
+    html.reduced-motion-preview .compass-glow::before,
+    html.reduced-motion-preview .compass-glow::after,
+    html.reduced-motion-preview .magic-particle,
+    html.reduced-motion-preview .magic-trail {
+      animation: none;
+    }
+
+    html.reduced-motion-preview .compass-glow::before,
+    html.reduced-motion-preview .compass-glow::after { opacity: 0.72; }
+
+    html.mobile-preview body {
+      align-content: start;
+      justify-items: center;
+      background: #e5cc98;
+    }
+
+    html.mobile-preview .portal-canvas { width: 390px; }
+  </style>
 </head>
-
 <body>
-  <header class="topbar" id="top">
-    <a class="logo" href="#top" aria-label="LucyLP home">
-      <img src="brand/LucyLP_Logo_Master.svg" alt="LucyLP Guides for Curious Minds">
-    </a>
+  <main class="portal-canvas" aria-label="LucyLP story portal">
+    <img class="portal-master" src="assets/portal/WEB001.svg" alt="LucyLP illustrated portal into the Gate 70 story world.">
 
-    <nav class="main-menu" aria-label="Main menu">
-      <a href="#books"><span class="menu-icon book-icon" aria-hidden="true"></span>Books</a>
-      <a href="#blog"><span class="menu-icon blog-icon" aria-hidden="true"></span>Blog</a>
-      <a href="#free"><span class="menu-icon gift-icon" aria-hidden="true"></span>Free</a>
-      <a href="#about"><span class="menu-icon heart-icon" aria-hidden="true"></span>About</a>
-      <a class="collector-menu" href="#collector-hub">Collector Hub <small>eBay Picks</small></a>
-    </nav>
+    <div class="compass-glow" aria-hidden="true"></div>
 
-    <div class="header-actions" aria-label="Site actions">
-      <button type="button" aria-label="Search coming soon" aria-disabled="true" tabindex="-1">Search</button>
-      <button type="button" aria-label="Language selector coming soon" aria-disabled="true" tabindex="-1">EN</button>
-      <button type="button" aria-label="Cart coming soon" aria-disabled="true" tabindex="-1"><span class="cart-count">0</span>Bag</button>
+    <div class="compass-motion" aria-hidden="true">
+      <img class="compass-poster" src="assets/portal/LucyLP_Memory_Compass_Portal_Poster.png" alt="">
+      <video
+        id="memory-compass"
+        src="assets/portal/LucyLP_Memory_Compass_Portal_Web.mp4"
+        poster="assets/portal/LucyLP_Memory_Compass_Portal_Poster.png"
+        autoplay
+        muted
+        loop
+        playsinline
+        preload="metadata"
+      ></video>
     </div>
-  </header>
 
-  <main class="page-shell">
-    <section class="hero" aria-labelledby="hero-title">
-      <div class="hero-illustration" aria-hidden="true">
-        <img src="assets/v3/hero-lucy-viking.png" alt="">
-      </div>
+    <div class="compass-magic" aria-hidden="true">
+      <i class="magic-particle" data-particle style="--x:3%;--y:24%;--size:3px;--opacity:.72;--color:#55d8d1;--duration:7s;--delay:-2s;--dx:-5px;--dy:-9px"></i>
+      <i class="magic-particle" data-particle style="--x:12%;--y:72%;--size:2px;--opacity:.58;--color:#cf9f4d;--duration:9s;--delay:-6s;--dx:-4px;--dy:7px"></i>
+      <i class="magic-particle" data-particle style="--x:24%;--y:7%;--size:4px;--opacity:.66;--color:#e4c477;--duration:8s;--delay:-3s;--dx:3px;--dy:-7px"></i>
+      <i class="magic-particle" data-particle style="--x:43%;--y:2%;--size:2px;--opacity:.5;--color:#55d8d1;--duration:10s;--delay:-7s;--dx:6px;--dy:-5px"></i>
+      <i class="magic-particle" data-particle style="--x:70%;--y:8%;--size:3px;--opacity:.62;--color:#c9953f;--duration:8.5s;--delay:-4s;--dx:5px;--dy:-8px"></i>
+      <i class="magic-particle" data-particle style="--x:91%;--y:27%;--size:4px;--opacity:.7;--color:#56ddd3;--duration:7.5s;--delay:-5s;--dx:7px;--dy:-2px"></i>
+      <i class="magic-particle" data-particle style="--x:96%;--y:58%;--size:2px;--opacity:.54;--color:#e1bd6a;--duration:9.5s;--delay:-1s;--dx:5px;--dy:6px"></i>
+      <i class="magic-particle" data-particle style="--x:82%;--y:88%;--size:3px;--opacity:.68;--color:#4fd3cf;--duration:8s;--delay:-6s;--dx:4px;--dy:8px"></i>
+      <i class="magic-particle" data-particle style="--x:48%;--y:96%;--size:2px;--opacity:.48;--color:#d1a24f;--duration:10s;--delay:-8s;--dx:-3px;--dy:7px"></i>
+      <i class="magic-particle" data-particle style="--x:19%;--y:90%;--size:4px;--opacity:.64;--color:#60d8d1;--duration:8.8s;--delay:-4.5s;--dx:-7px;--dy:4px"></i>
 
-      <div class="hero-copy">
-        <p>LucyLP Publishing</p>
-        <h1 id="hero-title">We don't<br>sell books.<br><span>We build<br>curiosity.</span></h1>
-        <p class="hero-text">
-          Stories, printables, and learning books that turn vintage objects,
-          music, collecting, and everyday history into small adventures.
-        </p>
-        <a class="dark-button" href="#books">Explore Books <span aria-hidden="true">-&gt;</span></a>
-      </div>
+      <span class="magic-trail" style="left:-2%;top:18%;--rotate:-24deg;--delay:-2s"></span>
+      <span class="magic-trail gold" style="right:-4%;top:43%;--rotate:32deg;--delay:-5s"></span>
+      <span class="magic-trail" style="left:29%;bottom:-1%;--rotate:8deg;--delay:-7s"></span>
+    </div>
 
-      <aside class="featured-book" aria-label="Featured book">
-        <img class="book-mockup" src="assets/v3/hero-book-cameras.png" alt="Baby Vintage School Cameras book mockup">
-        <div class="featured-panel">
-          <p>Featured Series</p>
-          <h2>Baby Vintage School</h2>
-          <p>Discover the amazing cameras kids used long before smartphones.</p>
-          <ul>
-            <li>20 Vintage Objects</li>
-            <li>Stories &amp; Activities</li>
-            <li>Digital Download</li>
-            <li>Ages 6+</li>
-          </ul>
-          <a href="#books" data-future-provider="lemon-squeezy" data-product="baby-vintage-school-cameras">View This Book <span aria-hidden="true">-&gt;</span></a>
-        </div>
-      </aside>
-    </section>
-
-    <section class="content-band" aria-label="LucyLP books and collector hub">
-      <section class="books-panel" id="books" aria-labelledby="books-title">
-        <div class="panel-heading">
-          <h2 id="books-title"><span class="heading-icon" aria-hidden="true"></span>Our Books &amp; Guides</h2>
-          <a href="#books">View All Books <span aria-hidden="true">-&gt;</span></a>
-        </div>
-
-        <div class="book-grid">
-          <article class="book-card">
-            <img src="assets/v3/book-baby-vintage.png" alt="Baby Vintage School book card" loading="lazy" decoding="async">
-            <h3>Baby Vintage School</h3>
-            <p>Ages 4-10</p>
-          </article>
-
-          <article class="book-card">
-            <img src="assets/v3/book-my-first-vinyl.png" alt="My First Vinyl book card" loading="lazy" decoding="async">
-            <h3>My First Vinyl</h3>
-            <p>Ages 6-12</p>
-          </article>
-
-          <article class="book-card">
-            <img src="assets/v3/book-collector-guides.png" alt="Collector Guides book card" loading="lazy" decoding="async">
-            <h3>Collector Guides</h3>
-            <p>For Collectors</p>
-          </article>
-
-          <article class="book-card">
-            <img src="assets/v3/book-future-series.png" alt="Future Series book card" loading="lazy" decoding="async">
-            <h3>Future Series</h3>
-            <p>Coming Soon</p>
-          </article>
-        </div>
-      </section>
-
-      <section class="collector-panel" id="collector-hub" aria-labelledby="collector-title">
-        <div class="collector-heading">
-          <h2 id="collector-title">Collector Hub <span>eBay Picks</span></h2>
-          <a href="https://www.ebay.com/" target="_blank" rel="noopener noreferrer sponsored">View All <span aria-hidden="true">-&gt;</span></a>
-        </div>
-
-        <div class="pick-grid">
-          <article>
-            <img src="assets/v3/ebay-pick-1.png" alt="Pink Floyd collector pick" loading="lazy" decoding="async">
-            <h3>Pink Floyd<br>of 6oa Moon<br>(Japan Press)</h3>
-            <p>$89.99</p>
-          </article>
-          <article>
-            <img src="assets/v3/ebay-pick-2.png" alt="The Beatles collector pick" loading="lazy" decoding="async">
-            <h3>The Beatles<br>Abbey Road<br>(UK Press)</h3>
-            <p>$64.99</p>
-          </article>
-          <article>
-            <img src="assets/v3/ebay-pick-3.png" alt="Led Zeppelin collector pick" loading="lazy" decoding="async">
-            <h3>Led Zeppelin<br>IV<br>(US Press)</h3>
-            <p>$79.99</p>
-          </article>
-          <article>
-            <img src="assets/v3/ebay-pick-4.png" alt="Queen collector pick" loading="lazy" decoding="async">
-            <h3>Queen<br>A Night At<br>The Opera</h3>
-            <p>$74.99</p>
-          </article>
-        </div>
-
-        <div class="collector-actions">
-          <a class="orange-button" href="https://www.ebay.com/" target="_blank" rel="noopener noreferrer sponsored">Browse eBay Picks <span aria-hidden="true">-&gt;</span></a>
-          <strong>eBay</strong>
-        </div>
-      </section>
-    </section>
-
-    <section class="hidden-content" id="blog" aria-labelledby="blog-title">
-      <h2 id="blog-title">Blog</h2>
-      <p>Article templates connect every story to one related LucyLP product.</p>
-    </section>
-
-    <section class="hidden-content" id="free" aria-labelledby="free-title">
-      <h2 id="free-title">Free</h2>
-      <p>Printable pages, mini books, coloring pages, certificates, and vintage quizzes.</p>
-    </section>
-
-    <section class="hidden-content" id="about" aria-labelledby="about-title">
-      <h2 id="about-title">About</h2>
-      <p>We don't sell books. We build curiosity.</p>
-    </section>
+    <a
+      class="enter-world-hotspot"
+      href="/world/"
+      aria-label="Enter Lucy's world"
+    >Enter the World</a>
   </main>
 
-  <footer class="footer-strip">
-    <article>
-      <span class="footer-icon download-icon" aria-hidden="true"></span>
-      <div>
-        <h2>Instant Digital Download</h2>
-        <p>Start reading right away.</p>
-      </div>
-    </article>
-    <article>
-      <span class="footer-icon footer-heart" aria-hidden="true"></span>
-      <div>
-        <h2>Made with Curiosity</h2>
-        <p>Books that inspire wonder.</p>
-      </div>
-    </article>
-    <article>
-      <span class="footer-icon globe-icon" aria-hidden="true"></span>
-      <div>
-        <h2>Available in 5 Languages</h2>
-        <p>EN - ES - DE - FR - HE</p>
-      </div>
-    </article>
-    <article>
-      <span class="footer-icon shield-icon" aria-hidden="true"></span>
-      <div>
-        <h2>Safe &amp; Secure Checkout</h2>
-        <p>Powered by Lemon Squeezy</p>
-      </div>
-    </article>
-  </footer>
-</body>
+  <script>
+    const video = document.querySelector("#memory-compass");
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const reducedMotionPreview = new URLSearchParams(window.location.search).has("reduced-motion");
+    const mobilePreview = new URLSearchParams(window.location.search).has("mobile-preview");
+    let portalVisible = true;
 
+    document.documentElement.classList.toggle("reduced-motion-preview", reducedMotionPreview);
+    document.documentElement.classList.toggle("mobile-preview", mobilePreview);
+
+    video.muted = true;
+    video.defaultMuted = true;
+
+    const tryPlay = () => {
+      if (reduceMotion.matches || reducedMotionPreview || !portalVisible) return;
+      video.muted = true;
+      const attempt = video.play();
+      if (attempt && typeof attempt.catch === "function") {
+        attempt.catch(() => {});
+      }
+    };
+
+    const observer = new IntersectionObserver(([entry]) => {
+      portalVisible = entry.isIntersecting;
+      if (portalVisible) {
+        tryPlay();
+      } else {
+        video.pause();
+      }
+    }, { threshold: 0.08 });
+
+    observer.observe(document.querySelector(".portal-canvas"));
+
+    const resumeAfterInteraction = () => {
+      tryPlay();
+      window.removeEventListener("pointerdown", resumeAfterInteraction);
+      window.removeEventListener("keydown", resumeAfterInteraction);
+      window.removeEventListener("scroll", resumeAfterInteraction);
+    };
+
+    window.addEventListener("pointerdown", resumeAfterInteraction, { passive: true });
+    window.addEventListener("keydown", resumeAfterInteraction);
+    window.addEventListener("scroll", resumeAfterInteraction, { passive: true });
+
+    reduceMotion.addEventListener("change", () => {
+      if (reduceMotion.matches) {
+        video.pause();
+      } else {
+        tryPlay();
+      }
+    });
+
+    tryPlay();
+  </script>
+</body>
 </html>
