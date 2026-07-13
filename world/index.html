@@ -1,348 +1,69 @@
 <!doctype html>
-<html lang="en"><head>
+<html lang="en">
+<head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>LucyLP World Board — Local Structure Test</title>
-  <style>
-    :root {
-      --ink: #18120c;
-      --paper: #e8d2a3;
-      --paper-light: #f0dfb9;
-      --orange: #b14a25;
-      --red: #8c3022;
-      --teal: #477f79;
-    }
-
-    * { box-sizing: border-box; }
-
-    html { background: #1b130c; }
-
-    body {
-      margin: 0;
-      color: var(--ink);
-      background:
-        repeating-linear-gradient(0deg, rgba(40,27,12,.025) 0 1px, transparent 1px 5px),
-        radial-gradient(circle at 50% 8%, rgba(255,255,255,.24), transparent 28%),
-        var(--paper);
-      font-family: Georgia, "Times New Roman", serif;
-    }
-
-    a:focus-visible {
-      outline: 4px solid var(--teal);
-      outline-offset: 5px;
-    }
-
-    .world-header {
-      position: relative;
-      z-index: 3;
-      max-width: 1440px;
-      margin: 0 auto;
-      padding: 22px 5vw 20px;
-      border-bottom: 3px double var(--ink);
-      text-align: center;
-    }
-
-    .back-link {
-      position: absolute;
-      left: 30px;
-      top: 26px;
-      color: var(--ink);
-      font: 700 12px/1.2 Arial, sans-serif;
-      letter-spacing: 0;
-      text-decoration: none;
-      text-transform: uppercase;
-    }
-
-    .back-link::before { content: "← "; color: var(--orange); }
-
-    .world-header p {
-      margin: 0 0 5px;
-      color: var(--orange);
-      font: 700 13px/1.2 Arial, sans-serif;
-      text-transform: uppercase;
-    }
-
-    .world-header h1 {
-      margin: 0;
-      font-size: 58px;
-      line-height: 1;
-    }
-
-    .world-header .subhead {
-      margin: 8px 0 0;
-      color: var(--ink);
-      font: 600 18px/1.35 Georgia, serif;
-      text-transform: none;
-    }
-
-    .board {
-      position: relative;
-      width: min(100%, 1440px);
-      height: 920px;
-      margin: 0 auto;
-      overflow: hidden;
-      isolation: isolate;
-    }
-
-    .board::before {
-      content: "";
-      position: absolute;
-      inset: 18px;
-      z-index: 0;
-      border: 3px solid rgba(24,18,12,.72);
-      clip-path: polygon(1% 2%, 99% 0, 98% 98%, 2% 100%);
-      pointer-events: none;
-    }
-
-    .routes {
-      position: absolute;
-      inset: 0;
-      z-index: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-    }
-
-    .routes path {
-      fill: none;
-      stroke: rgba(35,25,14,.58);
-      stroke-width: 3;
-      stroke-linecap: round;
-    }
-
-    .routes .signal { stroke: rgba(71,127,121,.64); stroke-width: 2; }
-
-    .routes circle {
-      fill: var(--red);
-      stroke: var(--paper-light);
-      stroke-width: 2;
-    }
-
-    .destination {
-      position: absolute;
-      z-index: 2;
-      display: flex;
-      min-height: 105px;
-      padding: 17px 20px;
-      align-items: center;
-      justify-content: center;
-      color: var(--ink);
-      background:
-        repeating-linear-gradient(0deg, rgba(36,24,11,.025) 0 1px, transparent 1px 5px),
-        rgba(240,223,185,.96);
-      border: 3px solid var(--ink);
-      box-shadow: 6px 7px 0 rgba(57,37,17,.14);
-      clip-path: polygon(3% 0, 97% 2%, 100% 14%, 98% 91%, 89% 100%, 4% 97%, 0 84%, 2% 10%);
-      text-align: center;
-      text-decoration: none;
-    }
-
-    .destination span {
-      display: block;
-      margin-bottom: 5px;
-      color: var(--orange);
-      font: 700 11px/1.2 Arial, sans-serif;
-      text-transform: uppercase;
-    }
-
-    .destination strong {
-      display: block;
-      font-size: 22px;
-      line-height: 1.05;
-    }
-
-    .books { left: 5%; top: 9%; width: 23%; }
-    .japan { left: 7%; top: 39%; width: 21%; }
-    .vinyl { left: 6%; bottom: 10%; width: 23%; }
-    .manga { left: 38%; top: 5%; width: 24%; }
-    .drops { right: 6%; top: 10%; width: 21%; }
-    .collector { right: 5%; top: 40%; width: 22%; }
-    .free { right: 7%; bottom: 10%; width: 21%; }
-
-    .blog-world {
-      position: absolute;
-      z-index: 2;
-      left: 50%;
-      top: 51%;
-      width: min(42%, 570px);
-      transform: translate(-50%, -50%);
-    }
-
-    .blog-label {
-      position: relative;
-      z-index: 2;
-      width: 76%;
-      margin: 0 auto -16px;
-      padding: 9px 14px;
-      color: var(--paper-light);
-      background: var(--ink);
-      border: 3px solid var(--paper-light);
-      text-align: center;
-      font: 700 15px/1.1 Arial, sans-serif;
-      text-transform: uppercase;
-      transform: rotate(-1deg);
-    }
-
-    .blog-artwork {
-      position: relative;
-      width: 100%;
-      aspect-ratio: 16 / 9;
-      overflow: hidden;
-      background: #17110b;
-      border: 4px solid var(--ink);
-      box-shadow: 12px 14px 0 rgba(57,37,17,.18);
-      clip-path: polygon(2% 0, 98% 1%, 100% 9%, 98% 94%, 91% 100%, 4% 98%, 0 89%, 1% 7%);
-    }
-
-    .blog-artwork iframe {
-      display: block;
-      width: 100%;
-      height: 100%;
-      border: 0;
-      background: #17110b;
-    }
-
-    .locked-note {
-      margin: 13px 0 0;
-      text-align: center;
-      font: 700 11px/1.3 Arial, sans-serif;
-      text-transform: uppercase;
-    }
-
-    .structure-note {
-      width: min(100% - 36px, 900px);
-      margin: -35px auto 32px;
-      padding: 14px 20px;
-      color: var(--paper-light);
-      background: var(--ink);
-      text-align: center;
-      font: 13px/1.45 Arial, sans-serif;
-    }
-
-    @media (max-width: 760px) {
-      .world-header { padding: 58px 22px 18px; }
-      .back-link { left: 20px; top: 20px; }
-      .world-header h1 { font-size: 42px; }
-      .world-header .subhead { font-size: 17px; }
-
-      .board {
-        display: flex;
-        flex-direction: column;
-        gap: 17px;
-        height: auto;
-        padding: 24px 18px 48px;
-        overflow: visible;
-      }
-
-      .routes { display: none; }
-      .board::before { inset: 8px; }
-
-      .destination,
-      .blog-world {
-        position: relative;
-        inset: auto;
-        width: 100%;
-        min-height: 92px;
-        transform: none;
-      }
-
-      .blog-world { order: 0; }
-      .books { order: 1; }
-      .japan { order: 2; }
-      .vinyl { order: 3; }
-      .manga { order: 4; }
-      .drops { order: 5; }
-      .collector { order: 6; }
-      .free { order: 7; }
-
-      .blog-label { width: 88%; }
-      .blog-artwork { aspect-ratio: 16 / 9; }
-      .structure-note { margin-top: 0; }
-    }
-
-    html.mobile-preview body { width: 390px; }
-    html.mobile-preview .world-header { padding: 58px 22px 18px; }
-    html.mobile-preview .back-link { left: 20px; top: 20px; }
-    html.mobile-preview .world-header h1 { font-size: 42px; }
-    html.mobile-preview .world-header .subhead { font-size: 17px; }
-    html.mobile-preview .board {
-      display: flex;
-      flex-direction: column;
-      gap: 17px;
-      width: 390px;
-      height: auto;
-      padding: 24px 18px 48px;
-      overflow: visible;
-    }
-    html.mobile-preview .routes { display: none; }
-    html.mobile-preview .board::before { inset: 8px; }
-    html.mobile-preview .destination,
-    html.mobile-preview .blog-world {
-      position: relative;
-      inset: auto;
-      width: 100%;
-      min-height: 92px;
-      transform: none;
-    }
-    html.mobile-preview .blog-world { order: 0; }
-    html.mobile-preview .books { order: 1; }
-    html.mobile-preview .japan { order: 2; }
-    html.mobile-preview .vinyl { order: 3; }
-    html.mobile-preview .manga { order: 4; }
-    html.mobile-preview .drops { order: 5; }
-    html.mobile-preview .collector { order: 6; }
-    html.mobile-preview .free { order: 7; }
-    html.mobile-preview .blog-label { width: 88%; }
-    html.mobile-preview .structure-note { margin-top: 0; }
-  </style>
+  <title>The World of LucyLP</title>
+  <meta name="description" content="Choose your path into the world of LucyLP: Vinyl Records or Manga.">
+  <link rel="stylesheet" href="/department-site.css?v=20260713-1">
 </head>
 <body>
-  <header class="world-header">
-    <a class="back-link" href="/">Back to the Portal</a>
-    <p>Local Structure Test</p>
-    <h1>LucyLP World Board</h1>
-    <p class="subhead">Choose a road into Lucy's world.</p>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand-link" href="/" aria-label="LucyLP home">
+        <img src="/brand/LucyLP_Guides_Header_Logo.png?v=20260713-1" alt="LucyLP Guides">
+      </a>
+      <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="Open navigation">☰</button>
+      <nav class="site-nav" id="site-nav" aria-label="Primary navigation">
+        <a href="/">Home</a>
+        <a href="/world/" aria-current="page">World</a>
+        <a href="/vinyl/">Vinyl</a>
+        <a href="/manga/">Manga</a>
+      </nav>
+    </div>
   </header>
 
-  <main class="board" aria-label="LucyLP World Board structural prototype">
-    <svg class="routes" viewBox="0 0 1440 920" aria-hidden="true">
-      <path d="M720 470 C510 350 365 190 225 145"></path>
-      <path d="M720 470 C480 470 320 475 205 465"></path>
-      <path d="M720 470 C520 640 370 735 220 795"></path>
-      <path class="signal" d="M720 470 C720 285 720 170 720 90"></path>
-      <path d="M720 470 C930 345 1060 210 1210 150"></path>
-      <path d="M720 470 C980 470 1100 475 1230 470"></path>
-      <path class="signal" d="M720 470 C930 650 1080 750 1220 800"></path>
-      <circle cx="487" cy="340" r="7"></circle>
-      <circle cx="950" cy="340" r="7"></circle>
-      <circle cx="480" cy="650" r="7"></circle>
-      <circle cx="970" cy="660" r="7"></circle>
-    </svg>
+  <main class="world-main">
+    <header class="world-intro">
+      <p class="section-kicker">Choose your path</p>
+      <h1>The World of LucyLP</h1>
+      <p>Two collections. Two ways into the story. Follow the sound of rare records or open the next illustrated adventure.</p>
+    </header>
 
-    <a class="destination books" href="#structure-status"><div><span>Future District</span><strong>Books &amp; Guides</strong></div></a>
-    <a class="destination japan" href="#structure-status"><div><span>Future District</span><strong>Lucy in Japan</strong></div></a>
-    <a class="destination vinyl" href="/vinyl/"><div><span>Future District</span><strong>Vinyl Finds</strong></div></a>
-    <a class="destination manga" href="/manga/"><div><span>Future District</span><strong>Manga &amp; Japan Finds</strong></div></a>
-    <a class="destination drops" href="#structure-status"><div><span>Future District</span><strong>Drops</strong></div></a>
-    <a class="destination collector" href="#structure-status"><div><span>Future District</span><strong>Collector Hub</strong></div></a>
-    <a class="destination free" href="#structure-status"><div><span>Future District</span><strong>Free Discoveries</strong></div></a>
+    <div class="world-entries" aria-label="LucyLP departments">
+      <article class="world-entry">
+        <img src="/assets/departments/vinyl-banner-approved.png?v=20260713-1" alt="Lucy’s Vinyl Finds — rare records and real stories">
+        <div class="world-entry-copy">
+          <p class="section-kicker">Records &amp; stories</p>
+          <h2>Vinyl Records</h2>
+          <p>Japanese pressings, limited editions and records with stories worth keeping.</p>
+          <a class="world-entry-link" href="/vinyl/">Enter Vinyl Records →</a>
+        </div>
+      </article>
 
-    <section class="blog-world" aria-labelledby="blog-world-title">
-      <h2 class="blog-label" id="blog-world-title">Blog &amp; Community</h2>
-      <div class="blog-artwork">
-        <iframe src="https://www.canva.com/design/DAHPMnDe7YQ/59uvaAZfwOAB4elu1uLHsQ/view?embed" title="Approved locked Blog and Community artwork" loading="eager" allow="autoplay; fullscreen" allowfullscreen=""></iframe>
-      </div>
-      <p class="locked-note">Approved artwork · locked</p>
-    </section>
+      <article class="world-entry">
+        <img src="/assets/departments/manga-banner-approved.png?v=20260713-1" alt="Manga Adventures — stories that inspire and worlds that stay">
+        <div class="world-entry-copy">
+          <p class="section-kicker">Illustrated worlds</p>
+          <h2>Manga</h2>
+          <p>Classic series, Japanese originals and collectible stories from Japan.</p>
+          <a class="world-entry-link" href="/manga/">Enter Manga →</a>
+        </div>
+      </article>
+    </div>
   </main>
 
-  <footer class="structure-note" id="structure-status">
-    Local structure test only. Future districts are intentionally text-only and have no external commerce links.
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <p>LucyLP — choose a path into the story.</p>
+      <nav class="footer-nav" aria-label="Footer navigation">
+        <a href="/">Home</a>
+        <a href="/world/">World</a>
+        <a href="/vinyl/">Vinyl</a>
+        <a href="/manga/">Manga</a>
+      </nav>
+    </div>
   </footer>
-
-  <script>
-    document.documentElement.classList.toggle("mobile-preview", new URLSearchParams(location.search).has("mobile-preview"));
-  </script>
-
-
-</body></html>
+  <script src="/department-site.js?v=20260713-1"></script>
+</body>
+</html>
