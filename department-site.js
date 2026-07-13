@@ -1,7 +1,7 @@
 const catalogData = {
   vinyl: [
     {
-      image: "/assets/departments/vinyl-sample-01.png",
+      image: "/assets/departments/vinyl-sample-01.png?v=20260713-1",
       title: "Japanese Pressing Selection",
       eyebrow: "Sample record",
       edition: "Japanese pressing",
@@ -10,7 +10,7 @@ const catalogData = {
       url: ""
     },
     {
-      image: "/assets/departments/vinyl-sample-02.png",
+      image: "/assets/departments/vinyl-sample-02.png?v=20260713-1",
       title: "Classic Album Selection",
       eyebrow: "Sample record",
       edition: "Collector edition",
@@ -19,7 +19,7 @@ const catalogData = {
       url: ""
     },
     {
-      image: "/assets/departments/vinyl-sample-03.png",
+      image: "/assets/departments/vinyl-sample-03.png?v=20260713-1",
       title: "Rare Vinyl Selection",
       eyebrow: "Sample record",
       edition: "International pressing",

@@ -212,7 +212,7 @@ button:focus-visible {
 }
 
 .manga-sample-visual {
-  background-image: url("/assets/departments/manga-banner-approved.png");
+  background-image: url("/assets/departments/manga-banner-approved.png?v=20260713-1");
   background-repeat: no-repeat;
   background-size: 230% auto;
 }
