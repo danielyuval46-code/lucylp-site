@@ -162,7 +162,7 @@
 
     const price = document.createElement("p");
     price.className = "product-card__price";
-    price.textContent = product.price || "TBA";
+    price.textContent = formatPrice(product);
 
     const action = document.createElement("a");
     action.className = "product-card__button";
@@ -182,6 +182,33 @@
 
   function formatPages(pages) {
     return pages ? `${pages} pages` : "Pages TBA";
+  }
+
+  function formatPrice(product) {
+    const rawPrice = String(product.price || "").trim();
+
+    if (!rawPrice) {
+      return "TBA";
+    }
+
+    if (/^[^\d-]/.test(rawPrice)) {
+      return rawPrice;
+    }
+
+    const numericPrice = Number(rawPrice.replace(/,/g, ""));
+
+    if (!Number.isFinite(numericPrice)) {
+      return rawPrice;
+    }
+
+    try {
+      return new Intl.NumberFormat("en-US", {
+        style: "currency",
+        currency: product.currency || "USD"
+      }).format(numericPrice);
+    } catch (_error) {
+      return rawPrice;
+    }
   }
 
   function getButtonLabel(product) {
