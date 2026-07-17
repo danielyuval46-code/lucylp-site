@@ -36,11 +36,17 @@
         .map((product) => [String(product.providerListingId), product])
     );
     const etsyById = new Map(etsyItems.map((product) => [String(product.id), product]));
+    const etsyByNormalizedTitle = new Map(
+      etsyItems
+        .filter((product) => product.title)
+        .map((product) => [normalizeTitle(product.title), product])
+    );
     const usedEtsyIds = new Set();
 
     const mergedLocalItems = localItems.map((localProduct) => {
       const etsyProduct =
         etsyByListingId.get(String(localProduct.etsyListingId || "")) ||
+        etsyByNormalizedTitle.get(normalizeTitle(localProduct.etsyTitleMatch || "")) ||
         etsyById.get(String(localProduct.id));
 
       if (!etsyProduct) {
@@ -53,7 +59,6 @@
         ...localProduct,
         price: etsyProduct.price || localProduct.price,
         currency: etsyProduct.currency || localProduct.currency,
-        cover: etsyProduct.image || localProduct.cover,
         provider: etsyProduct.provider || localProduct.provider,
         providerListingId: etsyProduct.providerListingId,
         buyUrl: etsyProduct.buyUrl || localProduct.buyUrl,
@@ -204,5 +209,12 @@
     }
 
     return "Digital Product";
+  }
+
+  function normalizeTitle(title) {
+    return String(title || "")
+      .replace(/\s+/g, " ")
+      .trim()
+      .toLowerCase();
   }
 }());
