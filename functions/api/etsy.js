@@ -3,6 +3,7 @@ const DEFAULT_LIMIT = 100;
 const MAX_PAGES = 20;
 const CACHE_SECONDS = 1800;
 const REQUEST_TIMEOUT_MS = 9000;
+const shopIdCache = new Map();
 const ALLOWED_ORIGINS = new Set([
   "https://lucylp.com",
   "https://www.lucylp.com"
@@ -62,6 +63,7 @@ export async function onRequest(context) {
   }
 
   try {
+    await ensureShopId(config);
     const shopSections = await fetchShopSections(config);
     const listingsResult = await fetchAllActiveListings(config);
     const products = await normalizeListings(config, listingsResult.listings, shopSections);
@@ -85,14 +87,16 @@ export async function onRequest(context) {
         listingsWithoutMappingTags: activeProducts
           .filter((product) => product.mapping.source !== "tag")
           .map((product) => product.providerListingId),
+        shopIdSource: config.shopIdSource,
         tokenRefreshStatus: config.tokenRefreshStatus
       }
     }, {
       cacheControl: `public, max-age=${CACHE_SECONDS}, s-maxage=${CACHE_SECONDS}`
     });
-  } catch (_error) {
+  } catch (error) {
     return jsonResponse(request, buildEmptyPayload({
-      error: "Live Etsy feed unavailable."
+      error: "Live Etsy feed unavailable.",
+      apiStatus: error instanceof EtsyApiError ? error.status : ""
     }), {
       status: 502,
       cacheControl: "no-store"
@@ -105,6 +109,8 @@ function getConfig(env) {
     apiKey: env.ETSY_API_KEY || "",
     sharedSecret: env.ETSY_SHARED_SECRET || "",
     shopId: env.ETSY_SHOP_ID || "",
+    shopName: env.ETSY_SHOP_NAME || "",
+    shopIdSource: env.ETSY_SHOP_ID ? "env" : "",
     accessToken: env.ETSY_ACCESS_TOKEN || "",
     refreshToken: env.ETSY_REFRESH_TOKEN || "",
     tokenRefreshStatus: "not-attempted"
@@ -114,10 +120,52 @@ function getConfig(env) {
 function getMissingConfig(config) {
   return [
     ["ETSY_API_KEY", config.apiKey],
-    ["ETSY_SHOP_ID", config.shopId]
+    ["ETSY_SHOP_ID or ETSY_SHOP_NAME", config.shopId || config.shopName]
   ]
     .filter(([, value]) => !value)
     .map(([name]) => name);
+}
+
+async function ensureShopId(config) {
+  if (config.shopId) {
+    config.shopId = sanitizeNumericId(config.shopId);
+    config.shopIdSource = "env";
+    return;
+  }
+
+  const shopName = sanitizeText(config.shopName);
+
+  if (!shopName) {
+    return;
+  }
+
+  const cacheKey = shopName.toLowerCase();
+  const cached = shopIdCache.get(cacheKey);
+
+  if (cached) {
+    config.shopId = cached;
+    config.shopIdSource = "resolved-cache";
+    return;
+  }
+
+  const url = new URL(`${ETSY_API_BASE}/shops`);
+  url.searchParams.set("shop_name", shopName);
+
+  const data = await etsyFetchJson(url, config);
+  const shops = Array.isArray(data.results) ? data.results : [];
+  const exactShop = shops.find((shop) => {
+    return String(shop.shop_name || "").toLowerCase() === cacheKey;
+  });
+  const resolvedShop = exactShop || shops[0];
+  const resolvedShopId = sanitizeNumericId(resolvedShop?.shop_id);
+
+  if (!resolvedShopId) {
+    throw new EtsyApiError("Etsy shop name did not resolve to a shop ID", 404);
+  }
+
+  shopIdCache.set(cacheKey, resolvedShopId);
+  config.shopId = resolvedShopId;
+  config.shopIdSource = "resolved-name";
 }
 
 async function fetchAllActiveListings(config) {
@@ -265,12 +313,20 @@ async function etsyFetchJson(url, config) {
     }
 
     if (!response.ok) {
-      throw new Error(`Etsy request failed with ${response.status}`);
+      throw new EtsyApiError(`Etsy request failed with ${response.status}`, response.status);
     }
 
     return response.json();
   } finally {
     clearTimeout(timer);
+  }
+}
+
+class EtsyApiError extends Error {
+  constructor(message, status) {
+    super(message);
+    this.name = "EtsyApiError";
+    this.status = status;
   }
 }
 
@@ -393,6 +449,11 @@ function sanitizeText(value) {
     .slice(0, 5000);
 }
 
+function sanitizeNumericId(value) {
+  const id = String(value || "").trim();
+  return /^\d+$/.test(id) ? id : "";
+}
+
 function sanitizeImageUrl(value) {
   return sanitizeUrl(value, ["https:"], ["i.etsystatic.com", "img0.etsystatic.com"]);
 }
@@ -445,6 +506,7 @@ function buildEmptyPayload(diagnostics) {
       paginationComplete: false,
       listingsWithoutImages: [],
       listingsWithoutMappingTags: [],
+      shopIdSource: "",
       tokenRefreshStatus: "not-attempted",
       ...diagnostics
     }
