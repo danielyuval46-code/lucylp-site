@@ -1,7 +1,7 @@
 const EBAY_TOKEN_URL = 'https://api.ebay.com/identity/v1/oauth2/token';
 const EBAY_SEARCH_URL = 'https://api.ebay.com/buy/browse/v1/item_summary/search';
 const EBAY_SCOPE = 'https://api.ebay.com/oauth/api_scope';
-const MARKETPLACE_ID = 'EBAY_US';
+const DEFAULT_MARKETPLACE_ID = 'EBAY_US';
 
 const AFFILIATE_PARAMS = {
   mkcid: '1',
@@ -21,11 +21,11 @@ const REQUIRED_AFFILIATE_PARAMS = [
 ];
 
 const SECTION_QUERIES = {
-  pinkfloyd: 'Pink Floyd vinyl LP Japan UK Germany Israel pressing',
-  beatles: 'Beatles vinyl LP mono stereo Japan UK Germany',
-  ledzeppelin: 'Led Zeppelin vinyl LP first pressing remaster Japan',
-  stylus: 'turntable stylus needle cartridge vinyl record player',
-  posters: 'vintage concert poster Pink Floyd Beatles Led Zeppelin'
+  'pink-floyd': 'Pink Floyd vinyl LP record',
+  'the-beatles': 'The Beatles vinyl LP record',
+  'japanese-pressings': 'Japan pressing vinyl LP obi record',
+  'colored-vinyl': 'colored vinyl LP record',
+  'new-finds': 'vinyl LP record newly listed'
 };
 
 const SECTION_LIMIT = 6;
@@ -35,20 +35,25 @@ const SECTION_LIMITS = {
 const SEARCH_LIMIT = 30;
 const FALLBACK_THRESHOLD = 3;
 const RELAXED_THRESHOLD = 4;
-const DEFAULT_QUERY = SECTION_QUERIES.stylus;
+const DEFAULT_QUERY = SECTION_QUERIES['new-finds'];
 const FALLBACK_QUERIES = {
-  pinkfloyd: 'Pink Floyd vinyl LP',
-  beatles: 'Beatles vinyl LP',
-  ledzeppelin: 'Led Zeppelin vinyl LP',
-  stylus: 'turntable stylus needle',
-  posters: 'vintage concert poster'
+  'pink-floyd': 'Pink Floyd vinyl LP',
+  'the-beatles': 'The Beatles vinyl LP',
+  'japanese-pressings': 'Japan vinyl LP obi',
+  'colored-vinyl': 'colored vinyl LP',
+  'new-finds': 'vinyl LP record'
 };
 const CATEGORY_TO_SECTION = {
-  pinkfloyd: 'pinkfloyd',
-  beatles: 'beatles',
-  ledzeppelin: 'ledzeppelin',
-  stylus: 'stylus',
-  posters: 'posters'
+  'pink-floyd': 'pink-floyd',
+  pinkfloyd: 'pink-floyd',
+  'the-beatles': 'the-beatles',
+  beatles: 'the-beatles',
+  'japanese-pressings': 'japanese-pressings',
+  japanese: 'japanese-pressings',
+  'colored-vinyl': 'colored-vinyl',
+  colored: 'colored-vinyl',
+  'new-finds': 'new-finds',
+  new: 'new-finds'
 };
 const VINYL_INCLUDE_GROUPS = [
   ['vinyl', 'lp', 'record', 'album']
@@ -84,38 +89,37 @@ const STYLUS_EXCLUDE_TERMS = [
   'book'
 ];
 const SECTION_FILTERS = {
-  pinkfloyd: {
+  'pink-floyd': {
     includeGroups: [
       ['pink floyd'],
       ...VINYL_INCLUDE_GROUPS
     ],
     exclude: GLOBAL_EXCLUDE_TERMS
   },
-  beatles: {
+  'the-beatles': {
     includeGroups: [
       ['beatles'],
       ...VINYL_INCLUDE_GROUPS
     ],
     exclude: GLOBAL_EXCLUDE_TERMS
   },
-  ledzeppelin: {
+  'japanese-pressings': {
     includeGroups: [
-      ['led zeppelin'],
+      ['japan', 'japanese', 'obi'],
       ...VINYL_INCLUDE_GROUPS
     ],
     exclude: GLOBAL_EXCLUDE_TERMS
   },
-  stylus: {
+  'colored-vinyl': {
     includeGroups: [
-      ['stylus', 'needle', 'cartridge']
+      ['colored', 'colour', 'color', 'pink', 'red', 'blue', 'clear', 'splatter', 'marbled'],
+      ...VINYL_INCLUDE_GROUPS
     ],
-    exclude: STYLUS_EXCLUDE_TERMS
+    exclude: GLOBAL_EXCLUDE_TERMS
   },
-  posters: {
-    includeGroups: [
-      ['poster', 'concert', 'tour', 'print']
-    ],
-    exclude: POSTER_EXCLUDE_TERMS
+  'new-finds': {
+    includeGroups: VINYL_INCLUDE_GROUPS,
+    exclude: GENERIC_VINYL_EXCLUDE_TERMS
   }
 };
 const GENERIC_VINYL_FILTER = {
@@ -311,7 +315,9 @@ function buildCategoryPayload(response, sectionKey, items, debugCounts) {
 function getEnvDebug(env) {
   return {
     hasEbayClientId: Boolean(env.EBAY_CLIENT_ID),
-    hasEbayClientSecret: Boolean(env.EBAY_CLIENT_SECRET)
+    hasEbayClientSecret: Boolean(env.EBAY_CLIENT_SECRET),
+    hasEbayMarketplaceId: Boolean(env.EBAY_MARKETPLACE_ID),
+    hasEbaySellerUsername: Boolean(env.EBAY_SELLER_USERNAME)
   };
 }
 
@@ -343,7 +349,11 @@ async function getAccessToken(env) {
   return data.access_token;
 }
 
-async function fetchBrowseSummaries(accessToken, query) {
+function getMarketplaceId(env) {
+  return env.EBAY_MARKETPLACE_ID || DEFAULT_MARKETPLACE_ID;
+}
+
+async function fetchBrowseSummaries(accessToken, query, env) {
   const url = new URL(EBAY_SEARCH_URL);
   url.searchParams.set('q', query);
   url.searchParams.set('limit', String(SEARCH_LIMIT));
@@ -352,7 +362,7 @@ async function fetchBrowseSummaries(accessToken, query) {
   const response = await fetch(url.toString(), {
     headers: {
       authorization: `Bearer ${accessToken}`,
-      'x-ebay-c-marketplace-id': MARKETPLACE_ID
+      'x-ebay-c-marketplace-id': getMarketplaceId(env)
     }
   });
 
@@ -368,25 +378,26 @@ async function fetchBrowseSummaries(accessToken, query) {
   };
 }
 
-async function searchItems(accessToken, query, sectionKey) {
-  const { itemSummaries } = await fetchBrowseSummaries(accessToken, query);
+async function searchItems(accessToken, query, sectionKey, env) {
+  const { itemSummaries } = await fetchBrowseSummaries(accessToken, query, env);
 
   return filterItemsForSection(itemSummaries, sectionKey)
     .slice(0, getSectionLimit(sectionKey))
     .map(normalizeItem);
 }
 
-async function searchCategory(accessToken, sectionKey) {
+async function searchCategory(accessToken, sectionKey, env) {
   const primary = await fetchBrowseSummaries(
     accessToken,
-    SECTION_QUERIES[sectionKey]
+    SECTION_QUERIES[sectionKey],
+    env
   );
   let itemSummaries = primary.itemSummaries;
   let queryUsed = SECTION_QUERIES[sectionKey];
   let filteredItems = filterItemsForSection(itemSummaries, sectionKey);
 
   if (filteredItems.length < FALLBACK_THRESHOLD && FALLBACK_QUERIES[sectionKey]) {
-    const fallback = await fetchBrowseSummaries(accessToken, FALLBACK_QUERIES[sectionKey]);
+    const fallback = await fetchBrowseSummaries(accessToken, FALLBACK_QUERIES[sectionKey], env);
     itemSummaries = removeDuplicateItems([...itemSummaries, ...fallback.itemSummaries]);
     queryUsed = `${queryUsed} | fallback: ${FALLBACK_QUERIES[sectionKey]}`;
     filteredItems = filterItemsForSection(itemSummaries, sectionKey);
@@ -409,7 +420,7 @@ async function searchCategory(accessToken, sectionKey) {
   });
 }
 
-async function searchBrowseApi(accessToken, query) {
+async function searchBrowseApi(accessToken, query, env) {
   const url = new URL(EBAY_SEARCH_URL);
   url.searchParams.set('q', query || DEFAULT_QUERY);
   url.searchParams.set('limit', String(SEARCH_LIMIT));
@@ -418,7 +429,7 @@ async function searchBrowseApi(accessToken, query) {
   const response = await fetch(url.toString(), {
     headers: {
       authorization: `Bearer ${accessToken}`,
-      'x-ebay-c-marketplace-id': MARKETPLACE_ID
+      'x-ebay-c-marketplace-id': getMarketplaceId(env)
     }
   });
   const data = await response.json().catch(() => ({}));
@@ -444,8 +455,6 @@ async function searchBrowseApi(accessToken, query) {
 export async function onRequest(context) {
   const { env, request } = context;
   const envDebug = getEnvDebug(env);
-
-  console.log('LucyLP eBay env availability', envDebug);
 
   if (request.method !== 'GET') {
     return jsonResponse(
@@ -490,7 +499,7 @@ export async function onRequest(context) {
             items: [],
             envDebug,
             error: 'Invalid category',
-            message: 'Use category=pinkfloyd, beatles, ledzeppelin, stylus, or posters'
+            message: 'Use category=pink-floyd, the-beatles, japanese-pressings, colored-vinyl, or new-finds'
           },
           {
             status: 400,
@@ -499,30 +508,30 @@ export async function onRequest(context) {
         );
       }
 
-      const payload = await searchCategory(accessToken, sectionKey);
+      const payload = await searchCategory(accessToken, sectionKey, env);
 
       return jsonResponse({
         ...payload,
         envDebug
       }, {
-        cacheControl: 'no-store'
+        cacheControl: 'public, max-age=900'
       });
     }
 
     if (query !== null) {
-      const payload = await searchBrowseApi(accessToken, query);
+      const payload = await searchBrowseApi(accessToken, query, env);
 
       return jsonResponse({
         ...payload,
         envDebug
       }, {
-        cacheControl: 'no-store'
+        cacheControl: 'public, max-age=900'
       });
     }
 
     const entries = await Promise.all(
       Object.entries(SECTION_QUERIES).map(async ([key, query]) => {
-        const items = await searchItems(accessToken, query, key);
+        const items = await searchItems(accessToken, query, key, env);
         return [key, items];
       })
     );
