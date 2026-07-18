@@ -349,16 +349,14 @@ class EbayOAuthError extends Error {
 }
 
 async function getAccessToken(env) {
-  const clientId = getSecretValue(env.EBAY_CLIENT_ID);
-  const clientSecret = getSecretValue(env.EBAY_CLIENT_SECRET);
   const clientIdDiagnostic = getSecretDiagnostic(env.EBAY_CLIENT_ID);
   const clientSecretDiagnostic = getSecretDiagnostic(env.EBAY_CLIENT_SECRET);
 
-  if (!clientId || !clientSecret) {
+  if (!env.EBAY_CLIENT_ID || !env.EBAY_CLIENT_SECRET) {
     throw new Error('Missing eBay API credentials');
   }
 
-  const credentials = btoa(`${clientId}:${clientSecret}`);
+  const credentials = btoa(`${env.EBAY_CLIENT_ID}:${env.EBAY_CLIENT_SECRET}`);
   const body = new URLSearchParams({
     grant_type: 'client_credentials',
     scope: EBAY_SCOPE
