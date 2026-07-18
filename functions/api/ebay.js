@@ -321,12 +321,19 @@ function getEnvDebug(env) {
   };
 }
 
+function getSecretValue(value) {
+  return String(value || '').trim().replace(/^["']|["']$/g, '');
+}
+
 async function getAccessToken(env) {
-  if (!env.EBAY_CLIENT_ID || !env.EBAY_CLIENT_SECRET) {
+  const clientId = getSecretValue(env.EBAY_CLIENT_ID);
+  const clientSecret = getSecretValue(env.EBAY_CLIENT_SECRET);
+
+  if (!clientId || !clientSecret) {
     throw new Error('Missing eBay API credentials');
   }
 
-  const credentials = btoa(`${env.EBAY_CLIENT_ID}:${env.EBAY_CLIENT_SECRET}`);
+  const credentials = btoa(`${clientId}:${clientSecret}`);
   const body = new URLSearchParams({
     grant_type: 'client_credentials',
     scope: EBAY_SCOPE
