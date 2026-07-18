@@ -325,9 +325,34 @@ function getSecretValue(value) {
   return String(value || '').trim().replace(/^["']|["']$/g, '');
 }
 
+function getSecretDiagnostic(value) {
+  const raw = String(value || '');
+  const trimmed = raw.trim();
+  const hadSurroundingQuotes =
+    (trimmed.startsWith('"') && trimmed.endsWith('"')) ||
+    (trimmed.startsWith("'") && trimmed.endsWith("'"));
+  const normalized = getSecretValue(value);
+
+  return {
+    characterCount: normalized.length,
+    whitespaceRemoved: raw !== trimmed,
+    hadSurroundingQuotes
+  };
+}
+
+class EbayOAuthError extends Error {
+  constructor(message, diagnostic) {
+    super(message);
+    this.name = 'EbayOAuthError';
+    this.diagnostic = diagnostic;
+  }
+}
+
 async function getAccessToken(env) {
   const clientId = getSecretValue(env.EBAY_CLIENT_ID);
   const clientSecret = getSecretValue(env.EBAY_CLIENT_SECRET);
+  const clientIdDiagnostic = getSecretDiagnostic(env.EBAY_CLIENT_ID);
+  const clientSecretDiagnostic = getSecretDiagnostic(env.EBAY_CLIENT_SECRET);
 
   if (!clientId || !clientSecret) {
     throw new Error('Missing eBay API credentials');
@@ -349,7 +374,21 @@ async function getAccessToken(env) {
   });
 
   if (!response.ok) {
-    throw new Error(`eBay OAuth failed with ${response.status}`);
+    const errorBody = await response.json().catch(() => ({}));
+
+    throw new EbayOAuthError(`eBay OAuth failed with ${response.status}`, {
+      httpStatus: response.status,
+      error: errorBody.error || '',
+      error_description: errorBody.error_description || '',
+      contentType: response.headers.get('content-type') || '',
+      tokenEndpoint: EBAY_TOKEN_URL,
+      clientIdCharacterCount: clientIdDiagnostic.characterCount,
+      clientSecretCharacterCount: clientSecretDiagnostic.characterCount,
+      clientIdWhitespaceRemoved: clientIdDiagnostic.whitespaceRemoved,
+      clientSecretWhitespaceRemoved: clientSecretDiagnostic.whitespaceRemoved,
+      clientIdHadSurroundingQuotes: clientIdDiagnostic.hadSurroundingQuotes,
+      clientSecretHadSurroundingQuotes: clientSecretDiagnostic.hadSurroundingQuotes
+    });
   }
 
   const data = await response.json();
@@ -548,6 +587,8 @@ export async function onRequest(context) {
       sections: Object.fromEntries(entries)
     });
   } catch (error) {
+    const oauthDiagnostic = error instanceof EbayOAuthError ? error.diagnostic : undefined;
+
     return jsonResponse(
       {
         tokenOk: false,
@@ -558,7 +599,8 @@ export async function onRequest(context) {
         items: [],
         envDebug,
         error: 'Live eBay feed unavailable',
-        message: error.message
+        message: error.message,
+        ...(oauthDiagnostic ? { oauthDiagnostic } : {})
       },
       {
         status: 502,
