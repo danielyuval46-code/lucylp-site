@@ -1,158 +1,29 @@
 (function () {
-  const fallbackProducts = Array.isArray(window.LUCYLP_VINYL_PRODUCTS) ? window.LUCYLP_VINYL_PRODUCTS : [];
-  const categoryConfig = Array.isArray(window.LUCYLP_VINYL_CATEGORIES) ? window.LUCYLP_VINYL_CATEGORIES : [];
+  const products = Array.isArray(window.LUCYLP_VINYL_PRODUCTS) ? window.LUCYLP_VINYL_PRODUCTS : [];
   const grid = document.querySelector("[data-record-grid]");
-  const feedStatus = document.querySelector("[data-feed-status]");
+  const pagination = document.querySelector("[data-catalog-pagination]");
   const categoryLinks = document.querySelectorAll("[data-category-link]");
+  const activeCategory = getActiveCategory();
+  const itemsPerPage = 6;
 
   if (!grid) {
     return;
   }
 
-  const activeCategory = getActiveCategory();
   markActiveCategory(activeCategory);
-  loadProducts(activeCategory).then((products) => {
-    renderRecords(products, activeCategory);
-  });
+  renderRecords(products, activeCategory, getActivePage());
 
-  async function loadProducts(activeCategory) {
-    try {
-      const response = await fetch(buildFeedUrl(activeCategory), {
-        headers: { accept: "application/json" }
-      });
+  function renderRecords(items, category, page) {
+    const visible = items
+      .filter((item) => item.featured !== false)
+      .filter((item) => !category || item.category === category)
+      .sort((a, b) => Number(a.displayOrder || 0) - Number(b.displayOrder || 0));
+    const totalPages = Math.max(1, Math.ceil(visible.length / itemsPerPage));
+    const safePage = Math.min(Math.max(page, 1), totalPages);
+    const pageItems = visible.slice((safePage - 1) * itemsPerPage, safePage * itemsPerPage);
 
-      if (!response.ok) {
-        throw new Error("Feed unavailable");
-      }
-
-      const data = await response.json();
-      const liveItems = normalizeFeed(data, activeCategory);
-
-      if (!liveItems.length) {
-        return fallbackProducts;
-      }
-
-      if (feedStatus) {
-        feedStatus.textContent = "Live collector finds are loaded from the curated feed.";
-      }
-
-      return liveItems;
-    } catch (_error) {
-      if (feedStatus) {
-        feedStatus.textContent = "Curated fallback records are shown until the live feed is available.";
-      }
-
-      return fallbackProducts;
-    }
-  }
-
-  function buildFeedUrl(activeCategory) {
-    if (activeCategory) {
-      return `/api/ebay?category=${encodeURIComponent(activeCategory)}`;
-    }
-
-    return "/api/ebay";
-  }
-
-  function normalizeFeed(data, activeCategory) {
-    if (Array.isArray(data.items)) {
-      return data.items.map((item, index) => normalizeProviderItem(item, activeCategory || data.category || "new-finds", index));
-    }
-
-    if (!data.sections || typeof data.sections !== "object") {
-      return [];
-    }
-
-    return categoryConfig.flatMap((category) => {
-      const items = data.sections[category.id] || [];
-      return items.map((item, index) => normalizeProviderItem(item, category.id, index));
-    });
-  }
-
-  function normalizeProviderItem(item, category, index) {
-    const title = String(item.title || "LucyLP Collector Find").trim();
-    const parsed = splitTitle(title);
-
-    return {
-      id: item.itemId || item.id || `${category}-${index}`,
-      title: parsed.artist,
-      artist: parsed.artist,
-      album: parsed.album,
-      category,
-      edition: "",
-      pressingCountry: "",
-      year: "",
-      condition: item.condition || "",
-      price: normalizePrice(item.price),
-      currency: item.currency || "",
-      image: item.image || item.imageUrl || "",
-      provider: item.provider || "provider",
-      buyUrl: item.url || item.buyUrl || "",
-      status: item.url || item.buyUrl ? "available" : "curated",
-      featured: true,
-      displayOrder: 100 + index,
-      tags: []
-    };
-  }
-
-  function splitTitle(title) {
-    const separators = [" - ", " – ", " | "];
-    const separator = separators.find((mark) => title.includes(mark));
-
-    if (!separator) {
-      return {
-        artist: title,
-        album: ""
-      };
-    }
-
-    const [artist, ...rest] = title.split(separator);
-    return {
-      artist: artist.trim(),
-      album: rest.join(separator).trim()
-    };
-  }
-
-  function normalizePrice(price) {
-    const raw = String(price || "").trim();
-    const providerPrice = raw.match(/^([A-Z]{3})\s+([0-9.,]+)/);
-
-    if (providerPrice) {
-      return formatCurrency(providerPrice[2], providerPrice[1]);
-    }
-
-    if (/^[^\d-]/.test(raw)) {
-      return raw;
-    }
-
-    return raw ? formatCurrency(raw, "USD") : "TBA";
-  }
-
-  function formatCurrency(value, currency) {
-    const number = Number(String(value).replace(/,/g, ""));
-
-    if (!Number.isFinite(number)) {
-      return value;
-    }
-
-    try {
-      return new Intl.NumberFormat("en-US", {
-        style: "currency",
-        currency: currency || "USD"
-      }).format(number);
-    } catch (_error) {
-      return value;
-    }
-  }
-
-  function renderRecords(products, activeCategory) {
-    const visible = products
-      .filter((product) => product.featured !== false)
-      .filter((product) => !activeCategory || product.category === activeCategory)
-      .sort((a, b) => Number(a.displayOrder || 0) - Number(b.displayOrder || 0))
-      .slice(0, 12);
-
-    grid.replaceChildren(...visible.map(createRecordCard));
+    grid.replaceChildren(...pageItems.map(createRecordCard));
+    renderPagination(totalPages, safePage, category);
   }
 
   function createRecordCard(product) {
@@ -160,87 +31,107 @@
     card.className = "record-card";
 
     const media = document.createElement("div");
-    media.className = "record-card__media";
-
-    const image = document.createElement("img");
-    image.src = product.image || "/assets/departments/vinyl-sample-01.png";
-    image.alt = `${product.title} ${product.album || "vinyl record"} artwork`;
-    image.loading = "lazy";
-    image.width = 320;
-    image.height = 320;
-    media.append(image);
-
-    const badgeText = getBadge(product);
-    if (badgeText) {
-      const badge = document.createElement("span");
-      badge.className = "record-card__badge";
-      badge.textContent = badgeText;
-      media.append(badge);
-    }
+    media.className = "record-card__media record-card__media--placeholder";
+    media.textContent = product.imageLabel || "PRODUCT ARTWORK PENDING";
 
     const body = document.createElement("div");
     body.className = "record-card__body";
 
     const artist = document.createElement("h3");
-    artist.textContent = product.artist || product.title;
+    artist.textContent = product.artist;
 
     const album = document.createElement("p");
     album.className = "record-card__album";
-    album.textContent = product.album || product.edition || "Collector record";
+    album.textContent = product.album;
 
     const price = document.createElement("p");
     price.className = "record-card__price";
     price.textContent = product.price || "TBA";
 
-    const actionRow = document.createElement("div");
-    actionRow.className = "record-card__actions";
-
     const action = document.createElement("a");
     action.className = "record-card__button";
+    action.href = "#";
+    action.setAttribute("aria-disabled", "true");
     action.textContent = "View the Record";
 
-    if (product.status === "available" && product.buyUrl) {
-      action.href = product.buyUrl;
-      action.target = "_blank";
-      action.rel = "noopener noreferrer";
-    } else {
-      action.href = "#";
-      action.setAttribute("aria-disabled", "true");
-    }
+    const save = document.createElement("button");
+    save.className = "record-card__save";
+    save.type = "button";
+    save.setAttribute("aria-label", "Save record placeholder");
+    save.textContent = "♡";
 
-    const favorite = document.createElement("button");
-    favorite.className = "record-card__save";
-    favorite.type = "button";
-    favorite.setAttribute("aria-label", "Save record placeholder");
-    favorite.textContent = "♡";
+    const actions = document.createElement("div");
+    actions.className = "record-card__actions";
+    actions.append(action, save);
 
-    actionRow.append(action, favorite);
-    body.append(artist, album, price, actionRow);
+    body.append(artist, album, price, actions);
     card.append(media, body);
     return card;
   }
 
-  function getBadge(product) {
-    const parts = [product.year, product.pressingCountry, product.edition || product.condition]
-      .filter(Boolean)
-      .join(" ");
-
-    return parts || "";
-  }
-
   function getActiveCategory() {
     const category = new URLSearchParams(window.location.search).get("category");
-    const knownCategories = categoryConfig.map((item) => item.id);
-    return knownCategories.includes(category) ? category : "";
+    const validCategories = ["pink-floyd", "the-beatles", "japanese-pressings", "colored-vinyl", "new-finds"];
+    return validCategories.includes(category) ? category : "";
   }
 
-  function markActiveCategory(activeCategory) {
-    if (!activeCategory) {
+  function getActivePage() {
+    const page = Number(new URLSearchParams(window.location.search).get("page") || 1);
+    return Number.isInteger(page) && page > 0 ? page : 1;
+  }
+
+  function renderPagination(totalPages, currentPage, category) {
+    if (!pagination) {
+      return;
+    }
+
+    if (totalPages <= 1) {
+      pagination.replaceChildren();
+      pagination.hidden = true;
+      return;
+    }
+
+    pagination.hidden = false;
+    const links = [];
+
+    for (let index = 1; index <= totalPages; index += 1) {
+      const link = document.createElement("a");
+      link.href = buildPageUrl(index, category);
+      link.textContent = String(index);
+      link.setAttribute("aria-label", `Go to Vinyl Finds page ${index}`);
+
+      if (index === currentPage) {
+        link.setAttribute("aria-current", "page");
+      }
+
+      links.push(link);
+    }
+
+    pagination.replaceChildren(...links);
+  }
+
+  function buildPageUrl(page, category) {
+    const params = new URLSearchParams();
+
+    if (category) {
+      params.set("category", category);
+    }
+
+    if (page > 1) {
+      params.set("page", String(page));
+    }
+
+    const query = params.toString();
+    return query ? `/vinyl/?${query}` : "/vinyl/";
+  }
+
+  function markActiveCategory(category) {
+    if (!category) {
       return;
     }
 
     categoryLinks.forEach((link) => {
-      if (link.dataset.categoryLink === activeCategory) {
+      if (link.dataset.categoryLink === category) {
         link.setAttribute("aria-current", "true");
       }
     });
