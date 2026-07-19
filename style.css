@@ -112,6 +112,11 @@ a { color: inherit; }
   border-radius: 8px;
 }
 
+.page-hero .about-hero-visual {
+  object-fit: contain;
+  background: rgba(255, 239, 204, 0.5);
+}
+
 .page-link {
   display: inline-flex;
   align-items: center;
