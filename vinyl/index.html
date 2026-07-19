@@ -20,7 +20,8 @@
       <img src="/brand/LucyLP_Guides_Header_Logo.png" alt="LucyLP Guides">
       <span>Guides & Finds</span>
     </a>
-    <nav class="vinyl-nav" aria-label="Primary navigation">
+    <button class="vinyl-menu-button" type="button" data-vinyl-menu aria-expanded="false" aria-controls="vinyl-nav">Menu</button>
+    <nav class="vinyl-nav" id="vinyl-nav" aria-label="Primary navigation">
       <a href="/">Home</a>
       <a href="/books/">Books & Comics</a>
       <a href="/vinyl/" aria-current="page">Vinyl Finds</a>
@@ -122,7 +123,7 @@
         <h2 id="newsletter-title">STAY IN THE LOOP</h2>
         <p>New finds, collector tips, and vinyl stories.<br>Straight to your inbox.</p>
       </div>
-      <form action="#" method="post">
+      <form method="post" data-newsletter-form novalidate>
         <label class="sr-only" for="vinyl-email">Email address</label>
         <input id="vinyl-email" type="email" name="email" placeholder="Enter your email" autocomplete="email">
         <button type="submit">SUBSCRIBE</button>
@@ -153,19 +154,19 @@
     </nav>
     <nav aria-label="Help">
       <h2>HELP</h2>
-      <a href="#">Shipping Info</a>
-      <a href="#">Returns</a>
-      <a href="#">Care Guide</a>
-      <a href="#">FAQ</a>
+      <span class="footer-placeholder">Shipping Info</span>
+      <span class="footer-placeholder">Returns</span>
+      <span class="footer-placeholder">Care Guide</span>
+      <span class="footer-placeholder">FAQ</span>
       <a href="/contact/">Contact</a>
     </nav>
     <nav aria-label="Follow Lucy's Finds">
       <h2>FOLLOW LUCY’S FINDS</h2>
       <div class="social-links">
-        <a href="#" aria-label="Instagram">IG</a>
-        <a href="#" aria-label="Facebook">F</a>
-        <a href="#" aria-label="YouTube">YT</a>
-        <a href="#" aria-label="Music">♪</a>
+        <span class="footer-placeholder" aria-label="Instagram">IG</span>
+        <span class="footer-placeholder" aria-label="Facebook">F</span>
+        <span class="footer-placeholder" aria-label="YouTube">YT</span>
+        <span class="footer-placeholder" aria-label="Music">♪</span>
       </div>
       <p>Some records are loud.<br>Some are quiet.<br>All of them tell the truth.</p>
     </nav>

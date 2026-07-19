@@ -124,6 +124,18 @@ input:focus-visible {
   color: var(--orange);
 }
 
+.vinyl-menu-button {
+  display: none;
+  min-height: 38px;
+  padding: 9px 13px;
+  border: 2px solid var(--gold);
+  border-radius: 5px;
+  background: transparent;
+  color: var(--paper-light);
+  font: 900 12px/1 Arial, sans-serif;
+  text-transform: uppercase;
+}
+
 .vinyl-header__tools {
   display: flex;
   align-items: center;
@@ -419,8 +431,16 @@ input:focus-visible {
 }
 
 .record-card__media {
+  overflow: hidden;
   aspect-ratio: 1 / 1;
   border-bottom: 2px solid var(--line);
+}
+
+.record-card__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center center;
 }
 
 .record-card__media--placeholder {
@@ -448,6 +468,14 @@ input:focus-visible {
   min-height: 34px;
   margin: 0;
   font: 500 14px/1.2 Arial, sans-serif;
+}
+
+.record-card__edition {
+  min-height: 28px;
+  margin: 0;
+  color: var(--brown);
+  font: 700 12px/1.15 Arial, sans-serif;
+  text-transform: uppercase;
 }
 
 .record-card__price {
@@ -637,7 +665,8 @@ input:focus-visible {
   font: 900 15px/1 Arial, sans-serif;
 }
 
-.vinyl-footer a {
+.vinyl-footer a,
+.vinyl-footer .footer-placeholder {
   display: block;
   margin: 6px 0;
   font: 600 14px/1.2 Arial, sans-serif;
@@ -649,7 +678,8 @@ input:focus-visible {
   margin-bottom: 18px;
 }
 
-.social-links a {
+.social-links a,
+.social-links .footer-placeholder {
   display: grid;
   width: 34px;
   height: 34px;
@@ -724,8 +754,15 @@ input:focus-visible {
 
 @media (max-width: 600px) {
   .vinyl-header {
-    gap: 12px;
+    grid-template-columns: auto auto 1fr;
+    gap: 10px;
     padding: 10px 14px 12px;
+  }
+
+  .vinyl-menu-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .vinyl-brand img {
@@ -738,6 +775,7 @@ input:focus-visible {
 
   .vinyl-header__tools {
     gap: 8px;
+    justify-self: end;
   }
 
   .search-button {
@@ -752,9 +790,24 @@ input:focus-visible {
   }
 
   .vinyl-nav {
-    gap: 16px;
-    padding-bottom: 4px;
+    display: none;
+    grid-column: 1 / -1;
+    width: 100%;
+    overflow: visible;
+    gap: 0;
+    padding: 8px 0 2px;
     font-size: 11px;
+  }
+
+  .vinyl-nav.is-open {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  .vinyl-nav a {
+    padding: 10px 0;
+    border-top: 1px solid rgba(210, 141, 34, .28);
+    white-space: normal;
   }
 
   .vinyl-hero {
@@ -771,16 +824,30 @@ input:focus-visible {
   }
 
   .vinyl-hero__copy {
+    width: 100%;
+    max-width: 100%;
     padding: 24px 18px 30px;
+    overflow: hidden;
   }
 
   .vinyl-hero h1 {
-    font-size: clamp(52px, 18vw, 72px);
+    max-width: 100%;
+    font-size: clamp(48px, 16vw, 66px);
   }
 
   .vinyl-hero__copy p:not(.vinyl-kicker) {
+    width: 100%;
+    max-width: 100%;
     margin: 14px 0 18px;
-    font-size: 18px;
+    font-size: 16px;
+    line-height: 1.32;
+  }
+
+  .vinyl-button {
+    width: 100%;
+    max-width: 100%;
+    white-space: normal;
+    text-align: center;
   }
 
   .category-strip {
