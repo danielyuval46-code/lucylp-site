@@ -522,7 +522,8 @@ input:focus-visible {
   gap: 7px;
 }
 
-.books-footer a {
+.books-footer a,
+.books-footer .footer-placeholder {
   color: var(--paper-light);
   text-decoration: none;
 }
@@ -536,7 +537,8 @@ input:focus-visible {
   gap: 14px;
 }
 
-.social-links a {
+.social-links a,
+.social-links .footer-placeholder {
   display: grid;
   width: 34px;
   height: 34px;

@@ -164,14 +164,14 @@
     price.className = "product-card__price";
     price.textContent = formatPrice(product);
 
-    const action = document.createElement("a");
+    const isAvailable = product.status === "available" && product.buyUrl;
+    const action = document.createElement(isAvailable ? "a" : "span");
     action.className = "product-card__button";
     action.textContent = getButtonLabel(product);
 
-    if (product.status === "available" && product.buyUrl) {
+    if (isAvailable) {
       action.href = product.buyUrl;
     } else {
-      action.href = "#";
       action.setAttribute("aria-disabled", "true");
     }
 
@@ -244,4 +244,10 @@
       .trim()
       .toLowerCase();
   }
+
+  document.querySelectorAll("[data-newsletter-form]").forEach((form) => {
+    form.addEventListener("submit", (event) => {
+      event.preventDefault();
+    });
+  });
 }());
