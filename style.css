@@ -157,6 +157,102 @@ a { color: inherit; }
   margin: 0 auto 0;
 }
 
+.shop-master-page {
+  min-height: 100vh;
+  margin: 0;
+  background: #f1ddb1;
+}
+
+.shop-master-page .site-header,
+.shop-master-page .site-footer,
+.shop-master-page .shop-main {
+  display: none;
+}
+
+.shop-master-shell {
+  position: relative;
+  width: min(100%, 1024px);
+  margin: 0 auto;
+  line-height: 0;
+}
+
+.shop-master-image {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.shop-hotspot {
+  position: absolute;
+  left: var(--x);
+  top: var(--y);
+  width: var(--w);
+  height: var(--h);
+  display: block;
+  border-radius: 6px;
+  color: transparent;
+  text-decoration: none;
+  line-height: 1;
+}
+
+.shop-hotspot:focus-visible,
+.shop-master-newsletter input:focus-visible,
+.shop-master-newsletter button:focus-visible {
+  outline: 3px solid #0f766e;
+  outline-offset: 2px;
+}
+
+.shop-master-newsletter {
+  position: absolute;
+  left: 59.3%;
+  top: 83.72%;
+  width: 30.0%;
+  height: 2.95%;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 36%;
+  gap: 3.5%;
+  margin: 0;
+  line-height: 1;
+}
+
+.shop-master-newsletter label {
+  display: block;
+  min-width: 0;
+}
+
+.shop-master-newsletter label span,
+.shop-master-newsletter button span {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.shop-master-newsletter input,
+.shop-master-newsletter button {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  border: 0;
+  border-radius: 5px;
+  box-shadow: none;
+}
+
+.shop-master-newsletter input {
+  padding: 0 10px;
+  background: transparent;
+  color: #1a140b;
+  font: 500 clamp(8px, 1.2vw, 14px)/1 var(--font-body);
+}
+
+.shop-master-newsletter button {
+  padding: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
 .shop-hero {
   display: grid;
   grid-template-columns: minmax(290px, 0.52fr) minmax(0, 1.48fr);
