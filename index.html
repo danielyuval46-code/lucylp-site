@@ -3,323 +3,196 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>LucyLP WEB001 Portal Prototype</title>
-  <style>
-    * { box-sizing: border-box; }
-
-    html,
-    body {
-      margin: 0;
-      min-height: 100%;
-      background: #171009;
-    }
-
-    body {
-      width: 100vw;
-      height: 100vh;
-      overflow: hidden;
-    }
-
-    .portal-canvas {
-      position: relative;
-      width: 100vw;
-      height: 100vh;
-      overflow: hidden;
-      background: #e5cc98;
-    }
-
-    .portal-master {
-      display: block;
-      width: 100%;
-      height: 100%;
-    }
-
-    .compass-glow {
-      position: absolute;
-      z-index: 1;
-      left: 85.333%;
-      top: 5.2%;
-      width: 12.805%;
-      height: 22.8%;
-      pointer-events: none;
-    }
-
-    .compass-glow::before,
-    .compass-glow::after {
-      content: "";
-      position: absolute;
-      inset: -7% -14%;
-      border-radius: 45% / 30%;
-      background:
-        radial-gradient(ellipse at center,
-          rgba(255, 240, 187, 0.18) 0 34%,
-          rgba(72, 214, 210, 0.2) 48%,
-          rgba(39, 183, 191, 0.12) 61%,
-          transparent 78%);
-      filter: blur(9px);
-      animation: compass-glow-pulse 7s ease-in-out infinite;
-    }
-
-    .compass-glow::after {
-      inset: -2% -8%;
-      background:
-        radial-gradient(ellipse at center,
-          transparent 44%,
-          rgba(205, 153, 64, 0.22) 58%,
-          rgba(229, 202, 139, 0.1) 69%,
-          transparent 80%);
-      filter: blur(5px);
-      animation-delay: -3.5s;
-    }
-
-    .compass-motion {
-      position: absolute;
-      z-index: 2;
-      left: 85.333%;
-      top: 5.2%;
-      width: 12.805%;
-      height: 22.8%;
-      overflow: hidden;
-      background: transparent;
-      -webkit-mask-image: radial-gradient(ellipse at center, #000 0 48%, rgba(0, 0, 0, 0.9) 58%, rgba(0, 0, 0, 0.38) 76%, transparent 100%);
-      mask-image: radial-gradient(ellipse at center, #000 0 48%, rgba(0, 0, 0, 0.9) 58%, rgba(0, 0, 0, 0.38) 76%, transparent 100%);
-      -webkit-mask-repeat: no-repeat;
-      mask-repeat: no-repeat;
-      -webkit-mask-size: 100% 100%;
-      mask-size: 100% 100%;
-    }
-
-    .compass-poster,
-    .compass-motion video {
-      position: absolute;
-      inset: 0;
-      display: block;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      object-position: center;
-    }
-
-    .compass-poster { z-index: 0; }
-    .compass-motion video { z-index: 1; }
-
-    .compass-magic {
-      position: absolute;
-      z-index: 3;
-      left: 84.75%;
-      top: 4.4%;
-      width: 14.1%;
-      height: 24.4%;
-      overflow: visible;
-      pointer-events: none;
-    }
-
-    .magic-particle {
-      position: absolute;
-      left: var(--x);
-      top: var(--y);
-      width: max(var(--size), 4px);
-      aspect-ratio: 1;
-      border-radius: 50%;
-      opacity: var(--opacity);
-      background: var(--color);
-      box-shadow: 0 0 5px 1px var(--color), 0 0 10px 2px var(--color);
-      animation: particle-drift var(--duration) ease-in-out var(--delay) infinite alternate;
-    }
-
-    .magic-trail {
-      position: absolute;
-      width: 34%;
-      height: 20%;
-      border: 1px solid transparent;
-      border-top-color: rgba(79, 215, 208, 0.24);
-      border-radius: 50%;
-      opacity: 0.72;
-      transform: rotate(var(--rotate));
-      animation: trail-breathe 8s ease-in-out var(--delay) infinite;
-    }
-
-    .magic-trail.gold {
-      border-top-color: rgba(205, 153, 64, 0.22);
-    }
-
-    @keyframes compass-glow-pulse {
-      0%, 100% { opacity: 0.68; transform: scale(0.98); }
-      50% { opacity: 0.9; transform: scale(1.025); }
-    }
-
-    @keyframes particle-drift {
-      from { transform: translate3d(0, 0, 0) scale(0.88); }
-      to { transform: translate3d(var(--dx), var(--dy), 0) scale(1.12); }
-    }
-
-    @keyframes trail-breathe {
-      0%, 100% { opacity: 0.3; }
-      50% { opacity: 0.68; }
-    }
-
-    .enter-world-hotspot {
-      position: absolute;
-      z-index: 4;
-      left: 18.3%;
-      top: 73.2%;
-      width: 31.5%;
-      height: 13.5%;
-      color: transparent;
-      background: transparent;
-      outline-offset: -5px;
-    }
-
-    .enter-world-hotspot:focus-visible {
-      outline: 4px solid #b9481d;
-    }
-
-    @media (max-width: 600px) {
-      body {
-        align-content: start;
-        background: #e5cc98;
-      }
-
-      .portal-canvas {
-        width: 100vw;
-      }
-
-      .enter-world-hotspot:focus-visible {
-        outline-width: 2px;
-      }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      .compass-motion video { display: none; }
-      .compass-glow::before,
-      .compass-glow::after,
-      .magic-particle,
-      .magic-trail {
-        animation: none;
-      }
-
-      .compass-glow::before,
-      .compass-glow::after { opacity: 0.72; }
-    }
-
-    html.reduced-motion-preview .compass-motion video { display: none; }
-
-    html.reduced-motion-preview .compass-glow::before,
-    html.reduced-motion-preview .compass-glow::after,
-    html.reduced-motion-preview .magic-particle,
-    html.reduced-motion-preview .magic-trail {
-      animation: none;
-    }
-
-    html.reduced-motion-preview .compass-glow::before,
-    html.reduced-motion-preview .compass-glow::after { opacity: 0.72; }
-
-    html.mobile-preview body {
-      align-content: start;
-      justify-items: center;
-      background: #e5cc98;
-    }
-
-    html.mobile-preview .portal-canvas { width: 390px; }
-  </style>
+  <title>LucyLP Guides | Curiosity Becomes a World</title>
+  <meta name="description" content="LucyLP Guides begins with curiosity: books, comics, vinyl finds, manga, community stories and LucyLP originals.">
+  <link rel="canonical" href="https://lucylp.com/">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="LucyLP Guides">
+  <meta property="og:description" content="We do not begin with products. We begin with curiosity.">
+  <meta property="og:url" content="https://lucylp.com/">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="/brand/LucyLP_Favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/style.css?v=20260717-final-home-1">
 </head>
 <body>
-  <main class="portal-canvas" aria-label="LucyLP story portal">
-    <img class="portal-master" src="assets/portal/WEB001.svg" alt="LucyLP illustrated portal into the Gate 70 story world.">
+  <header class="site-header" aria-label="LucyLP homepage header">
+    <a class="brand" href="/" aria-label="LucyLP Guides home">
+      <img src="/brand/LucyLP_Guides_Header_Logo.png" alt="LucyLP Guides">
+    </a>
 
-    <div class="compass-glow" aria-hidden="true"></div>
+    <nav class="primary-nav" aria-label="Primary navigation">
+      <a href="/about/">About</a>
+      <a href="/books/">Guides</a>
+      <a href="/blog/">Blog</a>
+      <a href="/blog/">Community</a>
+    </nav>
 
-    <div class="compass-motion" aria-hidden="true">
-      <img class="compass-poster" src="assets/portal/LucyLP_Memory_Compass_Portal_Poster.png" alt="">
-      <video
-        id="memory-compass"
-        src="assets/portal/LucyLP_Memory_Compass_Portal_Web.mp4"
-        poster="assets/portal/LucyLP_Memory_Compass_Portal_Poster.png"
-        autoplay
-        muted
-        loop
-        playsinline
-        preload="metadata"
-      ></video>
-    </div>
+    <nav class="action-nav" aria-label="Header actions">
+      <a href="/blog/">Search</a>
+      <a href="/contact/">Account</a>
+      <a class="portal-link" href="/">Portal Home</a>
+    </nav>
+  </header>
 
-    <div class="compass-magic" aria-hidden="true">
-      <i class="magic-particle" data-particle style="--x:3%;--y:24%;--size:3px;--opacity:.72;--color:#55d8d1;--duration:7s;--delay:-2s;--dx:-5px;--dy:-9px"></i>
-      <i class="magic-particle" data-particle style="--x:12%;--y:72%;--size:2px;--opacity:.58;--color:#cf9f4d;--duration:9s;--delay:-6s;--dx:-4px;--dy:7px"></i>
-      <i class="magic-particle" data-particle style="--x:24%;--y:7%;--size:4px;--opacity:.66;--color:#e4c477;--duration:8s;--delay:-3s;--dx:3px;--dy:-7px"></i>
-      <i class="magic-particle" data-particle style="--x:43%;--y:2%;--size:2px;--opacity:.5;--color:#55d8d1;--duration:10s;--delay:-7s;--dx:6px;--dy:-5px"></i>
-      <i class="magic-particle" data-particle style="--x:70%;--y:8%;--size:3px;--opacity:.62;--color:#c9953f;--duration:8.5s;--delay:-4s;--dx:5px;--dy:-8px"></i>
-      <i class="magic-particle" data-particle style="--x:91%;--y:27%;--size:4px;--opacity:.7;--color:#56ddd3;--duration:7.5s;--delay:-5s;--dx:7px;--dy:-2px"></i>
-      <i class="magic-particle" data-particle style="--x:96%;--y:58%;--size:2px;--opacity:.54;--color:#e1bd6a;--duration:9.5s;--delay:-1s;--dx:5px;--dy:6px"></i>
-      <i class="magic-particle" data-particle style="--x:82%;--y:88%;--size:3px;--opacity:.68;--color:#4fd3cf;--duration:8s;--delay:-6s;--dx:4px;--dy:8px"></i>
-      <i class="magic-particle" data-particle style="--x:48%;--y:96%;--size:2px;--opacity:.48;--color:#d1a24f;--duration:10s;--delay:-8s;--dx:-3px;--dy:7px"></i>
-      <i class="magic-particle" data-particle style="--x:19%;--y:90%;--size:4px;--opacity:.64;--color:#60d8d1;--duration:8.8s;--delay:-4.5s;--dx:-7px;--dy:4px"></i>
+  <main>
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="hero-copy">
+        <h1 id="hero-title">
+          <span>We don’t begin</span>
+          <span>with products.</span>
+          <span>We begin with <em>curiosity.</em></span>
+        </h1>
+        <div class="rule" aria-hidden="true"></div>
+        <p>One thought becomes a page.</p>
+        <p>One page becomes a story.</p>
+        <p><strong>One story becomes a world.</strong></p>
+      </div>
 
-      <span class="magic-trail" style="left:-2%;top:18%;--rotate:-24deg;--delay:-2s"></span>
-      <span class="magic-trail gold" style="right:-4%;top:43%;--rotate:32deg;--delay:-5s"></span>
-      <span class="magic-trail" style="left:29%;bottom:-1%;--rotate:8deg;--delay:-7s"></span>
-    </div>
+      <div class="hero-art">
+        <img class="lucy-hero" src="/assets/homepage/hero/lucy-hero.png" alt="Lucy smiling in a black travel jacket and black-and-gold horned helmet." fetchpriority="high">
+        <aside class="speech-bubble" aria-label="Welcome from Lucy">
+          <h2>Welcome!</h2>
+          <p>I’m Lucy.</p>
+          <p>
+            <span>Your guide to stories,</span>
+            <span>music, manga,</span>
+            <span>and all things worth</span>
+            <span>discovering.</span>
+          </p>
+          <span class="bubble-heart" aria-hidden="true">♥</span>
+        </aside>
+      </div>
+    </section>
 
-    <a
-      class="enter-world-hotspot"
-      href="/world/"
-      aria-label="Enter Lucy's world"
-    >Enter the World</a>
+    <nav class="circle-nav" aria-label="Department navigation">
+      <a class="circle-card" href="/books/">
+        <span class="circle-art"><img src="/assets/homepage/circles/circle-books-comics.png" alt="Lucy reading a comic for Books and Comics." loading="lazy"></span>
+        <strong>Books &<br>Comics</strong>
+      </a>
+      <a class="circle-card" href="/vinyl/">
+        <span class="circle-art"><img src="/assets/homepage/circles/circle-vinyl-finds.png" alt="Lucy holding a vinyl record for Vinyl Finds." loading="lazy"></span>
+        <strong>Vinyl<br>Finds</strong>
+      </a>
+      <a class="circle-card" href="/manga/">
+        <span class="circle-art"><img src="/assets/homepage/circles/circle-manga-japan.png" alt="Lucy holding a manga book for Manga and Japan Finds." loading="lazy"></span>
+        <strong>Manga &<br>Japan Finds</strong>
+      </a>
+      <a class="circle-card" href="/blog/">
+        <span class="circle-art"><img src="/assets/homepage/circles/circle-blog-community.png" alt="Lucy writing community stories for Blog and Community." loading="lazy"></span>
+        <strong>Blog &<br>Community</strong>
+      </a>
+      <a class="circle-card" href="/shop/">
+        <span class="circle-art"><img src="/assets/homepage/circles/circle-shop.png" alt="Lucy with a LucyLP shop bag and collectibles for Shop." loading="lazy"></span>
+        <strong>Shop</strong>
+      </a>
+    </nav>
+
+    <section class="panel-grid" aria-label="LucyLP departments">
+      <article class="department-panel">
+        <div class="department-panel__content">
+          <h2>Books & Comics</h2>
+          <p>Stories, mysteries, memories and illustrated adventures.</p>
+          <a href="/books/">Explore</a>
+        </div>
+        <div class="department-panel__art">
+          <img src="/assets/homepage/panels/panel-books-comics.png" alt="Lucy reading a comic with books beside her for Books and Comics." loading="lazy">
+        </div>
+      </article>
+
+      <article class="department-panel">
+        <div class="department-panel__content">
+          <h2>Vinyl Finds</h2>
+          <p>Rare pressings, forgotten stories and records worth finding.</p>
+          <p class="identity-mark">VINTAGE-IT</p>
+          <a href="/vinyl/">Explore</a>
+        </div>
+        <div class="department-panel__art">
+          <img src="/assets/homepage/panels/panel-vinyl-finds.png" alt="Lucy holding a vinyl record for Vinyl Finds." loading="lazy">
+        </div>
+      </article>
+
+      <article class="department-panel">
+        <div class="department-panel__content">
+          <h2>Manga & Japan Finds</h2>
+          <p>Stories, art, editions and curious finds from Japan.</p>
+          <a href="/manga/">Explore</a>
+        </div>
+        <div class="department-panel__art">
+          <img src="/assets/homepage/panels/panel-manga-japan.png" alt="Lucy reading manga with Japanese visual details for Manga and Japan Finds." loading="lazy">
+        </div>
+      </article>
+
+      <article class="department-panel">
+        <div class="department-panel__content">
+          <h2>Blog & Community</h2>
+          <p>Stories in progress, personal vintage treasures and a community built around curiosity.</p>
+          <a href="/blog/">Enter</a>
+        </div>
+        <div class="department-panel__art">
+          <img src="/assets/homepage/panels/panel-blog-community.png" alt="Lucy writing in a journal with a camera, laptop, postcards and community behind her for Blog and Community." loading="lazy">
+        </div>
+      </article>
+
+      <article class="department-panel">
+        <div class="department-panel__content">
+          <h2>Shop</h2>
+          <p>Books, comics, art and objects created inside the world of LucyLP.</p>
+          <a href="/shop/">Visit the shop</a>
+        </div>
+        <div class="department-panel__art">
+          <img src="/assets/homepage/panels/panel-shop.png" alt="Lucy with a shopping bag and curated LucyLP objects for Shop." loading="lazy">
+        </div>
+      </article>
+    </section>
+
+    <section class="value-row" aria-label="LucyLP values and newsletter">
+      <article>
+        <span aria-hidden="true">★</span>
+        <h2>Curated with Care</h2>
+        <p>Quality over everything.</p>
+      </article>
+      <article>
+        <span aria-hidden="true">□</span>
+        <h2>Stories That Stay</h2>
+        <p>Timeless reads and re-reads.</p>
+      </article>
+      <article>
+        <span aria-hidden="true">◎</span>
+        <h2>Worlds to Explore</h2>
+        <p>From local gems to global finds.</p>
+      </article>
+      <article>
+        <span aria-hidden="true">♥</span>
+        <h2>Community First</h2>
+        <p>You belong here. Let’s create together.</p>
+      </article>
+      <form class="newsletter" action="/contact/" method="get">
+        <h2>Stay in the loop.</h2>
+        <p>Stories, finds, and exclusives delivered to your inbox.</p>
+        <label>
+          <span>Email address</span>
+          <input type="email" name="email" placeholder="Your email address" autocomplete="email">
+        </label>
+        <button type="submit">Join</button>
+      </form>
+    </section>
   </main>
 
-  <script>
-    const video = document.querySelector("#memory-compass");
-    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const reducedMotionPreview = new URLSearchParams(window.location.search).has("reduced-motion");
-    const mobilePreview = new URLSearchParams(window.location.search).has("mobile-preview");
-    let portalVisible = true;
-
-    document.documentElement.classList.toggle("reduced-motion-preview", reducedMotionPreview);
-    document.documentElement.classList.toggle("mobile-preview", mobilePreview);
-
-    video.muted = true;
-    video.defaultMuted = true;
-
-    const tryPlay = () => {
-      if (reduceMotion.matches || reducedMotionPreview || !portalVisible) return;
-      video.muted = true;
-      const attempt = video.play();
-      if (attempt && typeof attempt.catch === "function") {
-        attempt.catch(() => {});
-      }
-    };
-
-    const observer = new IntersectionObserver(([entry]) => {
-      portalVisible = entry.isIntersecting;
-      if (portalVisible) {
-        tryPlay();
-      } else {
-        video.pause();
-      }
-    }, { threshold: 0.08 });
-
-    observer.observe(document.querySelector(".portal-canvas"));
-
-    const resumeAfterInteraction = () => {
-      tryPlay();
-      window.removeEventListener("pointerdown", resumeAfterInteraction);
-      window.removeEventListener("keydown", resumeAfterInteraction);
-      window.removeEventListener("scroll", resumeAfterInteraction);
-    };
-
-    window.addEventListener("pointerdown", resumeAfterInteraction, { passive: true });
-    window.addEventListener("keydown", resumeAfterInteraction);
-    window.addEventListener("scroll", resumeAfterInteraction, { passive: true });
-
-    reduceMotion.addEventListener("change", () => {
-      if (reduceMotion.matches) {
-        video.pause();
-      } else {
-        tryPlay();
-      }
-    });
-
-    tryPlay();
-  </script>
+  <footer class="site-footer">
+    <p>© 2025 LucyLP Guides. All rights reserved.</p>
+    <nav aria-label="Footer links">
+      <a href="/about/">About</a>
+      <a href="/contact/">Contact</a>
+      <a href="/privacy/">Privacy</a>
+      <a href="/terms/">Terms</a>
+    </nav>
+    <div class="follow">
+      <strong>Follow Lucy</strong>
+      <a href="/contact/">IG</a>
+      <a href="/contact/">YT</a>
+      <a href="/contact/">TT</a>
+      <a href="/contact/">P</a>
+    </div>
+  </footer>
 </body>
 </html>

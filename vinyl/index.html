@@ -3,54 +3,177 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Vinyl Records | LucyLP</title>
-  <meta name="description" content="Explore LucyLP vinyl finds: Japanese pressings, limited editions and collectible records.">
-  <link rel="stylesheet" href="/department-site.css?v=20260713-1">
+  <title>Vinyl Finds | LucyLP Guides & Finds</title>
+  <meta name="description" content="Rare pressings, forgotten stories and records worth finding from LucyLP Vinyl Finds.">
+  <link rel="canonical" href="https://lucylp.com/vinyl/">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Vinyl Finds | LucyLP Guides & Finds">
+  <meta property="og:description" content="Rare pressings, forgotten stories and records worth finding.">
+  <meta property="og:url" content="https://lucylp.com/vinyl/">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="/brand/LucyLP_Favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/vinyl/vinyl.css">
 </head>
 <body>
-  <header class="site-header">
-    <div class="header-inner">
-      <a class="brand-link" href="/" aria-label="LucyLP home">
-        <img src="/brand/LucyLP_Guides_Header_Logo.png?v=20260713-1" alt="LucyLP Guides">
+  <header class="vinyl-header">
+    <a class="vinyl-brand" href="/" aria-label="LucyLP home">
+      <img src="/brand/LucyLP_Guides_Header_Logo.png" alt="LucyLP Guides">
+      <span>Guides & Finds</span>
+    </a>
+    <button class="vinyl-menu-button" type="button" data-vinyl-menu aria-expanded="false" aria-controls="vinyl-nav">Menu</button>
+    <nav class="vinyl-nav" id="vinyl-nav" aria-label="Primary navigation">
+      <a href="/">Home</a>
+      <a href="/books/">Books & Comics</a>
+      <a href="/vinyl/" aria-current="page">Vinyl Finds</a>
+      <a href="/manga/">Manga & Japan Finds</a>
+      <a href="/about/">About Lucy</a>
+      <a href="/blog/">Blog</a>
+    </nav>
+    <div class="vinyl-header__tools">
+      <button class="search-button" type="button" aria-label="Search Vinyl Finds"></button>
+      <a class="compass-link" href="/world/" aria-label="Open the LucyLP world portal">
+        <span aria-hidden="true">✦</span>
       </a>
-      <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="Open navigation">☰</button>
-      <nav class="site-nav" id="site-nav" aria-label="Primary navigation">
-        <a href="/">Home</a>
-        <a href="/world/">World</a>
-        <a href="/vinyl/" aria-current="page">Vinyl</a>
-        <a href="/manga/">Manga</a>
-      </nav>
     </div>
   </header>
 
   <main>
-    <section class="banner-wrap" aria-label="Lucy’s Vinyl Finds">
-      <img class="department-banner" src="/assets/departments/vinyl-banner-approved.png?v=20260713-1" alt="Lucy’s Vinyl Finds — rare records and real stories">
-      <a class="banner-hotspot vinyl-hotspot" href="#catalog">Explore the vinyl catalog</a>
+    <section class="vinyl-hero" aria-labelledby="vinyl-title">
+      <div class="vinyl-hero__art">
+        <img src="/assets/vinyl/hero/vinyl-hero-artwork-only.png" alt="Lucy browsing a warm Vintage-It Japanese record shop.">
+      </div>
+      <div class="vinyl-hero__copy">
+        <p class="vinyl-kicker">VINTAGE-IT</p>
+        <h1 id="vinyl-title">VINYL<br>FINDS</h1>
+        <p>Rare pressings, forgotten stories and records worth finding.</p>
+        <a class="vinyl-button" href="#latest-finds">BROWSE THE COLLECTION <span aria-hidden="true">›</span></a>
+      </div>
     </section>
 
-    <section class="catalog-section" id="catalog" aria-labelledby="catalog-title">
-      <p class="section-kicker">Collector selection</p>
-      <h1 class="section-heading" id="catalog-title">Vinyl Records</h1>
-      <p class="section-intro">The first pass uses sample listings to lock the catalog structure. Product details and destination links can be updated in one data file without rebuilding the page.</p>
-      <div class="catalog-grid" data-catalog="vinyl" aria-live="polite"></div>
-      <div class="back-world-row">
-        <a class="back-world-link" href="/world/">← Back to World</a>
+    <section class="category-strip" aria-label="Vinyl categories">
+      <a class="category-card" href="/vinyl/?category=pink-floyd" data-category-link="pink-floyd">
+        <span class="category-card__art"><img src="/assets/vinyl/categories/category-pink-floyd.png" alt=""></span>
+        <span class="category-card__label"><strong>PINK FLOYD</strong><small>See all</small></span>
+      </a>
+      <a class="category-card" href="/vinyl/?category=the-beatles" data-category-link="the-beatles">
+        <span class="category-card__art"><img src="/assets/vinyl/categories/category-the-beatles.png" alt=""></span>
+        <span class="category-card__label"><strong>THE BEATLES</strong><small>See all</small></span>
+      </a>
+      <a class="category-card" href="/vinyl/?category=japanese-pressings" data-category-link="japanese-pressings">
+        <span class="category-card__art"><img src="/assets/vinyl/categories/category-japanese-pressings.png" alt=""></span>
+        <span class="category-card__label"><strong>JAPANESE PRESSINGS</strong><small>See all</small></span>
+      </a>
+      <a class="category-card" href="/vinyl/?category=colored-vinyl" data-category-link="colored-vinyl">
+        <span class="category-card__art"><img src="/assets/vinyl/categories/category-colored-vinyl.png" alt=""></span>
+        <span class="category-card__label"><strong>COLORED VINYL</strong><small>See all</small></span>
+      </a>
+      <a class="category-card" href="/vinyl/?category=new-finds" data-category-link="new-finds">
+        <span class="category-card__art"><img src="/assets/vinyl/categories/category-new-finds.png" alt=""></span>
+        <span class="category-card__label"><strong>NEW FINDS</strong><small>See all</small></span>
+      </a>
+    </section>
+
+    <section class="collector-row" aria-label="Collector values">
+      <article><span aria-hidden="true">✦</span><div><h2>CURATED WITH CARE</h2><p>Handpicked records with stories worth discovering.</p></div></article>
+      <article><span aria-hidden="true">◉</span><div><h2>AUTHENTIC PRESSINGS</h2><p>Original releases, Japanese pressings and collector editions.</p></div></article>
+      <article><span aria-hidden="true">▰</span><div><h2>NEW FINDS EVERY WEEK</h2><p>Fresh arrivals. Timeless music. Always something new.</p></div></article>
+      <article><span aria-hidden="true">♡</span><div><h2>FOR COLLECTORS</h2><p>Built for music lovers who listen deeper.</p></div></article>
+    </section>
+
+    <section class="vinyl-section" aria-labelledby="latest-finds">
+      <div class="section-heading">
+        <h2 id="latest-finds">LATEST VINYL FINDS</h2>
+        <a href="/vinyl/">VIEW ALL RECORDS <span aria-hidden="true">›</span></a>
       </div>
+      <div class="record-grid" data-record-grid aria-live="polite"></div>
+      <nav class="catalog-pagination" aria-label="Latest Vinyl Finds pages" data-catalog-pagination></nav>
+    </section>
+
+    <section class="highlight-grid" aria-labelledby="collector-highlights">
+      <h2 id="collector-highlights">COLLECTOR HIGHLIGHTS</h2>
+      <article class="highlight-card">
+        <div class="highlight-card__art placeholder-art"><span>EDITORIAL ARTWORK PENDING</span></div>
+        <div>
+          <h3>JAPANESE PRESSINGS</h3>
+          <p>Obi strips, original artwork, and the purest way to experience the music.</p>
+          <a href="/vinyl/?category=japanese-pressings">EXPLORE JAPANESE <span aria-hidden="true">›</span></a>
+        </div>
+      </article>
+      <article class="highlight-card">
+        <div class="highlight-card__art placeholder-art"><span>EDITORIAL ARTWORK PENDING</span></div>
+        <div>
+          <h3>NEW FINDS EVERY WEEK</h3>
+          <p>Dig into fresh arrivals and hidden gems.</p>
+          <a href="/vinyl/?category=new-finds">SHOP NEW FINDS <span aria-hidden="true">›</span></a>
+        </div>
+      </article>
+      <article class="highlight-card">
+        <div class="highlight-card__art placeholder-art"><span>EDITORIAL ARTWORK PENDING</span></div>
+        <div>
+          <h3>THE SOUND MATTERS</h3>
+          <p>Original pressings. Better sound. Stronger connection.</p>
+          <a href="/blog/">LEARN MORE <span aria-hidden="true">›</span></a>
+        </div>
+      </article>
+    </section>
+
+    <section class="vinyl-newsletter" aria-labelledby="newsletter-title">
+      <div class="newsletter-art placeholder-art" aria-hidden="true"><span>NEWSLETTER ARTWORK PENDING</span></div>
+      <div>
+        <h2 id="newsletter-title">STAY IN THE LOOP</h2>
+        <p>New finds, collector tips, and vinyl stories.<br>Straight to your inbox.</p>
+      </div>
+      <form method="post" data-newsletter-form novalidate>
+        <label class="sr-only" for="vinyl-email">Email address</label>
+        <input id="vinyl-email" type="email" name="email" placeholder="Enter your email" autocomplete="email">
+        <button type="submit">SUBSCRIBE</button>
+      </form>
+      <div class="newsletter-crate placeholder-art" aria-hidden="true"><span>CRATE ARTWORK PENDING</span></div>
     </section>
   </main>
 
-  <footer class="site-footer">
-    <div class="footer-inner">
-      <p>LucyLP — collect what matters.</p>
-      <nav class="footer-nav" aria-label="Footer navigation">
-        <a href="/">Home</a>
-        <a href="/world/">World</a>
-        <a href="/vinyl/">Vinyl</a>
-        <a href="/manga/">Manga</a>
-      </nav>
+  <footer class="vinyl-footer">
+    <div class="footer-brand">
+      <img src="/brand/LucyLP_Guides_Header_Logo.png" alt="LucyLP Guides">
+      <p>Vinyl. Books. Manga.<br>Stories worth collecting.</p>
     </div>
+    <nav aria-label="Vinyl Finds">
+      <h2>SHOP</h2>
+      <a href="/vinyl/?category=pink-floyd">Pink Floyd</a>
+      <a href="/vinyl/?category=the-beatles">The Beatles</a>
+      <a href="/vinyl/?category=japanese-pressings">Japanese Pressings</a>
+      <a href="/vinyl/?category=colored-vinyl">Colored Vinyl</a>
+      <a href="/vinyl/?category=new-finds">New Finds</a>
+    </nav>
+    <nav aria-label="Explore">
+      <h2>EXPLORE</h2>
+      <a href="/books/">Books & Comics</a>
+      <a href="/manga/">Manga & Japan Finds</a>
+      <a href="/blog/">Blog</a>
+      <a href="/about/">About Lucy</a>
+    </nav>
+    <nav aria-label="Help">
+      <h2>HELP</h2>
+      <span class="footer-placeholder">Shipping Info</span>
+      <span class="footer-placeholder">Returns</span>
+      <span class="footer-placeholder">Care Guide</span>
+      <span class="footer-placeholder">FAQ</span>
+      <a href="/contact/">Contact</a>
+    </nav>
+    <nav aria-label="Follow Lucy's Finds">
+      <h2>FOLLOW LUCY’S FINDS</h2>
+      <div class="social-links">
+        <span class="footer-placeholder" aria-label="Instagram">IG</span>
+        <span class="footer-placeholder" aria-label="Facebook">F</span>
+        <span class="footer-placeholder" aria-label="YouTube">YT</span>
+        <span class="footer-placeholder" aria-label="Music">♪</span>
+      </div>
+      <p>Some records are loud.<br>Some are quiet.<br>All of them tell the truth.</p>
+    </nav>
+    <small>&copy; 2025 LucyLP Guides & Finds. All rights reserved.</small>
   </footer>
-  <script src="/department-site.js?v=20260713-1"></script>
+
+  <script src="/data/vinyl-products.js"></script>
+  <script src="/vinyl/vinyl.js"></script>
 </body>
 </html>
