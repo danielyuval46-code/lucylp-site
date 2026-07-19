@@ -1,0 +1,55 @@
+.comics-hero h1 {
+  max-width: 680px;
+  font-size: clamp(54px, 5.2vw, 82px);
+}
+
+.comics-hero .books-hero__art img {
+  object-position: 54% 50%;
+}
+
+.comics-catalog {
+  padding-top: 34px;
+}
+
+.comics-page .product-card__body {
+  grid-template-rows: auto auto auto auto 1fr auto;
+  min-height: 242px;
+}
+
+.product-card__status {
+  justify-self: start;
+  margin: 0;
+  padding: 5px 8px;
+  color: var(--paper-light);
+  background: var(--orange);
+  border-radius: 3px;
+  font: 900 11px/1 Arial, sans-serif;
+  text-transform: uppercase;
+}
+
+.product-card__status--soon {
+  color: var(--orange);
+  background: transparent;
+  border: 1px solid var(--orange);
+}
+
+.comics-page .product-card__button {
+  align-self: end;
+}
+
+@media (max-width: 980px) {
+  .comics-hero h1 {
+    max-width: none;
+    font-size: clamp(52px, 9vw, 76px);
+  }
+}
+
+@media (max-width: 600px) {
+  .comics-hero h1 {
+    font-size: clamp(40px, 12vw, 50px);
+  }
+
+  .comics-page .product-card__body {
+    min-height: 226px;
+  }
+}
