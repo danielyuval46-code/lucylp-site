@@ -160,6 +160,7 @@ a { color: inherit; }
 .shop-master-page {
   min-height: 100vh;
   margin: 0;
+  padding: 0;
   background: #f1ddb1;
 }
 
@@ -171,14 +172,17 @@ a { color: inherit; }
 
 .shop-master-shell {
   position: relative;
-  width: min(100%, 1024px);
-  margin: 0 auto;
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding: 0;
   line-height: 0;
 }
 
 .shop-master-image {
   display: block;
   width: 100%;
+  max-width: none;
   height: auto;
 }
 
