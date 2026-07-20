@@ -5,36 +5,104 @@
       id: "birthday",
       title: "Birthday",
       subtitle: "A special LucyLP birthday adventure",
+      description: "",
       image: "/assets/cards/products/birthday.png",
-      alt: "LucyLP Happy Birthday greeting card"
+      alt: "LucyLP Happy Birthday greeting card",
+      format: "Format details coming soon",
+      status: "coming-soon"
     },
     {
       id: "thank-you",
       title: "Thank You",
       subtitle: "A warm thank-you from the world of LucyLP",
+      description: "",
       image: "/assets/cards/products/thank-you.png",
-      alt: "LucyLP Thank You greeting card"
+      alt: "LucyLP Thank You greeting card",
+      format: "Format details coming soon",
+      status: "coming-soon"
     },
     {
       id: "mothers-day",
       title: "Mother’s Day",
       subtitle: "For the one who makes every journey possible",
+      description: "",
       image: "/assets/cards/products/mothers-day.png",
-      alt: "LucyLP Happy Mother's Day greeting card"
+      alt: "LucyLP Happy Mother's Day greeting card",
+      format: "Format details coming soon",
+      status: "coming-soon"
     },
     {
       id: "fathers-day",
       title: "Father’s Day",
       subtitle: "For the one who always shows the way",
+      description: "",
       image: "/assets/cards/products/fathers-day.png",
-      alt: "LucyLP Happy Father's Day greeting card"
+      alt: "LucyLP Happy Father's Day greeting card",
+      format: "Format details coming soon",
+      status: "coming-soon"
     },
     {
       id: "anniversary-love",
       title: "Anniversary / Love",
       subtitle: "A story worth celebrating together",
+      description: "",
       image: "/assets/cards/products/anniversary-love.png",
-      alt: "LucyLP Happy Anniversary greeting card"
+      alt: "LucyLP Happy Anniversary greeting card",
+      format: "Format details coming soon",
+      status: "coming-soon"
+    },
+    {
+      id: "japanese-new-year",
+      title: "Japanese New Year",
+      subtitle: "A new year, a new journey.",
+      description: "A warm LucyLP greeting card inspired by Japanese New Year traditions, new beginnings, good fortune and beautiful journeys.",
+      image: "/assets/cards/products/japanese-new-year.png",
+      alt: "LucyLP Japanese New Year greeting card",
+      format: "Pack of 10 folded 5×7 greeting cards with envelopes",
+      price: 24.97,
+      currency: "USD",
+      buyUrl: "https://www.etsy.com/listing/4540671043/lucylp-japanese-new-year-greeting-cards",
+      status: "available",
+      etsyTitle: "LucyLP Japanese New Year Greeting Cards | Pack of 10 | 5x7 Folded Cards with Envelopes",
+      etsyDescription: `Welcome the new year with a little story from the world of LucyLP.
+
+This pack includes 10 folded 5x7 greeting cards featuring Lucy in a richly illustrated Japanese New Year scene with lanterns, a shrine gate, sunrise, floral details and vintage comic texture.
+
+Front message:
+Happy New Year — A New Year, A New Journey
+
+Inside message:
+A new year begins with a single step.
+May yours be filled with new stories, warm memories, good fortune, and beautiful journeys.
+
+Happy New Year
+あけましておめでとうございます
+
+Perfect for friends, family, collectors and anyone who loves Japan-inspired art, vintage illustration and meaningful paper goods.
+
+Includes:
+- 10 folded 5x7 cards
+- Matching envelopes
+- Blank space for a personal note
+- Original LucyLP artwork
+- Printed on coated silk paper
+
+A warm, memorable way to begin a new journey.`,
+      etsyTags: [
+        "japanese new year",
+        "new year card",
+        "happy new year",
+        "greeting card set",
+        "pack of 10 cards",
+        "5x7 greeting card",
+        "folded cards",
+        "vintage japan",
+        "japan inspired",
+        "lucylp",
+        "good fortune gift",
+        "new beginnings",
+        "family friendly"
+      ]
     }
   ];
 
@@ -67,20 +135,33 @@
     subtitle.className = "product-card__subtitle";
     subtitle.textContent = product.subtitle;
 
+    const description = document.createElement("p");
+    description.className = "greeting-card__description";
+    description.textContent = product.description;
+
     const format = document.createElement("p");
     format.className = "greeting-card__format";
-    format.textContent = "Format details coming soon";
+    format.textContent = product.format;
 
     const price = document.createElement("p");
     price.className = "product-card__price";
-    price.textContent = "Coming soon";
+    price.textContent = product.status === "available"
+      ? formatCurrency(product.price, product.currency)
+      : "Coming soon";
 
-    const action = document.createElement("span");
+    const action = document.createElement(product.status === "available" ? "a" : "span");
     action.className = "product-card__button";
-    action.textContent = "Coming soon";
-    action.setAttribute("aria-disabled", "true");
+    action.textContent = product.status === "available" ? "Shop card" : "Coming soon";
 
-    body.append(title, subtitle, format, price, action);
+    if (product.status === "available") {
+      action.href = product.buyUrl;
+      action.target = "_blank";
+      action.rel = "noopener noreferrer sponsored";
+    } else {
+      action.setAttribute("aria-disabled", "true");
+    }
+
+    body.append(title, subtitle, description, format, price, action);
     card.append(media, body);
     return card;
   }
@@ -103,6 +184,13 @@
     });
 
     image.src = approvedUrl.href;
+  }
+
+  function formatCurrency(value, currency) {
+    return new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: currency || "USD"
+    }).format(Number(value));
   }
 
   document.querySelectorAll("[data-newsletter-form]").forEach((form) => {
