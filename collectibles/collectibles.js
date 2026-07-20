@@ -39,7 +39,7 @@
     },
     {
       id: "toki-market-ashtray",
-      title: "Toki Market Ashtray",
+      title: "Tokyo to Torenza Ashtray",
       subtitle: "Tokyo Night Finds / Gate 70",
       image: "/assets/collectibles/products/toki-market-ashtray.jpg",
       alt: "Toki Market and Air Torenza Gate 70 glass ashtray",
@@ -47,6 +47,30 @@
       price: 24.99,
       currency: "USD",
       buyUrl: "https://www.etsy.com/listing/4538599735/air-torenza-tokyo-to-torenza-gate-70",
+      status: "available"
+    },
+    {
+      id: "moon-landing-1969-ashtray",
+      title: "Air Torenza — Moon Landing 1969 Ashtray",
+      subtitle: "From Imagination to Destination",
+      image: "/assets/collectibles/products/air-torenza-moon-landing-1969-ashtray.jpg",
+      alt: "Air Torenza Moon Landing 1969 glass ashtray",
+      format: "Clear glass ashtray",
+      price: 24.99,
+      currency: "USD",
+      buyUrl: "https://www.etsy.com/listing/4538607922/air-torenza-moon-landing-1969-glass",
+      status: "available"
+    },
+    {
+      id: "woodstock-ashtray",
+      title: "Air Torenza — Woodstock Ashtray",
+      subtitle: "Peace, Music & Flight",
+      image: "/assets/collectibles/products/air-torenza-woodstock-ashtray.jpg",
+      alt: "Air Torenza Woodstock glass ashtray",
+      format: "Clear glass ashtray",
+      price: 24.99,
+      currency: "USD",
+      buyUrl: "https://www.etsy.com/listing/4538610361/air-torenza-woodstock-1969-peace-music",
       status: "available"
     }
   ];
