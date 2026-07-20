@@ -51,14 +51,10 @@
     media.className = "product-card__media";
 
     const image = document.createElement("img");
-    image.src = product.image;
     image.alt = product.alt;
     image.loading = "eager";
     image.decoding = "async";
-    image.addEventListener("error", () => {
-      media.classList.add("product-card__media--missing");
-      image.remove();
-    }, { once: true });
+    loadApprovedImage(image, product.image);
     media.append(image);
 
     const body = document.createElement("div");
@@ -87,6 +83,26 @@
     body.append(title, subtitle, format, price, action);
     card.append(media, body);
     return card;
+  }
+
+  function loadApprovedImage(image, assetPath) {
+    const approvedUrl = new URL(assetPath, window.location.origin);
+    let retryCount = 0;
+
+    image.addEventListener("error", () => {
+      if (retryCount >= 2) {
+        return;
+      }
+
+      retryCount += 1;
+      const retryUrl = new URL(approvedUrl.href);
+      retryUrl.searchParams.set("asset-retry", String(retryCount));
+      window.setTimeout(() => {
+        image.src = retryUrl.href;
+      }, retryCount * 250);
+    });
+
+    image.src = approvedUrl.href;
   }
 
   document.querySelectorAll("[data-newsletter-form]").forEach((form) => {
