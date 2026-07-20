@@ -48,24 +48,6 @@
       currency: "USD",
       buyUrl: "https://www.etsy.com/listing/4538599735/air-torenza-tokyo-to-torenza-gate-70",
       status: "available"
-    },
-    {
-      id: "gate-70-lighter",
-      title: "Air Torenza Lighter — Gate 70",
-      subtitle: "World’s Airways",
-      image: "/assets/collectibles/products/air-torenza-lighter-gate-70.png",
-      alt: "Approved VINTAGE-IT Collectibles artwork showing Air Torenza Gate 70 lighters",
-      format: "Collectible lighter",
-      status: "coming-soon"
-    },
-    {
-      id: "destination-moon-lighter",
-      title: "Air Torenza Lighter — Destination the Moon",
-      subtitle: "From Imagination to Destination",
-      image: "/assets/collectibles/products/air-torenza-lighter-destination-moon.png",
-      alt: "Approved VINTAGE-IT Collectibles artwork showing the Destination the Moon lighter",
-      format: "Collectible lighter",
-      status: "coming-soon"
     }
   ];
 
