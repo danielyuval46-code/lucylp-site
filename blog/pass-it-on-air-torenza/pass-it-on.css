@@ -12,7 +12,6 @@
 }
 .post-hero .eyebrow { margin: 0 0 18px; color: var(--rust); font: 800 13px/1.2 var(--font-body); text-transform: uppercase; }
 .post-hero h1 { display: grid; margin: 0 auto; gap: 3px; font: 900 clamp(42px, 6.6vw, 94px)/.94 var(--font-display); letter-spacing: 0; }
-.post-hero h1 span:first-child, .post-hero h1 span:last-child { color: var(--rust); font-size: .48em; line-height: 1.08; }
 .post-intro { max-width: 760px; margin: clamp(26px, 4vw, 48px) auto 0; font: 500 clamp(17px, 1.45vw, 21px)/1.55 var(--font-body); }
 .post-intro p { margin: 0 0 18px; }
 .language-section, .sharing-section, .post-ending { margin-top: 20px; padding: clamp(24px, 3.5vw, 46px); }
@@ -23,7 +22,9 @@
   border: 2px solid var(--line); border-radius: 6px; background: rgba(255,248,223,.78); box-shadow: 6px 7px 0 rgba(48,31,13,.12);
 }
 .language-card--he { text-align: right; }
-.language-label { margin: 0 0 24px; color: var(--rust); font: 800 13px/1 var(--font-body); text-transform: uppercase; }
+.language-label { margin: 20px 0 18px; color: var(--rust); font: 800 13px/1 var(--font-body); text-transform: uppercase; }
+.language-card__cover { display: grid; width: 100%; aspect-ratio: 7 / 10; overflow: hidden; place-items: center; background: #dfcda6; border: 2px solid var(--line); }
+.language-card__cover img { width: 100%; height: 100%; object-fit: contain; }
 .language-card h3 { display: grid; min-height: 98px; margin: 0; align-content: start; gap: 5px; font: 900 clamp(25px, 2.25vw, 34px)/1.02 var(--font-display); }
 .language-card h3 span:last-child { color: var(--rust); font-size: .68em; line-height: 1.12; }
 .language-card > p:not(.language-label):not(.coming-status) { margin: 20px 0 28px; font: 500 17px/1.45 var(--font-body); }
@@ -40,11 +41,10 @@
 }
 .sharing-section { color: #fff3d4; background: #0b0907; border-color: var(--gold); }
 .sharing-section h2 { display: grid; margin: 0 0 24px; gap: 3px; color: #f1b04b; font: 900 clamp(26px, 3.4vw, 44px)/1 var(--font-display); }
-.sharing-section h2 span:first-child, .sharing-section h2 span:last-child { color: #fff3d4; font-size: .55em; line-height: 1.15; }
 .sharing-controls { display: flex; flex-wrap: wrap; gap: 10px; }
 .sharing-controls a, .sharing-controls button { border-color: #f1b04b; }
 .share-status { min-height: 20px; margin: 14px 0 0; color: #f1b04b; font: 600 14px/1.4 var(--font-body); }
-.post-ending { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 26px; text-align: center; }
+.post-ending { display: grid; place-items: center; text-align: center; }
 .post-ending p { margin: 0; font: 600 clamp(16px, 1.35vw, 19px)/1.55 var(--font-body); }
 @media (max-width: 900px) {
   .language-grid, .post-ending { grid-template-columns: 1fr; }
