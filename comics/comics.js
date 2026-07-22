@@ -7,22 +7,17 @@
     "lucy-japan-issue-3-en",
     "lucy-japan-issue-4-en"
   ];
-  const issueOneUrl = "https://www.etsy.com/listing/4537396310/lucy-in-japan-issue-1-digital-comic-pdf";
-
   if (!grid) {
     return;
   }
 
-  const comics = issueOrder.map((id, index) => {
+  const comics = issueOrder.map((id) => {
     const product = allProducts.find((item) => item.id === id) || {};
 
     return {
       ...product,
       id,
-      pages: 19,
-      price: index === 0 ? "$1.99" : "",
-      buyUrl: index === 0 ? issueOneUrl : "",
-      status: index === 0 ? "available" : "coming-soon"
+      pages: 19
     };
   });
 

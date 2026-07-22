@@ -1,5 +1,7 @@
 (function () {
   const grid = document.querySelector("[data-collectibles-grid]");
+  const pagination = document.querySelector("[data-collectibles-pagination]");
+  const itemsPerPage = 6;
   const products = [
     {
       id: "mexico-1970-ashtray",
@@ -72,11 +74,67 @@
       currency: "USD",
       buyUrl: "https://www.etsy.com/listing/4538610361/air-torenza-woodstock-1969-peace-music",
       status: "available"
+    },
+    {
+      id: "mexico-1970-supersonic-ashtray",
+      title: "Air Torenza Mexico 1970 Supersonic Mundial Route Vintage Glass Ashtray",
+      subtitle: "",
+      image: "https://i.etsystatic.com/17536107/r/il/56d582/8306961465/il_fullxfull.8306961465_m4bi.jpg",
+      alt: "Air Torenza Mexico 1970 Supersonic Mundial Route glass ashtray",
+      format: "Clear glass ashtray",
+      price: 24.99,
+      currency: "USD",
+      buyUrl: "https://www.etsy.com/listing/4538792626/air-torenza-mexico-1970-supersonic",
+      status: "available"
+    },
+    {
+      id: "moon-landing-1969-vintage-ashtray",
+      title: "Air Torenza Moon Landing 1969 Vintage Glass Ashtray",
+      subtitle: "",
+      image: "https://i.etsystatic.com/17536107/r/il/61c24e/8305404643/il_fullxfull.8305404643_qa5c.jpg",
+      alt: "Air Torenza Moon Landing 1969 vintage glass ashtray",
+      format: "Clear glass ashtray",
+      price: 24.99,
+      currency: "USD",
+      buyUrl: "https://www.etsy.com/listing/4538584291/air-torenza-moon-landing-1969-vintage",
+      status: "available"
+    },
+    {
+      id: "mexico-city-1968-retro-ashtray",
+      title: "Air Torenza Mexico City 1968 Retro Aviation Glass Ashtray",
+      subtitle: "",
+      image: "https://i.etsystatic.com/17536107/r/il/e712c8/8257375666/il_fullxfull.8257375666_l973.jpg",
+      alt: "Air Torenza Mexico City 1968 retro aviation glass ashtray",
+      format: "Clear glass ashtray",
+      price: 24.99,
+      currency: "USD",
+      buyUrl: "https://www.etsy.com/listing/4538570161/air-torenza-mexico-city-1968-retro",
+      status: "available"
+    },
+    {
+      id: "mexico-city-1968-vintage-ashtray",
+      title: "Air Torenza Mexico City 1968 Vintage Glass Ashtray",
+      subtitle: "",
+      image: "https://i.etsystatic.com/17536107/r/il/7b2333/8305220449/il_fullxfull.8305220449_hqwa.jpg",
+      alt: "Air Torenza Mexico City 1968 vintage glass ashtray",
+      format: "Clear glass ashtray",
+      price: 24.99,
+      currency: "USD",
+      buyUrl: "https://www.etsy.com/listing/4538562177/air-torenza-mexico-city-1968-vintage",
+      status: "available"
     }
   ];
 
   if (grid) {
-    grid.replaceChildren(...products.map(createCard));
+    const totalPages = Math.ceil(products.length / itemsPerPage);
+    const requestedPage = Number(new URLSearchParams(window.location.search).get("page") || 1);
+    const currentPage = Number.isInteger(requestedPage)
+      ? Math.min(Math.max(requestedPage, 1), totalPages)
+      : 1;
+    const start = (currentPage - 1) * itemsPerPage;
+
+    grid.replaceChildren(...products.slice(start, start + itemsPerPage).map(createCard));
+    renderPagination(totalPages, currentPage);
   }
 
   function createCard(product) {
@@ -131,6 +189,41 @@
     return card;
   }
 
+  function renderPagination(totalPages, currentPage) {
+    if (!pagination) {
+      return;
+    }
+
+    const controls = [
+      createPageControl("Previous", currentPage - 1, currentPage === 1)
+    ];
+
+    for (let page = 1; page <= totalPages; page += 1) {
+      const link = createPageControl(String(page), page, false);
+      if (page === currentPage) {
+        link.setAttribute("aria-current", "page");
+      }
+      controls.push(link);
+    }
+
+    controls.push(createPageControl("Next", currentPage + 1, currentPage === totalPages));
+    pagination.replaceChildren(...controls);
+  }
+
+  function createPageControl(label, page, disabled) {
+    const control = document.createElement(disabled ? "span" : "a");
+    control.className = "collectibles-pagination__control";
+    control.textContent = label;
+
+    if (disabled) {
+      control.setAttribute("aria-disabled", "true");
+    } else {
+      control.href = page === 1 ? "/collectibles/" : `/collectibles/?page=${page}`;
+      control.setAttribute("aria-label", `${label} collectibles page`);
+    }
+
+    return control;
+  }
   function formatCurrency(value, currency) {
     return new Intl.NumberFormat("en-US", {
       style: "currency",

@@ -137,13 +137,6 @@
       media.classList.add("product-card__media--missing");
     }
 
-    if (product.status !== "available") {
-      const stamp = document.createElement("span");
-      stamp.className = "product-card__stamp";
-      stamp.textContent = "Coming soon";
-      media.append(stamp);
-    }
-
     const body = document.createElement("div");
     body.className = "product-card__body";
 
@@ -171,6 +164,8 @@
 
     if (isAvailable) {
       action.href = product.buyUrl;
+      action.target = "_blank";
+      action.rel = "noopener noreferrer sponsored";
     } else {
       action.setAttribute("aria-disabled", "true");
     }
