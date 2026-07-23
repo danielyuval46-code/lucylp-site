@@ -40,7 +40,11 @@
       const image = document.createElement("img");
       image.src = product.image;
       image.alt = product.title || `${product.artist} - ${product.album}`;
+      image.width = 225;
+      image.height = 225;
       image.loading = "lazy";
+      image.decoding = "async";
+      image.fetchPriority = "low";
       media.append(image);
     } else {
       media.classList.add("record-card__media--placeholder");

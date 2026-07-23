@@ -94,6 +94,36 @@
   opacity: 0.72;
 }
 
+.collectibles-pagination {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 24px;
+}
+
+.collectibles-pagination__control {
+  display: grid;
+  min-width: 40px;
+  height: 40px;
+  padding-inline: 12px;
+  place-items: center;
+  border: 2px solid var(--line);
+  border-radius: 5px;
+  background: var(--paper-light);
+  color: var(--ink);
+  font: 800 13px/1 Arial, sans-serif;
+  text-transform: uppercase;
+}
+
+.collectibles-pagination a:hover,
+.collectibles-pagination a[aria-current="page"] {
+  background: var(--orange);
+}
+
+.collectibles-pagination [aria-disabled="true"] {
+  opacity: 0.45;
+}
 @media (max-width: 1100px) {
   .collectibles-hero {
     grid-template-columns: minmax(300px, 0.82fr) minmax(450px, 1.18fr);

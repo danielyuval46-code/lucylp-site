@@ -6,9 +6,12 @@
     return;
   }
 
-  loadProducts().then(renderProducts).catch(() => {
-    renderProducts(localProducts);
-  });
+  renderProducts(localProducts);
+  loadProducts().then((products) => {
+    if (products !== localProducts) {
+      renderProducts(products);
+    }
+  }).catch(() => {});
 
   async function loadProducts() {
     const response = await fetch("/api/etsy", {
@@ -125,9 +128,13 @@
     if (product.cover) {
       const image = document.createElement("img");
       image.src = product.cover;
+      applyResponsiveProductImage(image, product.cover);
       image.alt = `${product.title} cover`;
-      image.loading = "eager";
+      image.width = 768;
+      image.height = 990;
+      image.loading = "lazy";
       image.decoding = "async";
+      image.fetchPriority = "low";
       image.addEventListener("error", () => {
         media.classList.add("product-card__media--missing");
         image.remove();
@@ -135,13 +142,6 @@
       media.append(image);
     } else {
       media.classList.add("product-card__media--missing");
-    }
-
-    if (product.status !== "available") {
-      const stamp = document.createElement("span");
-      stamp.className = "product-card__stamp";
-      stamp.textContent = "Coming soon";
-      media.append(stamp);
     }
 
     const body = document.createElement("div");
@@ -171,6 +171,8 @@
 
     if (isAvailable) {
       action.href = product.buyUrl;
+      action.target = "_blank";
+      action.rel = "noopener noreferrer sponsored";
     } else {
       action.setAttribute("aria-disabled", "true");
     }
@@ -178,6 +180,18 @@
     body.append(meta, title, subtitle, price, action);
     card.append(media, body);
     return card;
+  }
+
+  function applyResponsiveProductImage(image, assetPath) {
+    if (!/^\/assets\/(?:books|guides)\//.test(assetPath)) {
+      return;
+    }
+
+    const stem = assetPath
+      .replace(/^\/assets\//, "/assets/responsive/")
+      .replace(/\.[^.]+$/, "");
+    image.srcset = `${stem}-480.webp 480w, ${stem}-768.webp 768w`;
+    image.sizes = "(max-width: 760px) calc(100vw - 40px), (max-width: 1120px) calc(50vw - 36px), 260px";
   }
 
   function formatPages(pages) {
