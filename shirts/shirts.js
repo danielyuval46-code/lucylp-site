@@ -65,9 +65,13 @@
 
     const image = document.createElement("img");
     image.src = product.image;
+    applyResponsiveProductImage(image, product.image);
     image.alt = product.alt;
-    image.loading = "eager";
+    image.width = 768;
+    image.height = 512;
+    image.loading = "lazy";
     image.decoding = "async";
+    image.fetchPriority = "low";
     image.addEventListener("error", () => {
       media.classList.add("product-card__media--missing");
       image.remove();
@@ -122,6 +126,14 @@
     body.append(title, subtitle, support, sizes, pricing, price, action);
     card.append(media, body);
     return card;
+  }
+
+  function applyResponsiveProductImage(image, assetPath) {
+    const stem = assetPath
+      .replace(/^\/assets\//, "/assets/responsive/")
+      .replace(/\.[^.]+$/, "");
+    image.srcset = `${stem}-480.webp 480w, ${stem}-768.webp 768w`;
+    image.sizes = "(max-width: 760px) calc(100vw - 40px), (max-width: 1120px) calc(50vw - 36px), 260px";
   }
 
   function formatCurrency(value, currency) {

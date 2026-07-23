@@ -147,9 +147,13 @@
 
     const image = document.createElement("img");
     image.src = product.image;
+    applyResponsiveProductImage(image, product.image);
     image.alt = product.alt;
+    image.width = 768;
+    image.height = 512;
     image.loading = "lazy";
     image.decoding = "async";
+    image.fetchPriority = "low";
     media.append(image);
 
     const body = document.createElement("div");
@@ -224,6 +228,18 @@
 
     return control;
   }
+  function applyResponsiveProductImage(image, assetPath) {
+    if (!assetPath.startsWith("/assets/collectibles/")) {
+      return;
+    }
+
+    const stem = assetPath
+      .replace(/^\/assets\//, "/assets/responsive/")
+      .replace(/\.[^.]+$/, "");
+    image.srcset = `${stem}-480.webp 480w, ${stem}-768.webp 768w`;
+    image.sizes = "(max-width: 760px) calc(100vw - 40px), (max-width: 1120px) calc(50vw - 36px), 340px";
+  }
+
   function formatCurrency(value, currency) {
     return new Intl.NumberFormat("en-US", {
       style: "currency",

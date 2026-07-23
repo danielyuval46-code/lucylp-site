@@ -135,8 +135,11 @@ A warm, memorable way to begin a new journey.`,
 
     const image = document.createElement("img");
     image.alt = product.alt;
-    image.loading = "eager";
+    image.width = 768;
+    image.height = 1152;
+    image.loading = "lazy";
     image.decoding = "async";
+    image.fetchPriority = "low";
     loadApprovedImage(image, product.image);
     media.append(image);
 
@@ -198,6 +201,11 @@ A warm, memorable way to begin a new journey.`,
       }, retryCount * 250);
     });
 
+    const stem = approvedUrl.pathname
+      .replace(/^\/assets\//, "/assets/responsive/")
+      .replace(/\.[^.]+$/, "");
+    image.srcset = `${stem}-480.webp 480w, ${stem}-768.webp 768w`;
+    image.sizes = "(max-width: 760px) calc(100vw - 40px), (max-width: 1120px) calc(50vw - 36px), 340px";
     image.src = approvedUrl.href;
   }
 

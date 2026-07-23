@@ -13,11 +13,12 @@
   <meta name="twitter:card" content="summary_large_image">
   <link rel="icon" href="/brand/LucyLP_Favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="/manga/manga.css">
+  <link rel="preload" as="image" href="/assets/responsive/manga/hero/manga-hero-artwork-768.webp" imagesrcset="/assets/responsive/manga/hero/manga-hero-artwork-480.webp 480w, /assets/responsive/manga/hero/manga-hero-artwork-768.webp 768w, /assets/responsive/manga/hero/manga-hero-artwork-1280.webp 1280w" imagesizes="(max-width: 760px) 100vw, 60vw">
 </head>
 <body>
   <header class="manga-header">
     <a class="manga-brand" href="/" aria-label="LucyLP home">
-      <img src="/brand/LucyLP_Guides_Header_Logo.png" alt="LucyLP Guides">
+      <img src="/brand/LucyLP_Guides_Header_Logo.png" alt="LucyLP Guides" width="96" height="96" decoding="async">
       <span>Guides & Finds</span>
     </a>
     <button class="manga-menu-button" type="button" data-manga-menu aria-expanded="false" aria-controls="manga-nav">Menu</button>
@@ -40,7 +41,7 @@
   <main>
     <section class="manga-hero" aria-labelledby="manga-title">
       <div class="manga-hero__art">
-        <img src="/assets/manga/hero/manga-hero-artwork.png" alt="Lucy browsing a warm vintage Japanese manga shop.">
+        <img src="/assets/manga/hero/manga-hero-artwork.png" srcset="/assets/responsive/manga/hero/manga-hero-artwork-480.webp 480w, /assets/responsive/manga/hero/manga-hero-artwork-768.webp 768w, /assets/responsive/manga/hero/manga-hero-artwork-1280.webp 1280w" sizes="(max-width: 760px) 100vw, 60vw" alt="Lucy browsing a warm vintage Japanese manga shop." width="1536" height="1024" fetchpriority="high" decoding="async">
       </div>
       <div class="manga-hero__copy">
         <p class="manga-kicker">MANGA &amp; JAPAN FINDS</p>
@@ -52,19 +53,19 @@
 
     <section class="category-strip" aria-label="Manga and Japan Finds categories">
       <a class="category-card" href="/manga/?category=manga" data-category-link="manga">
-        <span class="category-card__art"><img src="/assets/manga/categories/category-manga.png" alt=""></span>
+        <span class="category-card__art"><img src="/assets/manga/categories/category-manga.png" srcset="/assets/responsive/manga/categories/category-manga-480.webp 480w, /assets/responsive/manga/categories/category-manga-768.webp 768w, /assets/responsive/manga/categories/category-manga-1280.webp 1280w" sizes="(max-width: 760px) 50vw, 25vw" alt="" width="1536" height="1024" loading="lazy" decoding="async"></span>
         <span class="category-card__label"><strong>MANGA</strong><small>See all</small></span>
       </a>
       <a class="category-card" href="/manga/?category=manga-anime-art-books" data-category-link="manga-anime-art-books">
-        <span class="category-card__art"><img src="/assets/manga/categories/category-manga-anime-art-books.png" alt=""></span>
+        <span class="category-card__art"><img src="/assets/manga/categories/category-manga-anime-art-books.png" srcset="/assets/responsive/manga/categories/category-manga-anime-art-books-480.webp 480w, /assets/responsive/manga/categories/category-manga-anime-art-books-768.webp 768w, /assets/responsive/manga/categories/category-manga-anime-art-books-1280.webp 1280w" sizes="(max-width: 760px) 50vw, 25vw" alt="" width="1536" height="1024" loading="lazy" decoding="async"></span>
         <span class="category-card__label"><strong>MANGA / ANIME ART BOOKS</strong><small>See all</small></span>
       </a>
       <a class="category-card" href="/manga/?category=vintage-magazines" data-category-link="vintage-magazines">
-        <span class="category-card__art"><img src="/assets/manga/categories/category-vintage-magazines.png" alt=""></span>
+        <span class="category-card__art"><img src="/assets/manga/categories/category-vintage-magazines.png" srcset="/assets/responsive/manga/categories/category-vintage-magazines-480.webp 480w, /assets/responsive/manga/categories/category-vintage-magazines-768.webp 768w, /assets/responsive/manga/categories/category-vintage-magazines-1280.webp 1280w" sizes="(max-width: 760px) 50vw, 25vw" alt="" width="1536" height="1024" loading="lazy" decoding="async"></span>
         <span class="category-card__label"><strong>VINTAGE MAGAZINES</strong><small>See all</small></span>
       </a>
       <a class="category-card" href="/manga/?category=new-japan-finds" data-category-link="new-japan-finds">
-        <span class="category-card__art"><img src="/assets/manga/categories/category-new-japan-finds.png" alt=""></span>
+        <span class="category-card__art"><img src="/assets/manga/categories/category-new-japan-finds.png" srcset="/assets/responsive/manga/categories/category-new-japan-finds-480.webp 480w, /assets/responsive/manga/categories/category-new-japan-finds-768.webp 768w, /assets/responsive/manga/categories/category-new-japan-finds-1280.webp 1280w" sizes="(max-width: 760px) 50vw, 25vw" alt="" width="1536" height="1024" loading="lazy" decoding="async"></span>
         <span class="category-card__label"><strong>NEW JAPAN FINDS</strong><small>See all</small></span>
       </a>
     </section>
@@ -130,7 +131,7 @@
 
   <footer class="manga-footer">
     <div class="footer-brand">
-      <img src="/brand/LucyLP_Guides_Header_Logo.png" alt="LucyLP Guides">
+      <img src="/brand/LucyLP_Guides_Header_Logo.png" alt="LucyLP Guides" width="96" height="96" decoding="async">
       <p>Books. Vinyl. Manga.<br>Stories worth collecting.</p>
     </div>
     <nav aria-label="Shop">
