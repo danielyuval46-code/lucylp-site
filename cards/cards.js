@@ -11,7 +11,7 @@
       format: "Pack of 10 folded 5×7 greeting cards with envelopes",
       price: 24.97,
       currency: "USD",
-      buyUrl: "https://www.etsy.com/listing/4538008586/lucylp-happy-birthday-greeting-cards",
+      buyUrl: "https://www.etsy.com/listing/4537666706/lucylp-happy-birthday-greeting-cards",
       status: "available"
     },
     {
@@ -24,7 +24,7 @@
       format: "Pack of 10 folded 5×7 greeting cards with envelopes",
       price: 24.97,
       currency: "USD",
-      buyUrl: "https://www.etsy.com/listing/4538013212/lucylp-thank-you-greeting-cards-pack-of",
+      buyUrl: "https://www.etsy.com/listing/4537816579/lucylp-thank-you-greeting-cards-pack-of",
       status: "available"
     },
     {
@@ -37,7 +37,7 @@
       format: "Pack of 10 folded 5×7 greeting cards with envelopes",
       price: 24.97,
       currency: "USD",
-      buyUrl: "https://www.etsy.com/listing/4538015590/lucylp-mothers-day-greeting-cards-o-pack",
+      buyUrl: "https://www.etsy.com/listing/4537863640/lucylp-mothers-day-greeting-cards-o-pack",
       status: "available"
     },
     {
@@ -50,7 +50,7 @@
       format: "Pack of 10 folded 5×7 greeting cards with envelopes",
       price: 24.97,
       currency: "USD",
-      buyUrl: "https://www.etsy.com/listing/4538005585/lucylp-fathers-day-greeting-cards-o-pack",
+      buyUrl: "https://www.etsy.com/listing/4537931759/lucylp-fathers-day-greeting-cards-o-pack",
       status: "available"
     },
     {
@@ -63,7 +63,7 @@
       format: "Pack of 10 folded 5×7 greeting cards with envelopes",
       price: 24.97,
       currency: "USD",
-      buyUrl: "https://www.etsy.com/listing/4538006583/lucylp-anniversary-greeting-cards-pack",
+      buyUrl: "https://www.etsy.com/listing/4537983739/lucylp-anniversary-greeting-cards-pack",
       status: "available"
     },
     {

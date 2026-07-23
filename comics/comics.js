@@ -7,6 +7,7 @@
     "lucy-japan-issue-3-en",
     "lucy-japan-issue-4-en"
   ];
+
   if (!grid) {
     return;
   }
@@ -16,8 +17,7 @@
 
     return {
       ...product,
-      id,
-      pages: 19
+      id
     };
   });
 
