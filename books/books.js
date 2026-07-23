@@ -171,6 +171,8 @@
 
     if (isAvailable) {
       action.href = product.buyUrl;
+      action.target = "_blank";
+      action.rel = "noopener noreferrer sponsored";
     } else {
       action.setAttribute("aria-disabled", "true");
     }

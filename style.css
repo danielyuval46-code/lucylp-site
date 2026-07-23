@@ -95,6 +95,12 @@ a { color: inherit; }
   letter-spacing: 0;
 }
 
+.blog-hero h1 {
+  max-width: 100%;
+  font-size: clamp(48px, 4.4vw, 78px);
+  overflow-wrap: normal;
+}
+
 .page-hero p {
   max-width: 620px;
   font: 500 clamp(17px, 1.5vw, 22px)/1.28 var(--font-body);

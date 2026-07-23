@@ -7,7 +7,11 @@
       subtitle: "American Route / Gate 70",
       support: "",
       image: "/assets/shirts/products/air-torenza-fourth-of-july-1976.png",
-      alt: "Air Torenza Fourth of July 1976 approved shirt artwork"
+      alt: "Air Torenza Fourth of July 1976 approved shirt artwork",
+      price: 28.99,
+      currency: "USD",
+      buyUrl: "https://www.etsy.com/listing/4538847138/air-torenza-fourth-of-july-1976-american",
+      status: "available"
     },
     {
       id: "vintage-it-first-record-1984",
@@ -15,7 +19,11 @@
       subtitle: "Toki Market",
       support: "",
       image: "/assets/shirts/products/vintage-it-first-record-1984.png",
-      alt: "VINTAGE-IT First Record 1984 approved shirt artwork"
+      alt: "VINTAGE-IT First Record 1984 approved shirt artwork",
+      price: 29.99,
+      currency: "USD",
+      buyUrl: "https://www.etsy.com/listing/4538142624/vintage-it-first-record-1984-unisex-t",
+      status: "available"
     },
     {
       id: "genesis-fire",
@@ -23,7 +31,11 @@
       subtitle: "Live in Tokyo — 8.2.1966",
       support: "The Fire Comes Before All",
       image: "/assets/shirts/products/genesis-fire-live-in-tokyo.png",
-      alt: "Genesis Fire Live in Tokyo approved shirt artwork"
+      alt: "Genesis Fire Live in Tokyo approved shirt artwork",
+      price: 28.99,
+      currency: "USD",
+      buyUrl: "https://www.etsy.com/listing/4538395889/genesis-fire-live-in-tokyo-1966-unisex-t",
+      status: "available"
     },
     {
       id: "air-torenza-moon-landing-1969",
@@ -31,7 +43,11 @@
       subtitle: "From Imagination to Destination",
       support: "",
       image: "/assets/shirts/products/air-torenza-moon-landing-1969.png",
-      alt: "Air Torenza Moon Landing 1969 approved shirt artwork"
+      alt: "Air Torenza Moon Landing 1969 approved shirt artwork",
+      price: 28.99,
+      currency: "USD",
+      buyUrl: "https://www.etsy.com/listing/4538871472/air-torenza-moon-landing-1969-vintage",
+      status: "available"
     }
   ];
 
@@ -89,12 +105,14 @@
 
     const price = document.createElement("p");
     price.className = "product-card__price";
-    price.textContent = "From $28.99";
+    price.textContent = `From ${new Intl.NumberFormat("en-US", { style: "currency", currency: product.currency || "USD" }).format(Number(product.price))}`;
 
-    const action = document.createElement("span");
+    const action = document.createElement("a");
     action.className = "product-card__button";
-    action.textContent = "Coming soon";
-    action.setAttribute("aria-disabled", "true");
+    action.textContent = "Shop shirt";
+    action.href = product.buyUrl;
+    action.target = "_blank";
+    action.rel = "noopener noreferrer sponsored";
 
     body.append(title, subtitle, support, sizes, pricing, price, action);
     card.append(media, body);

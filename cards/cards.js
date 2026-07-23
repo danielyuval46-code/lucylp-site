@@ -8,8 +8,11 @@
       description: "",
       image: "/assets/cards/products/birthday.png",
       alt: "LucyLP Happy Birthday greeting card",
-      format: "Format details coming soon",
-      status: "coming-soon"
+      format: "Pack of 10 folded 5×7 greeting cards with envelopes",
+      price: 24.97,
+      currency: "USD",
+      buyUrl: "https://www.etsy.com/listing/4537666706/lucylp-happy-birthday-greeting-cards",
+      status: "available"
     },
     {
       id: "thank-you",
@@ -18,8 +21,11 @@
       description: "",
       image: "/assets/cards/products/thank-you.png",
       alt: "LucyLP Thank You greeting card",
-      format: "Format details coming soon",
-      status: "coming-soon"
+      format: "Pack of 10 folded 5×7 greeting cards with envelopes",
+      price: 24.97,
+      currency: "USD",
+      buyUrl: "https://www.etsy.com/listing/4537816579/lucylp-thank-you-greeting-cards-pack-of",
+      status: "available"
     },
     {
       id: "mothers-day",
@@ -28,8 +34,11 @@
       description: "",
       image: "/assets/cards/products/mothers-day.png",
       alt: "LucyLP Happy Mother's Day greeting card",
-      format: "Format details coming soon",
-      status: "coming-soon"
+      format: "Pack of 10 folded 5×7 greeting cards with envelopes",
+      price: 24.97,
+      currency: "USD",
+      buyUrl: "https://www.etsy.com/listing/4537863640/lucylp-mothers-day-greeting-cards-o-pack",
+      status: "available"
     },
     {
       id: "fathers-day",
@@ -38,8 +47,11 @@
       description: "",
       image: "/assets/cards/products/fathers-day.png",
       alt: "LucyLP Happy Father's Day greeting card",
-      format: "Format details coming soon",
-      status: "coming-soon"
+      format: "Pack of 10 folded 5×7 greeting cards with envelopes",
+      price: 24.97,
+      currency: "USD",
+      buyUrl: "https://www.etsy.com/listing/4537931759/lucylp-fathers-day-greeting-cards-o-pack",
+      status: "available"
     },
     {
       id: "anniversary-love",
@@ -48,8 +60,11 @@
       description: "",
       image: "/assets/cards/products/anniversary-love.png",
       alt: "LucyLP Happy Anniversary greeting card",
-      format: "Format details coming soon",
-      status: "coming-soon"
+      format: "Pack of 10 folded 5×7 greeting cards with envelopes",
+      price: 24.97,
+      currency: "USD",
+      buyUrl: "https://www.etsy.com/listing/4537983739/lucylp-anniversary-greeting-cards-pack",
+      status: "available"
     },
     {
       id: "japanese-new-year",
