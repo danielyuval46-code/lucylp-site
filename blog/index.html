@@ -28,7 +28,7 @@
       <div>
         <p class="eyebrow">Blog & Community</p>
         <h1 id="blog-title">Write the story. Add the picture. Keep the memory.</h1>
-        <p>Use this blog studio to add LucyLP stories, upload images from your computer, and collect reviews on this device.</p>
+        <p>Use this blog studio to add LucyLP stories, upload images from your computer, and collect reader submissions for approval.</p>
         <div class="blog-actions">
           <a class="page-link" href="#write-post">Write a Post</a>
           <a class="page-link page-link--light" href="#community-reviews">Read Reviews</a>
@@ -38,8 +38,8 @@
     </section>
 
     <section class="blog-status" aria-label="Blog storage status">
-      <strong id="blogStatus">Local blog ready</strong>
-      <span>Your posts and reviews are saved in this browser. Export a backup before clearing browser data.</span>
+      <strong id="blogStatus">Community approval portal ready</strong>
+      <span>Visitors can submit stories, images and reviews. Approved items appear publicly after admin review.</span>
     </section>
 
     <section class="blog-grid">
@@ -52,7 +52,7 @@
         <label>Image<input id="postImage" name="image" type="file" accept="image/*"></label>
         <figure id="imagePreview" class="image-preview" hidden><img alt=""><figcaption>Image preview</figcaption></figure>
         <div class="editor-row">
-          <button type="submit">Publish Locally</button>
+          <button type="submit">Send for Approval</button>
           <button type="button" id="saveDraft">Save Draft</button>
           <button type="button" id="clearDraft">Clear</button>
         </div>
@@ -63,13 +63,13 @@
         <button type="button" id="exportBlog">Export Blog Backup</button>
         <label class="import-control">Import Blog Backup<input id="importBlog" type="file" accept="application/json,.json"></label>
         <button type="button" id="resetBlog" class="danger-button">Reset Local Blog</button>
-        <p>These tools do not touch the live books area. They only manage local blog posts and reviews saved in this browser.</p>
+        <p>These tools do not touch the books area. They only manage local backup files if the approval database is offline.</p>
       </aside>
     </section>
 
     <section class="published-section" aria-labelledby="published-title">
       <div class="section-heading">
-        <p class="eyebrow">Published Locally</p>
+        <p class="eyebrow">Approved Community</p>
         <h2 id="published-title">Community Posts</h2>
       </div>
       <div id="postList" class="post-list" aria-live="polite"></div>
@@ -84,7 +84,7 @@
         <label>Name<input id="reviewName" maxlength="48" required placeholder="Your name"></label>
         <label>Rating<select id="reviewRating"><option value="5">5 stars</option><option value="4">4 stars</option><option value="3">3 stars</option><option value="2">2 stars</option><option value="1">1 star</option></select></label>
         <label>Review<textarea id="reviewText" required rows="4" placeholder="Write your review here."></textarea></label>
-        <button type="submit">Add Review</button>
+        <button type="submit">Send Review for Approval</button>
       </form>
       <div id="reviewList" class="review-list" aria-live="polite"></div>
     </section>

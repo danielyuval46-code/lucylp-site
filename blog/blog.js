@@ -1,7 +1,8 @@
 const BLOG_KEY = "lucylp-community-blog-v1";
 const DRAFT_KEY = "lucylp-community-blog-draft-v1";
+const API_URL = "/api/blog";
 
-const state = loadState();
+const state = { posts: seedPosts(), reviews: [], apiOnline: false };
 let selectedImage = "";
 
 const els = {
@@ -21,18 +22,10 @@ const els = {
   status: document.querySelector("#blogStatus"),
 };
 
-function loadState() {
-  try {
-    return JSON.parse(localStorage.getItem(BLOG_KEY)) || { posts: seedPosts(), reviews: [] };
-  } catch {
-    return { posts: seedPosts(), reviews: [] };
-  }
-}
-
 function seedPosts() {
   return [
     {
-      id: crypto.randomUUID(),
+      id: "seed-cameras-before-smartphones",
       title: "How Cameras Worked Before Smartphones",
       category: "Book Note",
       body: "A child-friendly LucyLP note about cameras, family memory and the small ceremony of waiting for film to be developed.",
@@ -40,10 +33,6 @@ function seedPosts() {
       createdAt: "2026-08-03T00:00:00.000Z",
     },
   ];
-}
-
-function saveState() {
-  localStorage.setItem(BLOG_KEY, JSON.stringify(state));
 }
 
 function setStatus(text) {
@@ -66,7 +55,7 @@ function formatDate(value) {
 
 function renderPosts() {
   if (!state.posts.length) {
-    els.postList.innerHTML = '<article class="post-card"><h3>No posts yet</h3><p>Write the first LucyLP community story above.</p></article>';
+    els.postList.innerHTML = '<article class="post-card"><h3>No approved posts yet</h3><p>Send the first LucyLP community story for approval above.</p></article>';
     return;
   }
 
@@ -77,7 +66,6 @@ function renderPosts() {
         <p class="post-meta">${escapeHTML(post.category)} · ${formatDate(post.createdAt)}</p>
         <h3>${escapeHTML(post.title)}</h3>
         <p>${escapeHTML(post.body)}</p>
-        <button type="button" data-delete-post="${post.id}">Delete Local Post</button>
       </div>
     </article>
   `).join("");
@@ -85,18 +73,68 @@ function renderPosts() {
 
 function renderReviews() {
   if (!state.reviews.length) {
-    els.reviewList.innerHTML = '<article class="review-card"><h3>No reviews yet</h3><p>Be the first to write a review for the LucyLP blog.</p></article>';
+    els.reviewList.innerHTML = '<article class="review-card"><h3>No approved reviews yet</h3><p>Be the first to send a review for approval.</p></article>';
     return;
   }
 
   els.reviewList.innerHTML = state.reviews.map((review) => `
     <article class="review-card">
-      <p class="review-meta">${"★".repeat(Number(review.rating))} · ${formatDate(review.createdAt)}</p>
-      <h3>${escapeHTML(review.name)}</h3>
-      <p>${escapeHTML(review.text)}</p>
-      <button type="button" data-delete-review="${review.id}">Delete Local Review</button>
+      <p class="review-meta">${"★".repeat(Number(review.rating) || 5)} · ${formatDate(review.createdAt)}</p>
+      <h3>${escapeHTML(review.author || review.name || "LucyLP Reader")}</h3>
+      <p>${escapeHTML(review.body || review.text)}</p>
     </article>
   `).join("");
+}
+
+function saveLocalBackup(payload) {
+  const local = loadLocalBackup();
+  if (payload.type === "post") local.pendingPosts.unshift(payload);
+  if (payload.type === "review") local.pendingReviews.unshift(payload);
+  localStorage.setItem(BLOG_KEY, JSON.stringify(local));
+}
+
+function loadLocalBackup() {
+  try {
+    return JSON.parse(localStorage.getItem(BLOG_KEY)) || { pendingPosts: [], pendingReviews: [] };
+  } catch {
+    return { pendingPosts: [], pendingReviews: [] };
+  }
+}
+
+async function loadApprovedItems() {
+  try {
+    const response = await fetch(API_URL, { headers: { accept: "application/json" } });
+    if (!response.ok) throw new Error("Blog service unavailable");
+    const data = await response.json();
+    if (!data.ok) throw new Error(data.error || "Blog service unavailable");
+    state.posts = data.posts.length ? data.posts : seedPosts();
+    state.reviews = data.reviews || [];
+    state.apiOnline = true;
+    setStatus("Community portal connected — submissions go to approval");
+  } catch {
+    state.posts = seedPosts();
+    state.reviews = [];
+    state.apiOnline = false;
+    setStatus("Preview mode: saving a local backup until the approval database is connected");
+  }
+  renderPosts();
+  renderReviews();
+}
+
+async function submitForApproval(payload) {
+  try {
+    const response = await fetch(API_URL, {
+      method: "POST",
+      headers: { "content-type": "application/json", accept: "application/json" },
+      body: JSON.stringify(payload),
+    });
+    const data = await response.json().catch(() => ({}));
+    if (!response.ok || !data.ok) throw new Error(data.error || "Submission failed");
+    return true;
+  } catch {
+    saveLocalBackup({ ...payload, id: crypto.randomUUID(), createdAt: new Date().toISOString() });
+    return false;
+  }
 }
 
 function readImage(file) {
@@ -110,7 +148,7 @@ function readImage(file) {
       return;
     }
     if (file.size > 1800000) {
-      reject(new Error("Image is too large. Use an image under 1.8MB for local browser storage."));
+      reject(new Error("Image is too large. Use an image under 1.8MB."));
       return;
     }
     const reader = new FileReader();
@@ -135,7 +173,7 @@ function saveDraft() {
     image: selectedImage,
   };
   localStorage.setItem(DRAFT_KEY, JSON.stringify(draft));
-  setStatus("Draft saved");
+  setStatus("Draft saved on this device");
 }
 
 function restoreDraft() {
@@ -171,36 +209,34 @@ els.image.addEventListener("change", async () => {
   }
 });
 
-els.form.addEventListener("submit", (event) => {
+els.form.addEventListener("submit", async (event) => {
   event.preventDefault();
-  state.posts.unshift({
-    id: crypto.randomUUID(),
+  const payload = {
+    type: "post",
     title: els.title.value.trim(),
     category: els.category.value,
     body: els.body.value.trim(),
     image: selectedImage,
-    createdAt: new Date().toISOString(),
-  });
-  saveState();
+  };
+  const sent = await submitForApproval(payload);
   localStorage.removeItem(DRAFT_KEY);
   clearEditor();
-  renderPosts();
-  setStatus("Post published locally");
+  setStatus(sent ? "Story sent for approval" : "Story saved locally; approval database is not connected yet");
+  await loadApprovedItems();
 });
 
-els.reviewForm.addEventListener("submit", (event) => {
+els.reviewForm.addEventListener("submit", async (event) => {
   event.preventDefault();
-  state.reviews.unshift({
-    id: crypto.randomUUID(),
+  const payload = {
+    type: "review",
     name: els.reviewName.value.trim(),
     rating: els.reviewRating.value,
     text: els.reviewText.value.trim(),
-    createdAt: new Date().toISOString(),
-  });
-  saveState();
+  };
+  const sent = await submitForApproval(payload);
   els.reviewForm.reset();
-  renderReviews();
-  setStatus("Review added locally");
+  setStatus(sent ? "Review sent for approval" : "Review saved locally; approval database is not connected yet");
+  await loadApprovedItems();
 });
 
 document.querySelector("#saveDraft").addEventListener("click", saveDraft);
@@ -211,11 +247,11 @@ document.querySelector("#clearDraft").addEventListener("click", () => {
 });
 
 document.querySelector("#exportBlog").addEventListener("click", () => {
-  const backup = { app: "LucyLP Blog Community", version: 1, exportedAt: new Date().toISOString(), ...state };
+  const backup = { app: "LucyLP Blog Community", version: 2, exportedAt: new Date().toISOString(), ...loadLocalBackup() };
   const blob = new Blob([JSON.stringify(backup, null, 2)], { type: "application/json" });
   const link = document.createElement("a");
   link.href = URL.createObjectURL(blob);
-  link.download = `LucyLP_Blog_Backup_${new Date().toISOString().slice(0, 10)}.json`;
+  link.download = `LucyLP_Blog_Submissions_${new Date().toISOString().slice(0, 10)}.json`;
   link.click();
   setTimeout(() => URL.revokeObjectURL(link.href), 1000);
 });
@@ -225,13 +261,10 @@ document.querySelector("#importBlog").addEventListener("change", async (event) =
   if (!file) return;
   try {
     const imported = JSON.parse(await file.text());
-    if (!Array.isArray(imported.posts) || !Array.isArray(imported.reviews)) throw new Error("Invalid backup");
-    state.posts = imported.posts;
-    state.reviews = imported.reviews;
-    saveState();
-    renderPosts();
-    renderReviews();
-    setStatus("Backup imported");
+    const pendingPosts = Array.isArray(imported.pendingPosts) ? imported.pendingPosts : [];
+    const pendingReviews = Array.isArray(imported.pendingReviews) ? imported.pendingReviews : [];
+    localStorage.setItem(BLOG_KEY, JSON.stringify({ pendingPosts, pendingReviews }));
+    setStatus("Local backup imported");
   } catch {
     setStatus("Backup file rejected");
   } finally {
@@ -240,36 +273,12 @@ document.querySelector("#importBlog").addEventListener("change", async (event) =
 });
 
 document.querySelector("#resetBlog").addEventListener("click", () => {
-  if (!confirm("Reset local LucyLP blog posts and reviews on this browser?")) return;
+  if (!confirm("Reset local LucyLP blog backup on this browser? Approved public posts are not deleted.")) return;
   localStorage.removeItem(BLOG_KEY);
   localStorage.removeItem(DRAFT_KEY);
-  state.posts = seedPosts();
-  state.reviews = [];
   clearEditor();
-  saveState();
-  renderPosts();
-  renderReviews();
-  setStatus("Local blog reset");
-});
-
-document.addEventListener("click", (event) => {
-  const postButton = event.target.closest("[data-delete-post]");
-  const reviewButton = event.target.closest("[data-delete-review]");
-  if (postButton) {
-    state.posts = state.posts.filter((post) => post.id !== postButton.dataset.deletePost);
-    saveState();
-    renderPosts();
-    setStatus("Post deleted locally");
-  }
-  if (reviewButton) {
-    state.reviews = state.reviews.filter((review) => review.id !== reviewButton.dataset.deleteReview);
-    saveState();
-    renderReviews();
-    setStatus("Review deleted locally");
-  }
+  setStatus("Local backup reset");
 });
 
 restoreDraft();
-saveState();
-renderPosts();
-renderReviews();
+loadApprovedItems();
