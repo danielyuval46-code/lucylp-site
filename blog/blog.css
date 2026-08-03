@@ -481,3 +481,28 @@
     grid-template-columns:1fr;
   }
 }
+
+.air-download-button{
+  align-self:start;
+  display:inline-flex;
+  justify-content:center;
+  align-items:center;
+  min-height:48px;
+  margin-top:6px;
+  padding:13px 18px;
+  border:1px solid rgba(255,238,181,0.62);
+  border-radius:999px;
+  background:linear-gradient(135deg, #f6d675, #fff2ba 50%, #c98627);
+  color:#2a1505 !important;
+  box-shadow:0 12px 28px rgba(0,0,0,0.24);
+  font-size:12px;
+  font-weight:900;
+  letter-spacing:0.85px;
+  text-align:center;
+  text-decoration:none !important;
+  text-transform:uppercase;
+}
+
+.air-download-button:hover{
+  transform:translateY(-1px);
+}
