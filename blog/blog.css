@@ -410,3 +410,74 @@
 .showcase-download--secondary{
   background:linear-gradient(135deg, #fff7db, #f0d49c);
 }
+
+.book-download-panel{
+  display:grid;
+  grid-template-columns:minmax(220px, 0.9fr) 1.4fr;
+  gap:22px;
+  align-items:center;
+  margin:34px 0;
+  padding:28px;
+  border:2px solid rgba(92,54,10,0.62);
+  border-radius:24px;
+  background:linear-gradient(135deg, #fff3c5, #f7cf6a 48%, #b96d18);
+  box-shadow:0 20px 54px rgba(76,42,8,0.18);
+}
+
+.book-download-panel h2{
+  color:#281303;
+  font-family:Georgia, "Times New Roman", serif;
+  font-size:clamp(30px, 5vw, 54px);
+  line-height:0.98;
+  margin:0 0 10px;
+}
+
+.book-download-panel p:not(.eyebrow){
+  color:#4d2c0c;
+  font-size:17px;
+  line-height:1.55;
+  margin:0;
+}
+
+.book-download-grid{
+  display:grid;
+  grid-template-columns:repeat(2, minmax(0, 1fr));
+  gap:12px;
+}
+
+.book-download-button{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  min-height:54px;
+  padding:14px 18px;
+  border:2px solid rgba(255,243,194,0.55);
+  border-radius:999px;
+  background:#2d1706;
+  color:#fff3c5 !important;
+  box-shadow:0 12px 28px rgba(45,23,6,0.24);
+  font-size:13px;
+  font-weight:900;
+  letter-spacing:0.8px;
+  text-align:center;
+  text-decoration:none !important;
+  text-transform:uppercase;
+}
+
+.book-download-button--library{
+  grid-column:1 / -1;
+  background:#fff8df;
+  color:#2d1706 !important;
+  border-color:rgba(45,23,6,0.28);
+}
+
+@media (max-width:760px){
+  .book-download-panel{
+    grid-template-columns:1fr;
+    padding:20px;
+  }
+
+  .book-download-grid{
+    grid-template-columns:1fr;
+  }
+}
