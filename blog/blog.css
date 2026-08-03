@@ -382,3 +382,31 @@
     grid-template-columns:repeat(2, minmax(0, 1fr));
   }
 }
+
+.showcase-download{
+  align-self:start;
+  display:inline-flex;
+  justify-content:center;
+  align-items:center;
+  min-height:42px;
+  margin-top:4px;
+  padding:11px 14px;
+  border:1px solid rgba(88,54,12,0.28);
+  border-radius:999px;
+  background:linear-gradient(135deg, #f8d46b, #fff0b7 52%, #d99a2b);
+  color:#2d1706 !important;
+  box-shadow:0 10px 24px rgba(90,51,12,0.18);
+  font-size:12px;
+  font-weight:900;
+  letter-spacing:0.7px;
+  text-decoration:none !important;
+  text-transform:uppercase;
+}
+
+.showcase-download:hover{
+  transform:translateY(-1px);
+}
+
+.showcase-download--secondary{
+  background:linear-gradient(135deg, #fff7db, #f0d49c);
+}
