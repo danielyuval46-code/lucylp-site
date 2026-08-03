@@ -1,6 +1,6 @@
 const BLOG_KEY = "lucylp-community-blog-v1";
 const DRAFT_KEY = "lucylp-community-blog-draft-v1";
-const API_URL = "/api/blog";
+const API_URL = "/api/blog?v=20260803-live-1";
 
 const state = { posts: seedPosts(), reviews: [], apiOnline: false };
 let selectedImage = "";

@@ -31,7 +31,7 @@ function setBlogStatus(text) {
   blogStatus.textContent = text;
 }
 
-async function blogRequest(path = '/api/blog?admin=1', options = {}) {
+async function blogRequest(path = '/api/blog?admin=1&v=20260803-live-1', options = {}) {
   const response = await fetch(path, {
     ...options,
     headers: {
@@ -105,7 +105,7 @@ approvalList.addEventListener('click', async (event) => {
   try {
     if (statusButton) {
       setBlogStatus('Updating submission...');
-      await blogRequest('/api/blog', {
+      await blogRequest('/api/blog?v=20260803-live-1', {
         method: 'PATCH',
         body: JSON.stringify({ id: statusButton.dataset.id, status: statusButton.dataset.action }),
       });
